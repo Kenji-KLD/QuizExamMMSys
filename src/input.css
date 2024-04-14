@@ -6,4 +6,16 @@
     .item {
         @apply flex gap-3 items-center;
     }
+
+    .menu-title {
+        @apply font-normal text-sm opacity-50 mb-4;
+    }
+
+    .card {
+        @apply bg-ISshade3 opacity-30 cursor-pointer hover:bg-gradient-to-br from-ISorange0 to-ISyellow0 hover:opacity-100 transition ease-in-out duration-500;
+    }
+
+    .main-title {
+        @apply font-bold text-xl mb-5 opacity-90;
+    }
 }
