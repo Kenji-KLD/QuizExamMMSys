@@ -60,3 +60,8 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 .card-section {
   font-size: small;
 }
+
+.input-line:focus {
+  border-image-source: linear-gradient(to left, #4862FF, #11CBFE);
+  border-image-slice: 1;
+}

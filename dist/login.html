@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Log in Page of QMS" />
+    <link rel="stylesheet" href="/dist/profView/css/styles.css" />
+    <link rel="stylesheet" href="/dist/output.css" />
+    <!--LINK FOR TAILWIND-->
+    <title>QMS | log in</title>
+  </head>
+  <body class="background flex flex-col h-screen">
+    <header class="p-6">
+      <div class="flex w-80 items-center gap-4">
+        <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
+        <h1 class="text-lg leading-5 font-bold text-balance">
+          Institute of Information and Computing Sciences
+        </h1>
+      </div>
+    </header>
+    <main class="flex flex-1 justify-center items-center">
+      <div
+        class="bg-ISwhite/10 rounded-3xl p-12 backdrop-blur-[2.25px] w-[500px] border border-ISshade1"
+      >
+        <form action="" class="relative">
+          <h1
+            class="text-[40px] leading-[53px] font-bold text-pretty w-[75%] drop-shadow-lg"
+          >
+            Welcome User;
+          </h1>
+          <img
+            src="/img/Rover.svg"
+            alt="Planet Model"
+            class="absolute -bottom-[4.5rem] -right-32 size-[300px] drop-shadow-2xl"
+          />
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-5 text-lg font-light text-[#FEFEFE55] cursor-text peer-focus:text-ISwhite"
+              >Email</label
+            >
+          </div>
+          <div class="flex relative mt-14">
+            <input
+              type="password"
+              id="Password"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Password"
+              class="absolute -top-5 text-lg font-light text-[#FEFEFE55] cursor-text peer-focus:text-ISwhite"
+              >Password</label
+            >
+          </div>
+          <div class="flex flex-1 mt-5 gap-2">
+            <input type="checkbox" class="">
+            <p>
+              I agreed to the
+              <a
+                href="tac.html"
+                class="mt-5 text-ISorange hover:text-ISwhite transition-all delay-150"
+              >
+                Terms and Condition
+              </a>
+            </p>
+          </div>
+          <a
+            href="/dist/index.html"
+            class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 w-[25%] rounded-[2.5rem]"
+          >
+            <p class="text-lg mx-auto font-medium">Log In</p>
+          </a>
+        </form>
+      </div>
+    </main>
+    <script>
+      let eye = document.getElementById("eye");
+      let pass = document.getElementById("Password");
+
+      eye.onclick = function () {
+        if (pass.type === "password") {
+          pass.type = "text";
+        } else {
+          pass.type = "password";
+        }
+      };
+    </script>
+  </body>
+</html>
