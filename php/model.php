@@ -20,12 +20,7 @@ class Model{
         $stmt->execute(); $result = $stmt->get_result();
         
         while ($row = $result->fetch_assoc()){
-            $data[] = [
-                "questionNumber" => $row['questionNumber'],
-                "questionText" => $row['questionText'],
-                "questionChoices" => $row['questionChoices'],
-                "questionAnswer" => $row['questionAnswer']
-            ];
+            $data[] = $row;
         }
         
         $result->free();
@@ -43,6 +38,18 @@ class Model{
         JOIN Section se ON c.section_ID = se.section_ID
         WHERE se.section_ID = ?;
         ";
+
+        $stmt = $db->prepare($query); $db->bind_param("s", $input_section);
+        $stmt->execute(); $result = $stmt->get_result();
+
+        while ($row = $result->fetch_assoc()){
+            $data[] = $row;
+        }
+
+        $result->free();
+        $stmt->close();
+        
+        return json_encode($data);
     }
 }
 ?>
