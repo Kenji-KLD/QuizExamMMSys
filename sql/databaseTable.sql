@@ -7,8 +7,9 @@ CREATE TABLE Account(
 	lName VARCHAR(32) NOT NULL,
 	email VARCHAR(64) NOT NULL,
 	age INT NOT NULL,
-	gender VARCHAR(6) NOT NULL,
+	sex VARCHAR(6) NOT NULL,
 	address TEXT NOT NULL,
+	firstLogin BOOLEAN NOT NULL DEFAULT 1,
 	PRIMARY KEY(user_ID)
 );
 
@@ -78,6 +79,8 @@ CREATE TABLE QuestionBank(
 	questionFormat VARCHAR(32) NOT NULL,
 	questionNumber INT NOT NULL,
 	questionText TEXT NOT NULL,
+	questionAnswer TEXT,
+	pointsGiven INT NOT NULL,
 	PRIMARY KEY(question_ID),
 	FOREIGN KEY(questionSet_ID) REFERENCES QuestionSet(questionSet_ID)
 );
@@ -86,9 +89,6 @@ CREATE TABLE ChoiceBank(
 	choice_ID BIGINT AUTO_INCREMENT,
 	question_ID BIGINT NOT NULL,
 	choiceLabel TEXT NOT NULL,
-	choiceText TEXT NOT NULL,
-	choiceAnswer TEXT,
-	pointsGiven INT NOT NULL,
 	PRIMARY KEY(choice_ID),
 	FOREIGN KEY(question_ID) REFERENCES QuestionBank(question_ID)
 );
@@ -136,7 +136,7 @@ CREATE TABLE SectionSubjectList(
 
 CREATE TABLE SubjectHandle(
 	faculty_ID BIGINT NOT NULL,
-	subject_ID VARCHAR(9) UNIQUE NOT NULL,
+	subject_ID VARCHAR(9) NOT NULL,
 	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
 );
