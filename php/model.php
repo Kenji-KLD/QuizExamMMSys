@@ -16,7 +16,7 @@ class Model{
         WHERE questionnaire_ID = ?
         ";
         
-        $stmt = $db->prepare($query); $db->bind_param("i", $input_questionnaireID);
+        $stmt = $this->db->prepare($query); $this->db->bind_param("i", $input_questionnaireID);
         $stmt->execute(); $result = $stmt->get_result();
         
         while ($row = $result->fetch_assoc()){

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Log in Page of QMS" />
+    <link rel="stylesheet" href="/dist/profView/css/styles.css" />
+    <link rel="stylesheet" href="/dist/output.css" />
+    <!--LINK FOR TAILWIND-->
+    <title>QMS | log in</title>
+  </head>
+  <body class="background flex flex-col h-screen">
+    <header class="p-6">
+      <div class="flex w-80 items-center gap-4">
+        <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
+        <h1 class="text-lg leading-5 font-bold text-balance">
+          Institute of Information and Computing Sciences
+        </h1>
+      </div>
+    </header>
+    <main class="flex flex-1 justify-center items-center">
+      <div
+        class="bg-ISwhite/10 rounded-3xl p-12 backdrop-blur-[2.25px] w-[500px] border border-ISshade1"
+      >
+        <form action="" class="relative">
+          <h1
+            class="text-[40px] leading-[53px] font-bold text-pretty w-[75%] drop-shadow-lg"
+          >
+            Welcome User,
+          </h1>
+          <img
+            src="/img/Rover.svg"
+            alt="Planet Model"
+            class="absolute -bottom-[4.5rem] -right-36 size-[300px] drop-shadow-2xl"
+          />
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >User ID</label
+            >
+          </div>
+          <div class="flex relative mt-14">
+            <input
+              type="password"
+              id="Password"
+              class="input-line w-[56%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.25"
+              stroke="currentColor"
+              class="w-5 h-5 mt-3 ml-3 mr-1 stroke-[#FEFEFE55] cursor-pointer peer-focus:stroke-ISwhite"
+              id="eye"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+              />
+            </svg>
+            <label
+              for="Password"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Password</label
+            >
+          </div>
+          <div class="flex flex-1 mt-5 gap-2">
+            <input type="checkbox" class="" />
+            <p>
+              I agreed to the
+              <a
+                href="tac.html"
+                class="mt-5 text-ISorange hover:text-ISwhite transition-all delay-150"
+              >
+                Terms and Condition
+              </a>
+            </p>
+          </div>
+          <a
+            href="/dist/index.html"
+            class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 w-[25%] rounded-[2.5rem]"
+          >
+            <p class="text-lg mx-auto font-medium">Log In</p>
+          </a>
+        </form>
+      </div>
+    </main>
+    <script>
+      const eye = document.getElementById("eye");
+      const pass = document.getElementById("Password");
+
+      eye.addEventListener("click", function () {
+        if (pass.type === "password") {
+          pass.type = "text";
+          eye.innerHTML = `
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.25"
+              stroke="currentColor"
+              class="w-5 h-5 mt-3 ml-3 mr-1 stroke-[#FEFEFE] cursor-pointer"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+          `;
+        } else {
+          pass.type = "password";
+          eye.innerHTML = `
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.25"
+              stroke="currentColor"
+              class="w-5 h-5 mt-3 ml-3 mr-1 stroke-[#FEFEFE] cursor-pointer"
+            >
+              <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+              />
+            </svg>
+          `;
+        }
+      });
+    </script>
+  </body>
+</html>
