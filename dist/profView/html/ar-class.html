@@ -19,8 +19,8 @@
       </div>
       <ul class="list-image-none list-none text-base font-medium">
         <h3 class="menu-title">MENU</h3>
-        <li class="menu-hover selected">
-          <a href="#" class="item">
+        <li class="menu-hover">
+          <a href="/dist/profView/html/home-page.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -38,8 +38,8 @@
             <span>Home</span>
           </a>
         </li>
-        <li class="menu-hover">
-          <a href="/dist/profView/html/ar-class.html" class="item">
+        <li class="menu-hover selected">
+          <a href="#" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -98,30 +98,68 @@
       </ul>
     </div>
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
-      <h1 class="main-title">Classes</h1>
-      <div
-        class="grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4"
-      >
-        <div class="card w-auto rounded-3xl">
-          <a href="class-page.html">
-            <h1 class="font-bold text-xl">System Analysis and Design</h1>
-            <h5 class="font-base text-sm">BSIS 201</h5>
-          </a>
+      <h1 class="main-title">Class Settings</h1>
+      <div class="grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
+        <div class="bg-ISshade3 w-auto rounded-3xl p-5">
+          <h1 class="font-bold text-3xl">Add Class</h1>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Subject / Class Name</label
+            >
+          </div>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Section</label
+            >
+          </div>
+          <button
+            onclick="addCard()"
+            type="submit"
+            class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
+          >
+            <p class="text-lg mx-auto font-medium">Add</p>
+          </button>
         </div>
-        <div class="card w-auto rounded-3xl">
-          <h1 class="font-bold text-xl">System Analysis and Design</h1>
-          <h5 class="font-base text-sm">BSIS 201</h5>
-        </div>
-        <div class="card w-auto rounded-3xl">
-          <h1 class="font-bold text-xl">System Analysis and Design</h1>
-          <h5 class="font-base text-sm">BSIS 201</h5>
-        </div>
-        <div class="card w-auto rounded-3xl">
-          <h1 class="font-bold text-xl">System Analysis and Design</h1>
-          <h5 class="font-base text-sm">BSIS 201</h5>
+        <div class="bg-ISshade3 w-auto rounded-3xl p-5">
+          <h1 class="font-bold text-3xl">Remove Class</h1>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Section</label
+            >
+          </div>
+          <button
+            class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
+          >
+            <p class="text-lg mx-auto font-medium">Remove</p>
+          </button>
         </div>
       </div>
     </main>
     <script src="/dist/profView/js/sidebar.js"></script>
+    <script src="/dist/profView/js/class-settings.js"></script>
   </body>
 </html>
