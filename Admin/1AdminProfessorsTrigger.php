@@ -12,10 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $subject_id = $_POST['subject_id'];
         $age = $_POST ['age'];
-        $gender = $_POST ['gender'];
+        $sex = $_POST ['sex'];
         $address = $_POST ['address'];
 
-        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $gender, $address);
+        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address);
 
         if ($registration->validate()) {
             if ($registration->register()) {
@@ -56,10 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = $_POST['password'];
         $subject_id = $_POST['subject_id'];
         $age = $_POST ['age'];
-        $gender = $_POST ['gender'];
+        $sex = $_POST ['sex'];
         $address = $_POST ['address'];
     
-        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $gender, $address);
+        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address);
     
         if ($editFaculty->validate()) {
             if ($editFaculty->edit()) {

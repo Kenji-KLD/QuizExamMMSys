@@ -1,7 +1,7 @@
 <?php
 
 function fetchFacultyData($conn) {
-    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.gender, SH.subject_ID, S.subjectName
+    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.sex, SH.subject_ID, S.subjectName
             FROM Account A
             LEFT JOIN Faculty F ON A.user_ID = F.user_ID
             LEFT JOIN SubjectHandle SH ON F.faculty_ID = SH.faculty_ID
@@ -24,7 +24,7 @@ function fetchFacultyData($conn) {
                         'email' => $row['email'],
                         'age' => $row['age'],
                         'address' => $row['address'],
-                        'gender' => $row['gender']
+                        'sex' => $row['sex']
                     ],
                     'subjects' => []
                 ];
@@ -41,7 +41,7 @@ function fetchFacultyData($conn) {
 
 function fetchStudentData($conn) {
    // Query to fetch student data
-$sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.gender, S.student_ID, C.section_ID, Sec.course
+$sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.sex, S.student_ID, C.section_ID, Sec.course
 FROM Account A
 LEFT JOIN Student S ON A.user_ID = S.user_ID
 LEFT JOIN Class C ON S.student_ID = C.student_ID
@@ -63,7 +63,7 @@ $studentData[] = [
     'email' => $row['email'],
     'age' => $row['age'],
     'address' => $row['address'],
-    'gender' => $row['gender'],
+    'sex' => $row['sex'],
     'student_ID' => $row['student_ID'], // Include student_ID in the array
     'sectionInfo' => [
         'section_ID' => $row['section_ID'],

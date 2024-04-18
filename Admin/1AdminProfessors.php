@@ -101,8 +101,8 @@
                     <label for="age">age:</label><br>
                     <input type="number" id="age" name="age" required><br><br>
 
-                    <label for="gender"> Gender:</label><br>
-                    <select name="gender" id="gender">
+                    <label for="sex"> sex:</label><br>
+                    <select name="sex" id="sex">
                     <option value="MALE"> Male </option>
                     <option value="FEMALE"> Female </option>
                     </select><br><br>
@@ -156,7 +156,7 @@ if (!empty($facultyData)) {
         echo "<td>{$faculty['userInfo']['email']}</td>";
         echo "<td>{$faculty['userInfo']['age']}</td>";
         echo "<td>{$faculty['userInfo']['address']}</td>";
-        echo "<td>{$faculty['userInfo']['gender']}</td>";
+        echo "<td>{$faculty['userInfo']['sex']}</td>";
         echo "<td>";
 
         if (!empty($faculty['subjects'])) {

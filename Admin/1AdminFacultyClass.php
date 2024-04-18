@@ -9,10 +9,10 @@ class RegistrationFaculty {
     private $email;
     private $subject_id;
     private $age;
-    private $gender;
+    private $sex;
     private $address;
 
-    public function __construct($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $gender, $address) {
+    public function __construct($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address) {
         $this->username = $username;
         $this->password = $password;
         $this->fName = $fName;
@@ -21,12 +21,12 @@ class RegistrationFaculty {
         $this->email = $email;
         $this->subject_id = $subject_id;
         $this->age = $age;
-        $this->gender = $gender;
+        $this->sex = $sex;
         $this->address = $address;
     }
 
     public function validate() {
-        if (empty($this->username) || empty($this->password) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->gender) || empty($this->address)) {
+        if (empty($this->username) || empty($this->password) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->sex) || empty($this->address)) {
             return false;
         }
         return true;
@@ -38,9 +38,9 @@ class RegistrationFaculty {
         $conn->begin_transaction(); 
         try {
             // Insert into Account
-            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, age, gender, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, age, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
-            $stmt1->bind_param('ssssssiss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->gender, $this->address);
+            $stmt1->bind_param('ssssssiss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address);
             $stmt1->execute();
             $stmt1->close();
 
