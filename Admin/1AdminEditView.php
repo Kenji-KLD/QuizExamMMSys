@@ -90,7 +90,7 @@ include "connection.php";
 if (isset($_POST['edit'])) {
     $user_ID = $_POST['user_ID'];
 
-    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.gender, SH.subject_ID, S.subjectName
+    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.sex, SH.subject_ID, S.subjectName
             FROM Account A
             LEFT JOIN Faculty F ON A.user_ID = F.user_ID
             LEFT JOIN SubjectHandle SH ON F.faculty_ID = SH.faculty_ID
@@ -112,7 +112,7 @@ if (isset($_POST['edit'])) {
         echo "Email: <input type='email' name='email' value='{$row['email']}'><br>";
         echo "age: <input type='number' name='age' value='{$row['age']}'><br>";
         echo "address: <input type='text' name='address' value='{$row['address']}'><br>";
-        echo "Gender: <select name = 'gender'>
+        echo "Gender: <select name = 'sex'>
         <option value = 'MALE'> Male </option>
         <option value = 'FEMALE'> Female </option>
         </select><br>";

@@ -12,7 +12,7 @@
     }
 
     .card {
-        @apply bg-ISshade3 opacity-30 cursor-pointer hover:bg-gradient-to-br from-ISorange0 to-ISyellow0 hover:opacity-100 transition ease-in-out duration-500;
+        @apply bg-ISshade3 p-5 opacity-30 cursor-pointer hover:bg-gradient-to-br from-ISorange0 to-ISyellow0 hover:opacity-100 transition ease-in-out duration-500;
     }
 
     .main-title {
