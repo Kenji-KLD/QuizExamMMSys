@@ -9,7 +9,6 @@ CREATE TABLE Account(
 	age INT NOT NULL,
 	sex VARCHAR(6) NOT NULL,
 	address TEXT NOT NULL,
-	firstLogin BOOLEAN NOT NULL DEFAULT 1,
 	PRIMARY KEY(user_ID)
 );
 
@@ -63,6 +62,7 @@ CREATE TABLE QuestionSet(
 	questionSetTitle VARCHAR(64) NOT NULL,
 	questionSetType VARCHAR(4) NOT NULL,
 	questionTotal INT NOT NULL,
+	randomCount INT,
 	rubrics TEXT,
 	deadline DATETIME NOT NULL,
 	acadYear VARCHAR(9) NOT NULL,
