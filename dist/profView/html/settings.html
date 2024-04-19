@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Professor Dashboard Page of QMS" />
+  <link rel="stylesheet" href="/dist/profView/css/styles.css" />
+  <link rel="stylesheet" href="/dist/output.css" />
+  <!--LINK FOR TAILWIND-->
+  <title>Home | Professor Dashboard</title>
+</head>
+
+<body class="font-sans flex bg-ISshade2">
+  <div class="sidebar p-7 h-dvh">
+    <div class="flex w-72 items-center gap-4 mb-8">
+      <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
+      <h1 class="text-lg leading-5 font-bold">
+        Institute of Information and Computing Sciences
+      </h1>
+    </div>
+    <ul class="list-image-none list-none text-base font-medium">
+      <h3 class="menu-title">MENU</h3>
+      <li class="menu-hover">
+        <a href="dist/profView/html/home-page.html" class="item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25"
+            stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+          </svg>
+          <span>Home</span>
+        </a>
+      </li>
+      <li class="menu-hover">
+        <a href="/dist/profView/html/ar-class.html" class="item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25"
+            stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          <span>Add/Remove Class</span>
+        </a>
+      </li>
+      <li class="menu-hover selected">
+        <a href="#" class="item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25"
+            stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z" />
+          </svg>
+          <span>Settings</span>
+        </a>
+      </li>
+      <li class="absolute bottom-5">
+        <a href="/dist/login.html" class="item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.25"
+            stroke="currentColor" class="w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+          </svg>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <main class="p-7 h-dvh w-dvw overflow-y-auto">
+    <h1 class="main-title">Settings</h1>
+    <div class="bg-ISshade3 w-auto rounded-3xl p-5">
+      <h2 class="font-medium">User Profile</h2>
+      <p class="text-[3rem] mt-6">Professor Name</p>
+      <p class="text-lg">Email</p>
+      <p>Sex</p>
+      <p>Age</p>
+    </div>
+    <div class="bg-ISshade3 w-auto rounded-3xl p-5">
+      <h2 class="font-medium">Security and Privacy</h2>
+      <p class="mt-6 text-lg">Change Password</p>
+      <div class="flex relative mt-16">
+        <input type="email" id="Email"
+          class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+          autocomplete="off" />
+        <label for="Email"
+          class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite">Old
+          Password</label>
+      </div>
+      <div class="flex relative mt-16">
+        <input type="email" id="Email"
+          class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+          autocomplete="off" />
+        <label for="Email"
+          class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite">New
+          Password</label>
+      </div>
+      <div class="flex relative mt-16">
+        <input type="email" id="Email"
+          class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+          autocomplete="off" />
+        <label for="Email"
+          class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite">Confirm New
+          Password</label>
+      </div>
+      <button type="submit"
+        class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]">
+        <p class="text-lg mx-auto font-medium">Change Password</p>
+      </button>
+    </div>
+  </main>
+  <script src="/dist/profView/js/sidebar.js"></script>
+</body>
+
+</html>
