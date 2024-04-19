@@ -18,4 +18,9 @@
     .main-title {
         @apply font-bold text-xl mb-5 opacity-90;
     }
+
+    .activated {
+        @apply bg-gradient-to-br from-ISblue to-IScyan bg-clip-text text-transparent;
+      }
+      
 }
