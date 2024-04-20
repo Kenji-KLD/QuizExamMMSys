@@ -69,24 +69,28 @@
                 <CENTER>
                     <div class="form-wrapper">
                         <h2>Classroom List</h2>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th><CENTER>Student ID</CENTER></th>
-                                    <th><CENTER>Section ID</CENTER></th>
-                                    <th><CENTER>Actions</CENTER></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Populate the table dynamically with PHP -->
-                                <tr>
-                                    <td><CENTER>123456</CENTER></td>
-                                    <td><CENTER>SEC001</CENTER></td>
-                                    <td><CENTER><button>Edit</button><button>Delete</button></CENTER></td>
-                                </tr>
-                                <!-- Add more rows as needed -->
-                            </tbody>
-                        </table>
+                        <?php
+include "connection.php";
+include "AdminCrud.php";
+
+$classnData = fetchClassData($conn);
+
+if (!empty($ClassData)) {
+    echo "<table>";
+    echo "<tr><th><CENTER>Student ID</CENTER></th><th><CENTER>Subject ID</CENTER></th></tr>";
+
+    foreach ($classData as $class) {
+        echo "<tr>";
+        echo "<td>{$class['student_ID']}</td>";
+        echo "<td>{$class['section_ID']}</td>";
+    }
+    echo "</table>";
+} else {
+    echo "<p>No student records found</p>";
+}
+
+$conn->close();
+?>
                     </div>
                 </CENTER>
             </div>

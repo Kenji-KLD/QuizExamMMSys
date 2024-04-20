@@ -25,16 +25,25 @@
         }
 
         .form-container {
-            width: 30%; 
-            padding-right: 20px; /* Added padding for spacing */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
         }
 
         .table-container {
-            width: 70%; 
+            width: 100%; 
         }
         .form-wrapper {
-            background-color: #212121;
-            
+            width: 100%; /* Adjust based on your design requirements */
+            max-width: 600px; /* Maximum width of the form */
+            background-color: #212121; /* Light grey background */
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 90vh; /* Maximum height of the form */
+            border-radius: 8px; /* Rounded corners for aesthetics */
         }
 
         #navbarToggle {
@@ -44,10 +53,31 @@
             cursor: pointer;
         }
 
+        .table-container1 {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
+}
+
+        .form-wrapper1 {
+            width: 100%; /* Adjust based on your design requirements */
+            max-width: 800px; /* Maximum width of the table display */
+            background-color: #212121; /* Light grey background */
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 90vh; /* Maximum height of the form */
+            border-radius: 8px; /* Rounded corners for aesthetics */
+            margin-left: 1px;
+}
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
 
         th, td {
             border: 1px solid white;
@@ -72,8 +102,9 @@
         <?php include 'sidebar.php'; ?>
         <div class="content">
             <div class="form-container">
-                <CENTER>
+       
                 <div class="form-wrapper">
+                    <CENTER>
                 <h2>Professor Form</h2>
                 <form action="1AdminProfessorsTrigger.php" method="post">
 
@@ -127,20 +158,21 @@
                     ?>
                     </select><br><br>
 
-
                     <input type="submit" name="add" value="Submit">
                     </form>
-                    </div>
                     </CENTER>
                     </div>
                     
-            <div class="table-container">
+                    </div>
+                    
+            <div class="table-container1">
                 <CENTER>
-                <div class="form-wrapper">
+                <div class="form-wrapper1">
                 <h2>Professor List</h2>
                 <?php
 include "connection.php";
 include "AdminCrud.php";
+
 
 // Fetch faculty data using the reusable function
 $facultyData = fetchFacultyData($conn);
@@ -173,7 +205,7 @@ if (!empty($facultyData)) {
         echo "<td>";
         echo "<form method='post' action='1AdminEditView.php'>";
         echo "<input type='hidden' name='user_ID' value='{$faculty['userInfo']['user_ID']}'>";
-        echo "<input type='submit' name='edit' value='Edit'>";
+        echo "<input type='submit' name='edit' value='Edit' onclick='toggleEdit()'>";
         echo "</form>";
         echo "<form method='post' action='1AdminProfessorsTrigger.php' onsubmit='return confirm(\"Are you sure you want to delete this faculty?\");'>";
         echo "<input type='hidden' name='user_ID' value='{$faculty['userInfo']['user_ID']}'>";

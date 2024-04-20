@@ -25,16 +25,26 @@
         }
 
         .form-container {
-            width: 30%; 
-            padding-right: 20px; /* Added padding for spacing */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
         }
+        
 
         .table-container {
-            width: 70%; 
+            width: 100%; 
         }
         .form-wrapper {
-            background-color: #212121;
-            padding: 20px;
+            width: 100%; /* Adjust based on your design requirements */
+            max-width: 600px; /* Maximum width of the form */
+            background-color: #212121; /* Light grey background */
+            padding: 35px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 90vh; /* Maximum height of the form */
+            border-radius: 8px; /* Rounded corners for aesthetics */
         }
 
         #navbarToggle {
@@ -43,6 +53,26 @@
             left: 20px;
             cursor: pointer;
         }
+        .table-container1 {
+            display: flex;
+            justify-content: center; /* Keeps the wrapper centered, can be adjusted if needed */
+            align-items: start; /* Aligns the content to the top */
+            height: 100%; /* Ensures the container takes full height of the viewport or its parent */
+            padding: 20px;      
+        }
+
+        .form-wrapper1 {
+            width: 100%; /* Adjust based on your design requirements */
+            max-width: 800px; /* Maximum width of the table display */
+            background-color: #212121; /* Dark background color */
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 90vh; /* Maximum height of the form */
+            border-radius: 8px; /* Rounded corners for aesthetics */
+            margin-left: 40px; /* Adds left margin to shift the wrapper to the right */
+        }
+
 
         table {
             width: 100%;
@@ -113,8 +143,8 @@
                             <label for="address">address:</label>
                             <input type="text" id="address" name="address" required>
 
-                            <label for="gender">Gender:</label>
-                            <select name="gender" id="gender">
+                            <label for="sex">sex:</label>
+                            <select name="sex" id="sex">
                             <option value="MALE"> Male </option>  
                             <option value=" FEMALE "> FEMALE </option>  
                             </select>
@@ -139,14 +169,23 @@
                     ?> 
                           </select>  
                              -->
+
                             <input type="submit" name="add" value="Submit">
+
                         </form>
+                        <form action="2AdminStudentTrigger.php" method="post" enctype="multipart/form-data">
+                        <h3>Or Import CSV Files</h3>
+                        <input type="file" id="accounts_file" name="accounts_file" accept=".csv">
+                        <br>
+                        <input type="submit" name="import" value="Import">
+                        </form>
+
                     </div>
                 </CENTER>
             </div>
-            <div class="table-container">
+            <div class="table-container1">
                 <CENTER>
-                    <div class="form-wrapper">
+                    <div class="form-wrapper1">
                         <h2>Student List</h2>
                         <?php
 include "connection.php";
@@ -158,7 +197,7 @@ $studentData = fetchStudentData($conn);
 // Display the retrieved data
 if (!empty($studentData)) {
     echo "<table>";
-    echo "<tr><th> ID </th><th> Name </th><th>Email</th><th>Section</th><th> Age </th><th> Gender </th><th> Address </th><th>Action</th></tr>";
+    echo "<tr><th> ID </th><th> Name </th><th>Email</th><th>Section</th><th> Age </th><th> Sex </th><th> Address </th><th>Action</th></tr>";
 
     foreach ($studentData as $student) {
         echo "<tr>";
@@ -167,13 +206,13 @@ if (!empty($studentData)) {
         echo "<td>{$student['email']}</td>";
         echo "<td>{$student['sectionInfo']['section_ID']}</td>";
         echo "<td>{$student['age']}</td>";
-        echo "<td>{$student['gender']}</td>";
+        echo "<td>{$student['sex']}</td>";
         echo "<td>{$student['address']}</td>";
     
         echo "<td>";
         echo "<form method='post' action='2AdminEditView.php'>";
         echo "<input type='hidden' name='user_ID' value='{$student['user_ID']}'>";
-        echo "<input type='hidden' name='student_ID' value='{$student['student_ID']}'>"; // Access student_ID safely
+        echo "<input type='hidden' name='student_ID' value='{$student['student_ID']}' >"; // Access student_ID safely
         echo "<input type='submit' name='edit' value='Edit'>";
         echo "</form>";
         echo "<form method='post' action='2AdminStudentTrigger.php' onsubmit='return confirm(\"Are you sure you want to delete this student?\");'>";
