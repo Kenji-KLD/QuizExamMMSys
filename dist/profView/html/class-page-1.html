@@ -20,7 +20,7 @@
       <ul class="list-image-none list-none text-base font-medium">
         <h3 class="menu-title">MENU</h3>
         <li class="menu-hover">
-          <a href="#" class="item">
+          <a href="/dist/profView/html/home-page.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -39,7 +39,7 @@
           </a>
         </li>
         <li class="menu-hover">
-          <a href="#" class="item">
+          <a href="/dist/profView/html/ar-class.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -58,7 +58,7 @@
           </a>
         </li>
         <li class="menu-hover">
-          <a href="#" class="item">
+          <a href="/dist/profView/html/settings.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -78,7 +78,7 @@
         </li>
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
-          <li class="menu-hover">
+          <li class="menu-hover selected">
             <a href="#" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +177,80 @@
       </ul>
     </div>
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
-      <h1 class="main-title">System Analysis and Design</h1>
+      <h1 class="main-title">Manage Class</h1>
+      <div class="w-auto rounded-3xl bg-ISshade3 p-5">
+        <section class="navbar flex gap-6 cursor-pointer">
+          <p class="navitem activated bg-clip-text">Students</p>
+          <a href="/dist/profView/html/class-page-2.html" class="navitem">Assessments</a>
+        </section>
+        <section class="top-content flex gap-6 mt-8">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.25"
+            stroke="currentColor"
+            class="w-7 h-7 mt-3"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+          <input
+            type="text"
+            class="text-ISshade3 w-[25%] rounded-xl p-3"
+            placeholder="e.i. KLD-xx-xxxx"
+          />
+          <button
+            type="submit"
+            class="flex cursor-pointer bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
+          >
+            <p class="text-lg mx-auto my-auto font-medium">Add</p>
+          </button>
+        </section>
+        <section class="main-content mt-10">
+          <div class="flex gap-6">
+            <button
+              type="submit"
+              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
+            >
+              <p class="text-lg mx-auto my-auto font-medium">Edit</p>
+            </button>
+            <button
+              type="submit"
+              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
+            >
+              <p class="text-lg mx-auto my-auto font-medium">Remove</p>
+            </button>
+          </div>
+          <div class="mt-10">
+            <table class="table-auto w-full overflow-auto">
+              <thead>
+                <tr>
+                  <th class="w-6">Selection</th>
+                  <th>Full Name</th>
+                  <th>Age</th>
+                  <th>Sex</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center"><input type="checkbox"></td>
+                  <td>Sample Name</td>
+                  <td>00</td>
+                  <td>Male</td>
+                  <td>hello@gmail.com</td>
+                  <td>123 Hello Mabuhay St.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </main>
     <script src="/dist/profView/js/sidebar.js"></script>
   </body>
