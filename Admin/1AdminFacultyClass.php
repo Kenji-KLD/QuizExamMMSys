@@ -85,10 +85,10 @@ class EditFaculty {
     private $email;
     private $subject_id;
     private $age;
-    private $gender;
+    private $sex;
     private $address;
 
-    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $gender, $address) {
+    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address) {
         $this->user_ID = $user_ID;
         $this->username = $username;   
         $this->password = $password;
@@ -98,12 +98,12 @@ class EditFaculty {
         $this->email = $email;
         $this->subject_id = $subject_id;
         $this->age = $age;
-        $this->gender = $gender;
+        $this->sex = $sex;
         $this->address = $address;
     }
 
     public function validate() {
-        if (empty($this->username) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->gender) || empty($this->address)) {
+        if (empty($this->username) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->sex) || empty($this->address)) {
             return false;
         }
         return true;
@@ -116,8 +116,8 @@ class EditFaculty {
 
         $conn->begin_transaction(); 
         try {
-            $stmt = $conn->prepare("UPDATE account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, age = ?, gender = ?, address = ? WHERE user_ID = ?");
-                $stmt->bind_param('sssssissi', $this->username, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->gender, $this->address, $this->user_ID);
+            $stmt = $conn->prepare("UPDATE account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, age = ?, sex = ?, address = ? WHERE user_ID = ?");
+                $stmt->bind_param('sssssissi', $this->username, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address, $this->user_ID);
                 $stmt->execute();
                 $stmt->close();
 

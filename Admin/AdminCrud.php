@@ -115,6 +115,24 @@ function fetchSectiontData($conn){
 
 }
 
+function fetchClassData($conn){
+    $sql = "SELECT student_ID, section_ID FROM Class";
+
+    $result = $conn->query($sql);
+
+    $sectionData = [];
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $sectionData[] = [
+                'student_ID' => $row['student_ID'],
+                'section_ID' => $row['section_ID']
+            ];
+        }
+    }
+    return $sectionData;
+
+}
+
 
 
 ?>

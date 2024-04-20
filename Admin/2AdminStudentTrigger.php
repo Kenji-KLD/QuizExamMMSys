@@ -14,10 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $section_ID = 'N/A';
         $age = $_POST['age'];
-        $gender = $_POST['gender'];
+        $sex = $_POST['sex'];
         $address = $_POST['address'];
     
-        $registration = new RegistrationStudent($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $age, $gender, $address);
+        $registration = new RegistrationStudent($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $age, $sex, $address);
     
         if ($registration->validate()) {
             if ($registration->register()) {
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "</script>";
             }
        
-    } if (isset($_POST['edit'])) {
+    } elseif (isset($_POST['edit'])) {
         $user_ID = $_POST['user_ID'];
         $username = $_POST['username'];
         $fName = $_POST['fName'];
@@ -53,13 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $age = $_POST['age'];
         $address = $_POST['address'];
-        $gender = $_POST['gender'];
+        $sex = $_POST['sex'];
         $password = $_POST['password'];
         $student_ID = $_POST['student_ID']; 
         $section_ID = $_POST['section_ID'];
     
         // Instantiate EditStudent class with form data
-        $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $gender, $password, $student_ID, $section_ID);
+        $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID);
     
         // Validate input data before attempting edit
         if ($editStudent->validate()) {
@@ -76,7 +76,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Handle invalid input data
             echo "Invalid input data.";
         }
+    }elseif (isset($_POST['import'])) {
+        if (isset($_FILES['accounts_file']['tmp_name']) && !empty($_FILES['accounts_file']['tmp_name'])) {
+            $userImporter = new ImportStudent($_FILES['accounts_file']['tmp_name']);
+            $userImporter->import();
+        } else {
+            echo "No file uploaded.";
+        }
     }
+    
     
 }
 

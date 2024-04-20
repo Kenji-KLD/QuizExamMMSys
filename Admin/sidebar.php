@@ -32,7 +32,7 @@
 
 <div class="sidebar" id="sidebar">
     <CENTER>
-        <img src="logo.jpg" height="150px" width="150px">
+        <img src="IICSlogo.jpg" height="150px" width="150px">
         <br>
         <br>
         <ul>
@@ -50,4 +50,5 @@
             sidebar.classList.toggle('closed');
         }
     </script>
+    
 </div>
