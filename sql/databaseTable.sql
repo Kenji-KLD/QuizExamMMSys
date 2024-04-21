@@ -93,6 +93,15 @@ CREATE TABLE ChoiceBank(
 	FOREIGN KEY(question_ID) REFERENCES QuestionBank(question_ID)
 );
 
+CREATE TABLE SubjectHandle(
+	subHandle_ID BIGINT AUTO_INCREMENT,
+	faculty_ID BIGINT NOT NULL,
+	subject_ID VARCHAR(9) NOT NULL,
+	PRIMARY KEY(subHandle_ID),
+	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
+	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
+);
+
 CREATE TABLE AnswerStatistic(
 	student_ID VARCHAR(13) NOT NULL,
 	question_ID BIGINT NOT NULL,
@@ -134,16 +143,9 @@ CREATE TABLE SectionSubjectList(
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
 );
 
-CREATE TABLE SubjectHandle(
-	faculty_ID BIGINT NOT NULL,
-	subject_ID VARCHAR(9) NOT NULL,
-	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
-	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
-);
-
 CREATE TABLE SectionHandle(
-	faculty_ID BIGINT NOT NULL,
+	subHandle_ID BIGINT NOT NULL,
 	section_ID VARCHAR(8) NOT NULL,
-	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
+	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
 	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
 );
