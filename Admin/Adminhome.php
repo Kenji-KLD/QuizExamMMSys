@@ -1,34 +1,52 @@
-<?php
-include "connection.php"; // Include your database connection
+<!-- <?php 
 
-// Prepare SQL query to count correct and incorrect answers
-$sql = "SELECT isCorrect, COUNT(*) AS count FROM AnswerStatistic GROUP BY isCorrect";
-
-// Execute the query and fetch results
+include "connection.php";
+$sql = "SELECT isCorrect, COUNT(*) as count FROM AnswerStatistic GROUP BY isCorrect";
 $result = $conn->query($sql);
 
-// Initialize an array to store data for the pie chart
-$data = array();
+$data = [];
 while ($row = $result->fetch_assoc()) {
-    $data[$row['isCorrect']] = $row['count'];
+    $key = $row['isCorrect'] ? 'Correct' : 'Incorrect';
+    $data[$key] = $row['count'];
 }
 
-// Close the database connection
 $conn->close();
-?>
-<?php
-// Prepare data for Chart.js
-$labels = array_keys($data); // Labels for the pie chart (e.g., "0" for incorrect, "1" for correct)
-$counts = array_values($data); // Corresponding counts (e.g., count of incorrect answers, count of correct answers)
 
-// Convert data to JSON format for JavaScript
-$chartData = json_encode(array(
-    'labels' => $labels,
-    'counts' => $counts
-));
-?>
+// Encode data to pass to JavaScript
+$chartData = json_encode($data);
 
+?> -->
 
+<!-- <script>
+document.addEventListener('DOMContentLoaded', function () {
+    var ctx = document.getElementById('myDonutChart').getContext('2d');
+    var data = <?php echo $chartData; ?>;
+    
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Correct', 'Incorrect'],
+            datasets: [{
+                label: 'Answer Statistics',
+                data: [data.Correct, data.Incorrect],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+});
+</script> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -68,39 +86,44 @@ $chartData = json_encode(array(
 <body>
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
-        <?php include 'sidebar.php';?> <!-- Include the sidebar -->
+        <?php include 'sidebar.php';?>
         <div class="content">
             <h1><CENTER>Welcome to Quiz and Exam Maker Management System</CENTER></h1>
-              <h2>Answer Statistics</h2>
-              <h2>Pie Chart of Answer Statistics</h2>
-    <canvas id="myPieChart" width="400" height="400"></canvas>
-
-    <script>
-        // Parse PHP data into JavaScript
-        var chartData = <?php echo $chartData; ?>;
-
-        // Get context of the canvas element
-        var ctx = document.getElementById('myPieChart').getContext('2d');
-
-        // Create a new pie chart instance
-        var myPieChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: chartData.labels,
-                datasets: [{
-                    label: 'Answer Statistics',
-                    data: chartData.counts,
-                    backgroundColor: ['red', 'green'], // Customize colors here
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                // Add other chart options as needed
-            }
+            <canvas id="myDonutChart" width="400" height="400"></canvas>
+            <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('myDonutChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        label: 'Answer Statistics',
+                        data: [200, 50],  // Example data
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.6)',  // Correct Answers Color
+                            'rgba(255, 99, 132, 0.6)'   // Incorrect Answers Color
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            fontColor: 'white'
+                        }
+                    }
+                }
+            });
         });
     </script>
-             
         </div>
     </div>
 
