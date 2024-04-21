@@ -3,20 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Professor Dashboard Page of QMS" />
+    <meta
+      name="description"
+      content="Professor Dashboard Make Assessments Page of QMS"
+    />
+    <link rel="icon" href="/img/Planet-9.svg" type="image/x-icon" />
     <link rel="stylesheet" href="/dist/profView/css/styles.css" />
     <link rel="stylesheet" href="/dist/output.css" />
     <!--LINK FOR TAILWIND-->
-    <title>Class | Professor Dashboard</title>
+    <title>QMS | Make Assessments - Professor Dashboard</title>
   </head>
   <body class="font-sans flex bg-ISshade2">
     <div class="sidebar p-7 h-dvh">
+      <!-- IICS HEADER -->
       <div class="flex w-72 items-center gap-4 mb-8">
         <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
         <h1 class="text-lg leading-5 font-bold">
           Institute of Information and Computing Sciences
         </h1>
       </div>
+
+      <!-- MENU -->
       <ul class="list-image-none list-none text-base font-medium">
         <h3 class="menu-title">MENU</h3>
         <li class="menu-hover">
@@ -156,7 +163,7 @@
           </li>
         </div>
         <li class="absolute bottom-5">
-          <a href="#" class="item">
+          <a href="/dist/login.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -209,68 +216,81 @@
           <p class="assessment-subhead">Assessment Details</p>
           <div class="flex relative mt-16">
             <input
-              type="email"
-              id="Email"
+              type="text"
+              id="Title"
               class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
               autocomplete="off"
             />
             <label
-              for="Email"
+              for="Title"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Title</label
             >
           </div>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="Deadline"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Deadline</label
             >
+            <!-- DATE AND TIME -->
+            <div class="flex">
+              <input
+                type="datetime-local"
+                class="input-line py-1 w-full border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              />
+            </div>
           </div>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="AcademicYear"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Academic Year</label
+            ><select
+              id="AcademicYear"
+              name="academicYear"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+              <option value="" class="bg-ISshade3" disabled selected>
+                -- Select Subject --
+              </option>
+              <option value="" class="bg-ISshade3">test 1</option>
+              <option value="" class="bg-ISshade3">test 2</option>
+            </select>
           </div>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="AcademicTerm"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Academic Term</label
+            ><select
+              id="AcademicTerm"
+              name="academicTerm"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+              <option value="" class="bg-ISshade3" disabled selected>
+                -- Select Subject --
+              </option>
+              <option value="" class="bg-ISshade3">test 1</option>
+              <option value="" class="bg-ISshade3">test 2</option>
+            </select>
           </div>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="AcademicSemester"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Academic Semester</label
+            ><select
+              id="AcademicSemester"
+              name="academicSemester"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+              <option value="" class="bg-ISshade3" disabled selected>
+                -- Select Subject --
+              </option>
+              <option value="" class="bg-ISshade3">test 1</option>
+              <option value="" class="bg-ISshade3">test 2</option>
+            </select>
           </div>
         </div>
         <div>
@@ -299,7 +319,7 @@
           </div>
           <div class="flex items-center gap-4 mt-12">
             <p class="assessment-subhead">Randomize Questions</p>
-            <input type="checkbox" class="size-5"/>
+            <input type="checkbox" class="size-5" />
           </div>
           <div class="flex flex-col gap-4">
             <div class="flex gap-4 items-center">
@@ -312,7 +332,7 @@
                 name="randomize-question"
                 id="QuestionAmmt"
                 value="QuestionAmmt"
-                class="input-line py-1 w-[5%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer "
+                class="input-line py-1 w-[5%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
                 autocomplete="off"
               />
             </div>
@@ -327,6 +347,7 @@
       </div>
     </main>
     <script src="/dist/profView/js/sidebar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script>
       const fileUpload = document.getElementById("file-upload");
       const fileNameSpan = document.getElementById("file-name");

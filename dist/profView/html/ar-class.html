@@ -3,20 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Professor Dashboard Page of QMS" />
+    <meta
+      name="description"
+      content="Professor Dashboard Add/Remove Class Page of QMS"
+    />
+    <link rel="icon" href="/img/Planet-9.svg" type="image/x-icon" />
     <link rel="stylesheet" href="/dist/profView/css/styles.css" />
     <link rel="stylesheet" href="/dist/output.css" />
     <!--LINK FOR TAILWIND-->
-    <title>Home | Professor Dashboard</title>
+    <title>QMS | Add/Remove Class - Professor Dashboard</title>
   </head>
   <body class="font-sans flex bg-ISshade2">
     <div class="sidebar p-7 h-dvh">
+      <!-- IICS HEADER -->
       <div class="flex w-72 items-center gap-4 mb-8">
         <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
         <h1 class="text-lg leading-5 font-bold">
           Institute of Information and Computing Sciences
         </h1>
       </div>
+      <!-- MENU -->
       <ul class="list-image-none list-none text-base font-medium">
         <h3 class="menu-title">MENU</h3>
         <li class="menu-hover">
@@ -100,33 +106,50 @@
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
       <h1 class="main-title">Class Settings</h1>
       <div class="grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
+        <!-- COLUMN 1 -->
         <div class="bg-ISshade3 w-auto rounded-3xl p-5">
           <h1 class="font-bold text-3xl">Add Class</h1>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="subject"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
-              >Subject / Class Name</label
+              >Subject / Class Name </label
+            ><select
+              id="subject"
+              name="subject"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+            <option value="" class="bg-ISshade3" disabled selected>
+              -- Select Subject --
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 1
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 2
+            </option>
+          </select>
           </div>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="subject"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Section</label
+            ><select
+              id="subject"
+              name="subject"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+            <option value="" class="bg-ISshade3" disabled selected>
+              -- Select Subject --
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 1
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 2
+            </option>
+          </select>
           </div>
           <button
             type="submit"
@@ -135,20 +158,29 @@
             <p class="text-lg mx-auto font-medium">Add</p>
           </button>
         </div>
+        <!-- COLUMN 2 -->
         <div class="bg-ISshade3 w-auto rounded-3xl p-5">
           <h1 class="font-bold text-3xl">Remove Class</h1>
           <div class="flex relative mt-16">
-            <input
-              type="email"
-              id="Email"
-              class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
-              autocomplete="off"
-            />
             <label
-              for="Email"
+              for="subject"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Section</label
+            ><select
+              id="subject"
+              name="subject"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
+            <option value="" class="bg-ISshade3" disabled selected>
+              -- Select Subject --
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 1
+            </option>
+            <option value="" class="bg-ISshade3">
+              test 2
+            </option>
+          </select>
           </div>
           <button
             class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"

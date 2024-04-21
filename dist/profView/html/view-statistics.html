@@ -3,20 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Professor Dashboard Page of QMS" />
+    <meta name="description" content="Professor Dashboard View Statistics Page of QMS" />
+    <link rel="icon" href="/img/Planet-9.svg" type="image/x-icon" />
     <link rel="stylesheet" href="/dist/profView/css/styles.css" />
     <link rel="stylesheet" href="/dist/output.css" />
     <!--LINK FOR TAILWIND-->
-    <title>Class | Professor Dashboard</title>
+    <title>QMS | View Statistics - Professor Dashboard</title>
   </head>
   <body class="font-sans flex bg-ISshade2">
     <div class="sidebar p-7 h-dvh">
+      <!-- IICS HEADER -->
       <div class="flex w-72 items-center gap-4 mb-8">
         <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
         <h1 class="text-lg leading-5 font-bold">
           Institute of Information and Computing Sciences
         </h1>
       </div>
+
+      <!-- MENU -->
       <ul class="list-image-none list-none text-base font-medium">
         <h3 class="menu-title">MENU</h3>
         <li class="menu-hover">
@@ -156,7 +160,7 @@
           </li>
         </div>
         <li class="absolute bottom-5">
-          <a href="#" class="item">
+          <a href="/dist/login.html" class="item">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -183,6 +187,7 @@
         <section
           class="top-content grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 mt-8"
         >
+        <!-- CARDS -->
           <div class="card w-auto rounded-3xl">
             <a href="/dist/profView/html/view-statistics-details.html">
               <h1 class="font-bold text-xl">Quiz 1</h1>
