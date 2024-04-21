@@ -78,8 +78,8 @@
         </li>
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
-          <li class="menu-hover selected">
-            <a href="#" class="item">
+          <li class="menu-hover">
+            <a href="/dist/profView/html/class-page-1.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -97,8 +97,8 @@
               <span>Manage Class</span>
             </a>
           </li>
-          <li class="menu-hover">
-            <a href="/dist/profView/html/make-assessment.html" class="item">
+          <li class="menu-hover selected">
+            <a href="#" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -177,82 +177,167 @@
       </ul>
     </div>
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
-      <h1 class="main-title">Manage Class</h1>
-      <div class="w-auto rounded-3xl bg-ISshade3 p-5 relative">
-        <section class="navbar flex gap-6 cursor-pointer">
-          <p class="navitem activated bg-clip-text">Students</p>
-          <a href="/dist/profView/html/class-page-2.html" class="navitem"
-            >Assessments</a
-          >
-        </section>
-        <div class="absolute top-10 right-10">
-          <p class="font-bold text-xl text-right">System Analysis and Design</p>
-          <p class="font-base text-lg text-right">BSIS 201</p>
-        </div>
-        <section class="top-content flex gap-6 mt-8">
+      <h1 class="main-title">Make Assessments</h1>
+      <div
+        class="w-[75%] h-[20%] rounded-3xl bg-ISshade3 p-5 flex flex-col gap-4 justify-center items-center mt-12"
+      >
+        <label
+          for="file-upload"
+          class="custom-file-upload flex gap-4 items-center"
+        >
+          Upload CSV File
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.25"
+            stroke-width="1.5"
             stroke="currentColor"
-            class="w-7 h-7 mt-3"
+            class="size-6"
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
             />
           </svg>
-          <input
-            type="text"
-            class="text-ISshade3 w-[25%] rounded-xl p-3"
-            placeholder="e.i. KLD-xx-xxxx"
-          />
+        </label>
+        <span id="file-name" class="ml-4">-No file selected-</span>
+        <input id="file-upload" type="file" accept=".csv" />
+      </div>
+      <div class="w-dvh grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
+        <div>
+          <p class="assessment-subhead">Assessment Details</p>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Title</label
+            >
+          </div>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Deadline</label
+            >
+          </div>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Academic Year</label
+            >
+          </div>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Academic Term</label
+            >
+          </div>
+          <div class="flex relative mt-16">
+            <input
+              type="email"
+              id="Email"
+              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              autocomplete="off"
+            />
+            <label
+              for="Email"
+              class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+              >Academic Semester</label
+            >
+          </div>
+        </div>
+        <div>
+          <p class="assessment-subhead">Assessment Format</p>
+          <div class="flex flex-col gap-4">
+            <div class="flex gap-4 items-center">
+              <input
+                type="radio"
+                name="assessment-format"
+                id="Quiz"
+                value="Quiz"
+                class="size-6"
+              />
+              <label for="Quiz" class="text-lg">Quiz</label>
+            </div>
+            <div class="flex gap-4 items-center">
+              <input
+                type="radio"
+                name="assessment-format"
+                id="Exam"
+                value="Exam"
+                class="size-6"
+              />
+              <label for="Exam" class="text-lg">Exam</label>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 mt-12">
+            <p class="assessment-subhead">Randomize Questions</p>
+            <input type="checkbox" class="size-5"/>
+          </div>
+          <div class="flex flex-col gap-4">
+            <div class="flex gap-4 items-center">
+              <label for="QuestionAmmt" class="text-lg"
+                >Question Display Amount</label
+              >
+              <input
+                type="number"
+                inputmode="numeric"
+                name="randomize-question"
+                id="QuestionAmmt"
+                value="QuestionAmmt"
+                class="input-line py-1 w-[5%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer "
+                autocomplete="off"
+              />
+            </div>
+          </div>
           <button
             type="submit"
-            class="flex cursor-pointer bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
+            class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
           >
-            <p class="text-lg mx-auto my-auto font-medium">Add</p>
+            <p class="text-lg mx-auto font-medium">Create</p>
           </button>
-        </section>
-        <section class="main-content mt-10">
-          <div class="flex gap-6">
-            <button
-              type="submit"
-              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
-            >
-              <p class="text-lg mx-auto my-auto font-medium">Edit</p>
-            </button>
-            <button
-              type="submit"
-              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
-            >
-              <p class="text-lg mx-auto my-auto font-medium">Remove</p>
-            </button>
-          </div>
-
-          <div class="mt-4">
-            <table class="w-full ">
-              <thead>
-                <tr>
-                  <th class="w-6">Selection</th>
-                  <th>Full Name</th>
-                  <th>Age</th>
-                  <th>Sex</th>  
-                  <th>Email</th>
-                  <th>Address</th>
-                </tr>
-              </thead>
-              <tbody id="studentTable">
-              </tbody>
-            </table>
-          </div>
-        </section>
+        </div>
       </div>
     </main>
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/profView/js/sidebar.js"></script>
-    <script src="../js/class-page-1.js" defer></script>
+    <script>
+      const fileUpload = document.getElementById("file-upload");
+      const fileNameSpan = document.getElementById("file-name");
+
+      fileUpload.addEventListener("change", function () {
+        if (fileUpload.files.length > 0) {
+          fileNameSpan.textContent = fileUpload.files[0].name;
+        } else {
+          fileNameSpan.textContent = "No file selected";
+        }
+      });
+    </script>
   </body>
 </html>

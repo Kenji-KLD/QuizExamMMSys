@@ -1,13 +1,17 @@
-const dots = document.getElementById("dots");
-const dropdownContent = document.getElementById("dropdown-content");
+const allDots = document.querySelectorAll(".dots");
+const allDropdownContents = document.querySelectorAll(".dropdown-content");
 
-dots.addEventListener("click", () => {
-  dropdownContent.classList.toggle("hidden");
-});
+allDots.forEach((dots, index) => {
+  dots.addEventListener("click", () => {
+    allDropdownContents[index].classList.toggle("hidden");
+  });
 
-document.addEventListener('click', (event) => {
-  const isClickInsideDropdown = dropdownContent.contains(event.target) || event.target === dots;
-  if (!isClickInsideDropdown) {
-    dropdownContent.classList.add('hidden');
-  }
+  document.addEventListener("click", (event) => {
+    const isClickInsideDropdown =
+      allDropdownContents[index].contains(event.target) ||
+      event.target === dots;
+    if (!isClickInsideDropdown) {
+      allDropdownContents[index].classList.add("hidden");
+    }
+  });
 });

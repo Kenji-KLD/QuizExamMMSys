@@ -78,8 +78,8 @@
         </li>
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
-          <li class="menu-hover selected">
-            <a href="#" class="item">
+          <li class="menu-hover">
+            <a href="/dist/profView/html/class-page-1.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -116,8 +116,8 @@
               <span>Make Assessments</span>
             </a>
           </li>
-          <li class="menu-hover">
-            <a href="/dist/profView/html/hold-assessments.html" class="item">
+          <li class="menu-hover selected">
+            <a href="#" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -177,82 +177,74 @@
       </ul>
     </div>
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
-      <h1 class="main-title">Manage Class</h1>
-      <div class="w-auto rounded-3xl bg-ISshade3 p-5 relative">
-        <section class="navbar flex gap-6 cursor-pointer">
-          <p class="navitem activated bg-clip-text">Students</p>
-          <a href="/dist/profView/html/class-page-2.html" class="navitem"
-            >Assessments</a
-          >
-        </section>
-        <div class="absolute top-10 right-10">
-          <p class="font-bold text-xl text-right">System Analysis and Design</p>
-          <p class="font-base text-lg text-right">BSIS 201</p>
-        </div>
-        <section class="top-content flex gap-6 mt-8">
+      <h1 class="main-title">Hold Assessments</h1>
+      <div class="flex gap-4">
+        <a href="/dist/profView/html/hold-assessments.html">
+          <!--Back Icon-->
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.25"
             stroke="currentColor"
-            class="w-7 h-7 mt-3"
+            class="w-8 h-8 mb-6"
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-          <input
-            type="text"
-            class="text-ISshade3 w-[25%] rounded-xl p-3"
-            placeholder="e.i. KLD-xx-xxxx"
-          />
-          <button
-            type="submit"
-            class="flex cursor-pointer bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
-          >
-            <p class="text-lg mx-auto my-auto font-medium">Add</p>
-          </button>
-        </section>
-        <section class="main-content mt-10">
-          <div class="flex gap-6">
-            <button
-              type="submit"
-              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
-            >
-              <p class="text-lg mx-auto my-auto font-medium">Edit</p>
-            </button>
-            <button
-              type="submit"
-              class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
-            >
-              <p class="text-lg mx-auto my-auto font-medium">Remove</p>
-            </button>
-          </div>
-
+        </a>
+        <p class="navitem mb-4">Quiz 1</p>
+      </div>
+      <div class="w-dvh grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
+        <div class="w-auto rounded-3xl bg-ISshade3 p-5">
+          <p class="text-3xl font-semibold">Attendance</p>
+          <p class="text-lg font-medium">Section</p>
+          <p>Date</p>
+          <p>Time</p>
           <div class="mt-4">
-            <table class="w-full ">
+            <table class="w-full">
               <thead>
                 <tr>
-                  <th class="w-6">Selection</th>
+                  <th class="w-6"></th>
                   <th>Full Name</th>
-                  <th>Age</th>
-                  <th>Sex</th>  
-                  <th>Email</th>
-                  <th>Address</th>
                 </tr>
               </thead>
-              <tbody id="studentTable">
+              <tbody>
+                <tr>
+                  <td class="text-center"><input type="checkbox" /></td>
+                  <td>Sample Name</td>
+                </tr>
+                <tr>
+                  <td class="text-center"><input type="checkbox" /></td>
+                  <td>Sample Name</td>
+                </tr>
+                <tr>
+                  <td class="text-center"><input type="checkbox" /></td>
+                  <td>Sample Name</td>
+                </tr>
+                <tr>
+                  <td class="text-center"><input type="checkbox" /></td>
+                  <td>Sample Name</td>
+                </tr>
               </tbody>
             </table>
           </div>
-        </section>
+        </div>
+        <div class="flex flex-col gap-8">
+          <div class="card-stats">
+            <h1 class="stats-title">Present</h1>
+            <p class="stats-number">00</p>
+          </div>
+          <div class="card-stats">
+            <h1 class="stats-title">Absent</h1>
+            <p class="stats-number">00</p>
+          </div>
+        </div>
       </div>
     </main>
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/profView/js/sidebar.js"></script>
-    <script src="../js/class-page-1.js" defer></script>
   </body>
 </html>
