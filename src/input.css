@@ -15,12 +15,24 @@
         @apply bg-ISshade3 p-5 opacity-30 cursor-pointer hover:bg-gradient-to-br from-ISorange0 to-ISyellow0 hover:opacity-100 transition ease-in-out duration-500;
     }
 
+    .card-stats {
+        @apply w-auto rounded-3xl bg-ISshade3 p-5 flex flex-col;
+    }
+
     .card-test {
         @apply cursor-pointer p-5 bg-gradient-to-br from-ISblue0 to-IScyan0;
     }
 
     .main-title {
         @apply font-bold text-xl mb-5 opacity-90;
+    }
+
+    .stats-title {
+        @apply text-3xl font-semibold;
+    }
+
+    .stats-number {
+        @apply text-5xl self-center font-medium py-12;
     }
 
     .assessment-title {
