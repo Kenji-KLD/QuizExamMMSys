@@ -38,4 +38,13 @@ INNER JOIN SubjectHandle suh ON su.subject_ID = suh.subject_ID
 INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
 INNER JOIN SectionHandle seh ON f.faculty_ID = seh.faculty_ID
 INNER JOIN Section se ON seh.section_ID = se.section_ID
-WHERE f.faculty_ID = 1;
+WHERE f.faculty_ID = ?;
+
+
+
+ADD/REMOVE CLASS:
+SELECT COUNT(suh.subHandle_ID) FROM SubjectHandle suh
+INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
+INNER JOIN SectionHandle seh ON suh.subHandle_ID = seh.subHandle_ID
+INNER JOIN Section se ON seh.section_ID = se.section_ID
+WHERE se.section_ID = ? AND su.subject_ID = ?
