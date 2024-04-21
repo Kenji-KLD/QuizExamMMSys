@@ -1,20 +1,20 @@
-INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address, firstLogin) VALUES
+INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address) VALUES
     ("Kenji667", "$2y$10$uaopU3O/dB95DSCNNEtApObugn4BUAkXHSAXBjWLwbMz8.ltpNJPW", 
     "Kenji", "", "Gabunada", 
     "kgabunada@kld.edu.ph", 21, "Male",
-    "B2 L29 Scotland St. Sunnycrest Village Salitran II, Dasmariñas, Cavite 4114", 1),
+    "B2 L29 Scotland St. Sunnycrest Village Salitran II, Dasmariñas, Cavite 4114"),
     ("MasterAibu", "$2y$10$oOl/QWtH.3OnhmItx0xgAuOkNSFfZ0vgnXoHM/o0f3cH/IwAWGa9O", 
     "Aibu", "", "Kuan", 
     "akuan@kld.edu.ph", 20, "Male", 
-    "Congressional Avenue, Dasmariñas, Cavite 4114", 1),
+    "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("admin", "$2y$10$hKTXF3EesCmn9sRCaCbzE.vZxfbNd1J6XHU9PVuzw7i4oYk2.UbuK", 
     "Admin", "", "Lorem Ipsum", 
     "aloremipsum@kld.edu.ph", 30, "Male", 
-    "Congressional Avenue, Dasmariñas, Cavite 4114", 1),
+    "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("faculty", "$2y$10$/l/3bssfbuFr/8FqC1vNsO21jGqZMsf2vIXXuF84jL9bLbJ9YRSES", 
     "Faculty", "", "Lorem Ipsum", 
     "floremipsum@kld.edu.ph", 32, "Male", 
-    "Congressional Avenue, Dasmariñas, Cavite 4114", 1)
+    "Congressional Avenue, Dasmariñas, Cavite 4114")
 ;
 
 INSERT INTO Subject(subject_ID, subjectName, unitsAmount, subjectType) VALUES
