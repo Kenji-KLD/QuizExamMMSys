@@ -54,14 +54,18 @@ class AddSubject {
 class EditSubject {
     private $subjectID;
     private $subjectName;
+    private $unitsAmount;
+    private $subjectType;
    
-    public function __construct($subjectID, $subjectName) {
+    public function __construct($subjectID, $subjectName, $unitsAmount, $subjectType) {
        $this->subjectID = $subjectID;
        $this->subjectName = $subjectName;
+       $this->unitsAmount = $unitsAmount;
+       $this->subjectType = $subjectType;
     }
 
     public function validate() {
-        if (empty($this->subjectID || empty($this->subjectName))) {
+        if (empty($this->subjectID) || empty($this->subjectName) || empty ($this->unitsAmount) || empty($this->subjectType)) {
             return false;
         }
         return true;
@@ -74,8 +78,8 @@ class EditSubject {
     
         $conn->begin_transaction(); 
         try {
-            $stmt = $conn->prepare("UPDATE Subject SET subjectName = ? WHERE subject_ID = ?");
-            $stmt->bind_param('ss', $this->subjectName, $this->subjectID);
+            $stmt = $conn->prepare("UPDATE Subject SET subjectName = ?, unitsAmount = ?, subjectType = ? WHERE subject_ID = ?");
+            $stmt->bind_param('siss', $this->subjectName, $this->unitsAmount, $this->subjectType, $this->subjectID);
             $stmt->execute();
             $stmt->close();
 
