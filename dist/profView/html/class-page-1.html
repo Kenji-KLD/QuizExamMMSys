@@ -98,7 +98,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="#" class="item">
+            <a href="/dist/profView/html/make-assessment.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -117,7 +117,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="#" class="item">
+            <a href="/dist/profView/html/hold-assessments.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -136,7 +136,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="#" class="item">
+            <a href="/dist/profView/html/view-statistics.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -178,11 +178,17 @@
     </div>
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
       <h1 class="main-title">Manage Class</h1>
-      <div class="w-auto rounded-3xl bg-ISshade3 p-5">
+      <div class="w-auto rounded-3xl bg-ISshade3 p-5 relative">
         <section class="navbar flex gap-6 cursor-pointer">
           <p class="navitem activated bg-clip-text">Students</p>
-          <a href="/dist/profView/html/class-page-2.html" class="navitem">Assessments</a>
+          <a href="/dist/profView/html/class-page-2.html" class="navitem"
+            >Assessments</a
+          >
         </section>
+        <div class="absolute top-10 right-10">
+          <p class="font-bold text-xl text-right">System Analysis and Design</p>
+          <p class="font-base text-lg text-right">BSIS 201</p>
+        </div>
         <section class="top-content flex gap-6 mt-8">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -225,33 +231,28 @@
               <p class="text-lg mx-auto my-auto font-medium">Remove</p>
             </button>
           </div>
-          <div class="mt-10">
-            <table class="table-auto w-full overflow-auto">
+
+          <div class="mt-4">
+            <table class="w-full ">
               <thead>
                 <tr>
                   <th class="w-6">Selection</th>
                   <th>Full Name</th>
                   <th>Age</th>
-                  <th>Sex</th>
+                  <th>Sex</th>  
                   <th>Email</th>
                   <th>Address</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center"><input type="checkbox"></td>
-                  <td>Sample Name</td>
-                  <td>00</td>
-                  <td>Male</td>
-                  <td>hello@gmail.com</td>
-                  <td>123 Hello Mabuhay St.</td>
-                </tr>
+              <tbody id="studentTable">
               </tbody>
             </table>
           </div>
         </section>
       </div>
     </main>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/profView/js/sidebar.js"></script>
+    <script src="../js/class-page-1.js" defer></script>
   </body>
 </html>

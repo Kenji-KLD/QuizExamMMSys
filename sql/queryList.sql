@@ -1,7 +1,7 @@
 MANAGE CLASS:
 
 Default Display:
-SELECT CONCAT(a.lName, ', ', a.fName, ' ', LEFT(a.mName, 1), '.') AS fullName, a.age AS age, a.sex AS sex, a.email AS email, a.address AS address
+SELECT CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, a.age AS age, a.sex AS sex, a.email AS email, a.address AS address
 FROM Account a
 INNER JOIN Student s ON a.user_ID = s.user_ID
 INNER JOIN Class c ON s.student_ID = c.student_ID
@@ -10,7 +10,7 @@ ORDER BY fullName;
 
 
 Search Display:
-SELECT CONCAT(a.lName, ', ', a.fName, ' ', LEFT(a.mName, 1), '.') AS fullName, a.age AS age, a.sex AS sex, a.email AS email, a.address AS address
+SELECT CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, a.age AS age, a.sex AS sex, a.email AS email, a.address AS address
 FROM Account a
 INNER JOIN Student s ON a.user_ID = s.user_ID
 INNER JOIN Class c ON s.student_ID = c.student_ID

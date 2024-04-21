@@ -22,7 +22,7 @@
       <div
         class="bg-ISwhite/10 rounded-3xl p-12 backdrop-blur-[2.25px] w-[500px] border border-ISshade1"
       >
-        <form action="" class="relative">
+        <form method="post" class="relative">
           <h1
             class="text-[40px] leading-[53px] font-bold text-pretty w-[75%] drop-shadow-lg"
           >
@@ -35,15 +35,15 @@
           />
           <div class="flex relative mt-16">
             <input
-              type="email"
-              id="Email"
+              type="text"
+              id="Username"
               class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
               autocomplete="off"
             />
             <label
-              for="Email"
+              for="Username"
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
-              >User ID</label
+              >Username</label
             >
           </div>
           <div class="flex relative mt-14">
@@ -75,7 +75,7 @@
             >
           </div>
           <div class="flex flex-1 mt-5 gap-2">
-            <input type="checkbox" class="" />
+            <input type="checkbox" id="TAC_Checkbox" class="" />
             <p>
               I agreed to the
               <a
@@ -87,7 +87,7 @@
             </p>
           </div>
           <a
-            href="/dist/index.html"
+            onclick="initiateLogin();"
             class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 w-[25%] rounded-[2.5rem]"
           >
             <p class="text-lg mx-auto font-medium">Log In</p>
@@ -95,6 +95,8 @@
         </form>
       </div>
     </main>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="js/login.js" type="module"></script>
     <script>
       const eye = document.getElementById("eye");
       const pass = document.getElementById("Password");

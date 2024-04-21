@@ -4,6 +4,7 @@ class Connection{
     private $dbname;
     private $username;
     private $password;
+    public $conn;
     
     public function __construct(){
         // Database connection details
@@ -13,12 +14,9 @@ class Connection{
         $this->password = "";
 
         // Establishing database connection
-        $conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
-        if ($conn->connect_error){
-            die("Connection Failed : " . $conn->connect_error);
-        }
-        else{
-            return $conn;
+        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
+        if ($this->conn->connect_error){
+            die("Connection Failed : " . $this->conn->connect_error);
         }
     }
 }
