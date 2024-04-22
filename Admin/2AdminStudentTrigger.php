@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 require_once "connection.php"; 
 include "2AdminStudentClass.php"; 
 
@@ -21,13 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         if ($registration->validate()) {
             if ($registration->register()) {
+                $_SESSION['notif'] = "Successful";
                 header("Location: 2AdminStudents.php");
-                exit; // Ensure script stops after redirection
             } else {
-                echo "<script>alert('Registration failed. Please try again.');</script>";
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 2AdminStudents.php");
             }
         } else {
-            echo "<script>alert('All fields are required.');</script>";
+            $_SESSION['notif'] = "Data Entry Already Exist";
+            header("Location: 2AdminStudents.php");
         }
     }
     elseif (isset($_POST['delete'])) {
@@ -37,11 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $delete = new DeleteStudent($user_ID);
 
             if ($delete->delete()) {
+                $_SESSION['notif'] = "Deleted Successfully";
                 header("Location: 2AdminStudents.php");
             } else {
-                echo "<script>";
-                echo "Failed to Delete faculty. ";
-                echo "</script>";
+                $_SESSION['notif'] = "Failed to delete";
+                header("Location: 2AdminStudents.php");
             }
        
     } elseif (isset($_POST['edit'])) {
@@ -58,30 +61,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $student_ID = $_POST['student_ID']; 
         $section_ID = $_POST['section_ID'];
     
-        // Instantiate EditStudent class with form data
+        
         $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID);
     
-        // Validate input data before attempting edit
-        if ($editStudent->validate()) {
-            // Attempt to edit student details
+        
+        // if ($editStudent->validate()) {
+           
             if ($editStudent->edit()) {
-                // Redirect upon successful edit
+               
+                $_SESSION['notif'] = "Successful";
                 header("Location: 2AdminStudents.php");
-                exit;
             } else {
-                // Display error message if edit fails
-                echo "<script>alert('Failed to update student details.');</script>";
+                $_SESSION['notif'] = "Invalid input data";
+                header("Location: 2AdminStudents.php");
             }
-        } else {
-            // Handle invalid input data
-            echo "Invalid input data.";
-        }
+        // } else {
+        //     $_SESSION['notif'] = "Data Entry Already Existing";
+        //     header("Location: 2AdminEditView.php");
+        // }
     }elseif (isset($_POST['import'])) {
         if (isset($_FILES['accounts_file']['tmp_name']) && !empty($_FILES['accounts_file']['tmp_name'])) {
             $userImporter = new ImportStudent($_FILES['accounts_file']['tmp_name']);
             $userImporter->import();
         } else {
-            echo "No file uploaded.";
+            $_SESSION['notif'] = "No file uploaded";
+            header("Location: 2AdminStudents.php");
         }
     }
     

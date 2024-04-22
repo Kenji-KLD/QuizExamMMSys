@@ -16,16 +16,15 @@ class AddSubject {
 
     // Method to validate if a subject ID already exists in the database
     public function validate() {
-        include "connection.php"; // Includes the database connection
-        $sql = "SELECT 1 FROM Subject WHERE subject_ID = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param('s', $this->subjectID);
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Subject WHERE subject_ID = ? AND subjectName = ?");
+        $stmt->bind_param('ss', $this->subjectID, $this->subjectName);
         $stmt->execute();
         $result = $stmt->get_result();
-        $exists = $result->num_rows > 0;
-        $stmt->close();
-        $conn->close();
-        return !$exists;
+
+        if ($result->num_rows > 0) {
+        return false;
+        }
     }
 
     // Method to add a new subject to the database
@@ -65,10 +64,15 @@ class EditSubject {
     }
 
     public function validate() {
-        if (empty($this->subjectID) || empty($this->subjectName) || empty ($this->unitsAmount) || empty($this->subjectType)) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Subject WHERE subjectName = ?");
+        $stmt->bind_param('s', $this->subjectName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
     
 

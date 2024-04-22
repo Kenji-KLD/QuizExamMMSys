@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Faculty Details</title>
+    <title>Edit Subject Details</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -66,7 +66,56 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.name;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'fName':
+            case 'mName':
+            case 'lName':
+            case 'username':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+                break;
+            case 'address':
+                regex = /[!$%^&*()_+\=\[\]{};:"\\|<>\?]+/;
+                break;
+            case 'email':
+                regex = /[!#$%^&*()_+\-=\[\]{};,':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
 
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
 <div class="container">
     <?php
     include "connection.php";
@@ -86,7 +135,7 @@
             echo "<h2>Edit Subject Details</h2>";
             echo "Subject ID: <input type='text' name='subject_ID' value='{$row['subject_ID']}' readonly><br>";
             echo "Subject Name: <input type='text' name='subjectName' value='{$row['subjectName']}'><br>";
-            echo "Units Amount: <input type='number' name='unitsAmount' value='{$row['unitsAmount']}'><br>";
+            echo "Units Amount: <input type='number' name='unitsAmount' value='{$row['unitsAmount']}' required min='0'><br>";
             echo "Subject Type: <input type='text' name='subjectType' value='{$row['subjectType']}'><br>";
             
             echo "<input type='submit' name='edit' value='Save Changes'>";

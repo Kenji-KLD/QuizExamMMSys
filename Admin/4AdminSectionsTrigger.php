@@ -12,16 +12,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($registration->validate()) {
             if ($registration->add()) {
-                header("Location: 4AdminSections.php");
+                $_SESSION['notif'] = "Successful";
+                header("Location: 2AdminStudents.php");
             } else {
-                echo "<script>";
-                echo "alert('New Section Entry failed. Please try again later.');";
-                echo "</script>";
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 2AdminStudents.php");
             }
         } else {
-            echo "<script>";
-            echo "alert('All fields are required.');";
-            echo "</script>";
+            $_SESSION['notif'] = "Data Entry Already Existing";
+            header("Location: 2AdminStudents.php");
         }
 
     } elseif (isset($_POST['delete'])) {
@@ -31,13 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $deleteSection = new DeleteSection($section_ID);
 
     if ($deleteSection->delete()) {
-        header("Location: 4AdminSections.php");
-        exit; // Ensure script stops after redirection
+        $_SESSION['notif'] = "Successful";
+        header("Location: 2AdminStudents.php");
     } else {
-        echo "<script>";
-        echo "alert('Failed to delete Section.');";
-        echo "window.location='4AdminSections.php';";
-        echo "</script>";
+        $_SESSION['notif'] = "Failed to delete data";
+        header("Location: 2AdminStudents.php");
     }
 
 
@@ -49,16 +46,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($edit->validate()) {
             if ($edit->edit()) {
-                header("Location: 4AdminSections.php");
+                $_SESSION['notif'] = "Successful";
+                header("Location: 2AdminStudents.php");
             } else {
-                echo "<script>";
-                echo "alert('New Section Entry failed. Please try again later.');";
-                echo "</script>";
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 2AdminStudents.php");
             }
         } else {
-            echo "<script>";
-            echo "alert('Section entered Already Exist.');";
-            echo "</script>";
+            $_SESSION['notif'] = "Data Entry Already Existing";
+            header("Location: 2AdminStudents.php");
         }
 
     } 
