@@ -14,8 +14,20 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
             'error_message' => 'JSON Decoding Fail'
         ]);
     }
-    
-    if($_POST['dataFlag'] == 'createSubHandle'){
+
+    if(isset($jsonData['subject_ID']) && $jsonData['subject_ID'] == ''){
+        echo json_encode([
+            'processed' => false, 
+            'error_message' => 'ERROR: No Subject Selected'
+        ]);
+    }
+    else if($jsonData['section_ID'] == ''){
+        echo json_encode([
+            'processed' => false, 
+            'error_message' => 'ERROR: No Section Selected'
+        ]);
+    }
+    else if($_POST['dataFlag'] == 'createSubHandle'){
         $sessionData = $Model->readSessionData($_COOKIE['session_token']);
         $Model->createSubHandle($sessionData['faculty_ID'], $jsonData['subject_ID'], $jsonData['section_ID']);
 

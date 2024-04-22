@@ -11,7 +11,6 @@ function generateOptions(valuesArray, divId){
 }
 
 function sendData(dataFlag, jsonData){
-    console.log(jsonData);
     $.ajax({
         url: "/php/ar-class_controller.php",
         method: "POST",
@@ -23,7 +22,6 @@ function sendData(dataFlag, jsonData){
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response){
-            console.log(response);
             data = JSON.parse(response);
 
             if(data.processed == true){
