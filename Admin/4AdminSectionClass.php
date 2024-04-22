@@ -10,14 +10,38 @@ class AddSection {
     }
 
     public function validate() {
+        // Include the database connection file
         include "connection.php";
-        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE section_ID = ?");
-        $stmt->bind_param('s', $this->sectionID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-        return false;
+    
+        try {
+            // Prepare a SQL statement to check for existing user
+            $stmt = $conn->prepare("SELECT 1 FROM Section WHERE section_ID = ? AND course = ?");
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $conn->error);
+            }
+    
+            // Bind the input parameters to the prepared statement
+            $stmt->bind_param('ss', $this->sectionID, $this->courseName);
+            $stmt->execute();
+    
+            // Fetch the results
+            $result = $stmt->get_result();
+            if (!$result) {
+                throw new Exception("Failed to get result: " . $stmt->error);
+            }
+    
+            // Check the number of rows in the result
+            if ($result->num_rows > 0) {
+                // If rows are found, data exists, return false
+                return false;
+            } else {
+                // If no rows are found, data does not exist, return true
+                return true;
+            }
+        } catch (Exception $e) {
+            // Optionally, handle exceptions and errors if necessary
+            error_log('Error in validate function: ' . $e->getMessage());
+            return null; // Or consider re-throwing the exception depending on your error handling strategy
         }
     }
 
@@ -36,7 +60,9 @@ class AddSection {
             return true;
         } catch (Exception $e) {
             $conn->rollback();
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 4AdminSections.php"); // Redirect with error message
+            exit;
         }
     }
 }

@@ -132,6 +132,39 @@ function fetchClassData($conn){
     return $sectionData;
 
 }
+function fetchFacultyList($conn) {
+    // Define the SQL query to join Account and Faculty tables
+    $sql = "SELECT Faculty.faculty_ID, Account.fName, Account.mName, Account.lName 
+            FROM Faculty
+            JOIN Account ON Faculty.user_ID = Account.user_ID
+            ORDER BY Account.lName, Account.fName"; // Sorting by last name and first name
+
+    // Prepare and execute the SQL statement
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch results
+    $facultyList = [];
+    while ($row = $result->fetch_assoc()) {
+        $fullName = $row['fName'];
+        if (!empty($row['mName'])) {
+            $fullName .= ' ' . $row['mName'];
+        }
+        $fullName .= ' ' . $row['lName'];
+        $facultyList[] = [
+            'faculty_ID' => $row['faculty_ID'],
+            'fullName' => $fullName
+        ];
+    }
+
+    $stmt->close();
+    return $facultyList;
+}
+
 
 
 

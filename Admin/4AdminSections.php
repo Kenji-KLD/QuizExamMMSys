@@ -1,3 +1,13 @@
+<?php
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,8 +119,9 @@ function restrictSpecialChars(input) {
             <div class="form-container">
                 <CENTER>
                     <div class="form-wrapper">
-                        <h2>Section Form</h2>
-                        <form action="4AdminSectionsTrigger.php" method="post">
+                        <h2>Section Form</h2><br>
+                        <?php echo $notif; ?><br>
+                        <br><form action="4AdminSectionsTrigger.php" method="post">
                             <label for="sectionID">Section ID:</label>
                             <input type="text" id="sectionID" name="sectionID" required>
 
