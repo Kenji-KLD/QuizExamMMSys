@@ -1,3 +1,13 @@
+<?php
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,6 +82,36 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.id;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'sectionID':
+                regex = /[!@#$%^&*(),._+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
+
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+</script>
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -79,8 +119,9 @@
             <div class="form-container">
                 <CENTER>
                     <div class="form-wrapper">
-                        <h2>Section Form</h2>
-                        <form action="4AdminSectionsTrigger.php" method="post">
+                        <h2>Section Form</h2><br>
+                        <?php echo $notif; ?><br>
+                        <br><form action="4AdminSectionsTrigger.php" method="post">
                             <label for="sectionID">Section ID:</label>
                             <input type="text" id="sectionID" name="sectionID" required>
 

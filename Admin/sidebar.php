@@ -43,6 +43,25 @@
             <li><a href="4AdminSections.php">Sections</a></li>
             <li><a href="5AdminClassrooms.php">Classrooms</a></li>
         </ul>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <form action="logout.php" method="post">
+            <button type="submit">Logout</button>
+        </form>     
     </CENTER>
     <script>
         function toggleSidebar() {

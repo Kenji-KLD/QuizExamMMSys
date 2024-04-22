@@ -23,6 +23,14 @@
         @apply bg-ISshade3 p-5 opacity-30 cursor-pointer hover:bg-gradient-to-br from-ISorange0 to-ISyellow0 hover:opacity-100 transition ease-in-out duration-500;
     }
 
+    .card-user {
+        @apply p-5 cursor-pointer bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE];
+    }
+
+    .card-user1 {
+        @apply p-5 cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE];
+    }
+
     .card-stats {
         @apply w-auto rounded-3xl bg-ISshade3 p-5 flex flex-col;
     }
@@ -53,6 +61,10 @@
 
     .activated {
         @apply bg-gradient-to-br from-ISblue to-IScyan bg-clip-text text-transparent;
+      }
+
+    .activated-secondary {
+        @apply bg-gradient-to-br from-ISorange to-ISyellow bg-clip-text text-transparent;
       }
     
     .answers {

@@ -1,3 +1,22 @@
+<?php
+ include 'connection.php';  
+ include 'AdminCrud.php'; 
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+// Check if $_SESSION['notif'] is set and display it
+$notif1 = isset($_SESSION['notif1']) ? $_SESSION['notif1'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif1']);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,6 +91,47 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.id;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'subjectID':
+                regex = /[!#$@%^&*()_+\-=.\[\]{};,':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
+
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -80,31 +140,78 @@
                 <CENTER>
                     <div class="form-wrapper">
                         <h2>Subject Form</h2>
-                        <form action="3AdminSubjectTrigger.php" method="post">
+                        <?php echo $notif; ?><br>
+                        <br><form action="3AdminSubjectTrigger.php" method="post">
                             <label for="subjectID">Subject ID:</label>
-                            <input type="text" id="subjectID" name="subjectID" required>
+                            <input type="text" id="subjectID" name="subjectID" placeholder="CCIS1101" required>
 
                             <label for="subjectName">Subject Name:</label>
-                            <input type="text" id="subjectName" name="subjectName" required>
+                            <input type="text" id="subjectName" name="subjectName" placeholder="Computer Programming 1" required>
 
                             <label for="unitsAmount">Units Amount:</label>
-                            <input type="number" id="unitsAmount" name="unitsAmount" required>
+                            <input type="number" id="unitsAmount" name="unitsAmount" required min="0" required>
 
                             <label for="subjectType">Subject Type:</label>
-                            <input type="text" id="subjectType" name="subjectType" required>
+                            <input type="text" id="subjectType" name="subjectType" placeholder="Lec/Lab" required>
                             
                             <input type="submit" name = "add" value="Submit">
                         </form>
                     </div>
                 </CENTER>
             </div>
+            <div class="form-container">
+            <CENTER>
+                <div class="form-wrapper">
+                    <h2>Assign Subjects</h2>
+                    <?php echo $notif1 ?><br>
+                    <br><form action="3AdminSubjectTrigger.php" method="post">
+                    <label for="faculty_ID">Choose a faculty member:</label>
+                    <select name="faculty_ID" id="faculty_ID">
+                    <option disabled selected>Select Faculty</option>
+                
+                    <?php
+                    try {
+                    $facultyMembers = fetchFacultyList($conn);
+                    foreach ($facultyMembers as $member) {
+                    echo "<option value='{$member['faculty_ID']}'>" . htmlspecialchars($member['fullName']) . "</option>";
+                    }
+                    } catch (Exception $e) {
+                    echo 'Error: ' . $e->getMessage();
+                    }
+                    ?>
+                    </select><br>
+
+                    <br><label for="subjectID">Subject:</label>
+                    <select name="subjectID" id="subjectID">
+                    <option disabled selected>Select Subject</option>
+                    <?php
+                    $query = "SELECT subject_ID, subjectName FROM Subject";
+                    $result = mysqli_query($conn, $query);
+
+                    if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                    $subjectID = $row['subject_ID'];
+                    $subjectName = $row['subjectName'];
+                    echo "<option value=\"$subjectID\">$subjectName</option>";
+                    }
+                    } 
+                    // else {
+                    //     echo "<option value=\"N/A\">No subjects available</option>";
+                    // }
+                    ?>
+                        </select><br>
+
+                        <br><input type="submit" name = "assign" value="Assign">
+                    </form>
+                </div>
+            </CENTER>
+        </div>
             <div class="table-container">
                 <CENTER>
                     <div class="form-wrapper">
                         <h2>Subject List</h2>
                         <?php
-include "connection.php";
-include "AdminCrud.php";
+
 
 $subjectData = fetchSubjectData($conn);
 

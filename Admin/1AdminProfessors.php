@@ -1,3 +1,13 @@
+<?php
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,6 +107,60 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.id;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'fName':
+            case 'mName':
+            case 'lName':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+                break;
+            case 'password':
+            case 'username':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                break;
+            case 'address':
+                regex = /[!$%^&*()_+\=\[\]{};:"\\|<>\?]+/;
+                break;
+            case 'email':
+                regex = /[!#$%^&*()_+\-=\[\]{};':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
+
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
+
     <div class="container">
     <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -106,7 +170,8 @@
                 <div class="form-wrapper">
                     <CENTER>
                 <h2>Professor Form</h2>
-                <form action="1AdminProfessorsTrigger.php" method="post">
+                <?php echo $notif; ?><br>
+                <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
 
                     <label for="fName">First Name:</label><br>
                     <input type="text" id="fName" name="fName" required><br><br>
@@ -118,27 +183,27 @@
                     <input type="text" id="lName" name="lName" required><br><br>
 
                     <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username" required><br><br>
+                    <input type="text" id="username" name="username" placeholder="" required><br><br>
 
                     <label for="password">Password:</label><br>
-                    <input type="password" id="password" name="password" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="At least 8 characters" required><br><br>
 
                     <label for="email">Email:</label><br>
-                    <input type="email" id="email" name="email" required><br><br>
+                    <input type="email" id="email" name="email" placeholder="name@domain.com" required><br><br>
                     
                     <label for="address">Address:</label><br>
                     <input type="text" id="address" name="address" required><br><br>
                     
-                    <label for="age">age:</label><br>
-                    <input type="number" id="age" name="age" required><br><br>
+                    <label for="age">Age:</label><br>
+                    <input type="number" id="age" name="age" required min="0" required><br><br>
 
-                    <label for="sex"> sex:</label><br>
+                    <label for="sex">Sex:</label><br>
                     <select name="sex" id="sex">
                     <option value="MALE"> Male </option>
                     <option value="FEMALE"> Female </option>
                     </select><br><br>
 
-                    <label for="subject_id">Subjects Assigned:</label><br>
+                    <!-- <label for="subject_id">Subjects Assigned:</label><br>
                     <select id="subject_id" name="subject_id">
                     <?php
                      include "connection.php";
@@ -156,7 +221,7 @@
                     //     echo "<option value=\"N/A\">No subjects available</option>";
                     // }
                     ?>
-                    </select><br><br>
+                    </select><br><br> -->
 
                     <input type="submit" name="add" value="Submit">
                     </form>
@@ -220,6 +285,7 @@ if (!empty($facultyData)) {
 } else {
     echo "<p>No records found</p>";
 }
+
 
 $conn->close();
 ?>
