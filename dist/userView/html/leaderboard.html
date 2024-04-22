@@ -69,44 +69,79 @@
         <div
           class="p-0 md:p-4 bg-ISshade3/10 rounded-3xl backdrop-blur-[2.25px] border border-ISshade1 mt-4"
         >
-          <div>
-            <div class="flex">
-              <a
-                href="/dist/userView/html/subject.html"
-                class="md:block hidden main-title ml-6 mt-6 mb-0"
-                >Assessments</a
-              >
-              <a
-                href="/dist/userView/html/people.html"
-                class="md:block hidden main-title ml-6 mt-6 mb-0"
-                >People</a
-              >
-              <a href="" class="main-title ml-6 mt-6 mb-0 md:activated-secondary">Leaderboard</a>
+          <div class="flex relative">
+            <a
+              href="/dist/userView/html/subject.html"
+              class="md:block hidden main-title ml-6 mt-6 mb-0"
+              >Assessments</a
+            >
+            <a
+              href="/dist/userView/html/people.html"
+              class="md:block hidden main-title ml-6 mt-6 mb-0"
+              >People</a
+            >
+            <a href="" class="main-title ml-6 mt-6 mb-0 md:activated-secondary"
+              >Leaderboard</a
+            >
+            <div class="flex gap-3 absolute top-6 right-10">
+              <div class="flex items-center gap-1">
+                <p>You</p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.25"
+                  stroke="currentColor"
+                  class="w-7 h-7"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              </div>
+              <div class="flex items-center gap-0">
+                <p>#</p>
+                <span>00</span>
+              </div>
             </div>
           </div>
           <div class="mt-10">
             <table class="mx-auto my-6 w-full table-fixed">
               <thead class="bg-ISshade3">
                 <tr>
-                  <th class="text-center text-ellipsis overflow-hidden">Rank</th>
-                  <th class="text-center text-ellipsis overflow-hidden">Name</th>
-                  <th class="text-center text-ellipsis overflow-hidden">Score</th>
+                  <th class="text-center text-ellipsis overflow-hidden">
+                    Rank #
+                  </th>
+                  <th class="text-center text-ellipsis overflow-hidden">
+                    KLD ID
+                  </th>
+                  <th class="text-center text-ellipsis overflow-hidden">
+                    Score
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td class="text-center text-ellipsis overflow-hidden">1</td>
-                  <td class="text-center text-ellipsis overflow-hidden">John Doe</td>
+                  <td class="text-center text-ellipsis overflow-hidden">
+                    KLD-22-000**1
+                  </td>
                   <td class="text-center text-ellipsis overflow-hidden">100</td>
                 </tr>
                 <tr>
                   <td class="text-center text-ellipsis overflow-hidden">2</td>
-                  <td class="text-center text-ellipsis overflow-hidden">Jane Doe</td>
+                  <td class="text-center text-ellipsis overflow-hidden">
+                    KLD-22-000**2
+                  </td>
                   <td class="text-center text-ellipsis overflow-hidden">90</td>
                 </tr>
                 <tr>
                   <td class="text-center text-ellipsis overflow-hidden">3</td>
-                  <td class="text-center text-ellipsis overflow-hidden">Mark Doe</td>
+                  <td class="text-center text-ellipsis overflow-hidden">
+                    KLD-22-000**3
+                  </td>
                   <td class="text-center text-ellipsis overflow-hidden">80</td>
                 </tr>
               </tbody>
@@ -141,7 +176,10 @@
         </a>
       </div>
       <div>
-        <a href="/dist/userView/html/people.html" class="flex flex-col items-center">
+        <a
+          href="/dist/userView/html/people.html"
+          class="flex flex-col items-center"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -156,9 +194,7 @@
               d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
             />
           </svg>
-          <p class="text-sm font-medium antialiased">
-            People
-          </p>
+          <p class="text-sm font-medium antialiased">People</p>
         </a>
       </div>
       <div>
@@ -177,7 +213,9 @@
               d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6"
             />
           </svg>
-          <p class="text-sm font-medium antialiased activated-secondary">Leaderboard</p>
+          <p class="text-sm font-medium antialiased activated-secondary">
+            Leaderboard
+          </p>
         </a>
       </div>
     </footer>
