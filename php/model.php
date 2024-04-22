@@ -341,6 +341,39 @@ class Model{
         }
     }
 
+    public function readSubjectHandle($input_facultyID){
+        $query = "
+        SELECT su.subject_ID AS subject_ID, su.subjectName AS subjectName, se.section_ID AS section_ID
+        FROM Faculty f
+        INNER JOIN SubjectHandle suh ON f.faculty_ID = suh.faculty_ID
+        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
+        INNER JOIN SectionHandle seh ON suh.subHandle_ID = seh.subHandle_ID
+        INNER JOIN Section se ON seh.section_ID = se.section_ID
+        WHERE f.faculty_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_facultyID);
+            $stmt->execute(); $stmt->bind_result($subject_ID, $subjectName, $section_ID);
+
+            while($stmt->fetch()){
+                $subjectHandleData = [
+                    'subject_ID' => $subject_ID,
+                    'subjectName' => $subjectName,
+                    'section_ID' => $section_ID
+                ];
+
+                $data[] = $subjectHandleData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readUnhandledSection(){
         $query = "
         SELECT se.section_ID FROM Section se
