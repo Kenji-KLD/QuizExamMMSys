@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Index Page Student of QMS" />
+    <link rel="icon" href="/img/Planet-9.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="/dist/css/styles.css" />
+    <link rel="stylesheet" href="/dist/output.css" />
+    <!--LINK FOR TAILWIND-->
+    <title>QMS | Home - Student</title>
+  </head>
+  <body class="background flex flex-col h-screen">
+    <!-- IICS HEADER -->
+    <header class="p-4 bg-gradient-to-b from-ISshade3 to-transparent">
+      <div class="flex w-full items-center gap-4 relative">
+        <img src="/img/IICS Logo.png" alt="IICS Logo" class="size-20" />
+        <h1 class="text-lg leading-5 font-bold text-balance hidden md:block">
+          Institute of Information <br />
+          and Computing Sciences
+        </h1>
+        <!-- HAMBURGER -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.25"
+          stroke="currentColor"
+          class="w-7 h-7 absolute right-5 cursor-pointer md:hidden block z-50"
+          id="hamburger"
+          name="menu"
+          onclick="Menu(this)"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+        <span class="bg-side w-[190px] h-[200px] rounded-3xl bg-ISshade3 absolute z-10 top-0 right-[-10px] opacity-0 transition-all ease-in duration-500 md:hidden"></span>
+
+        <!-- SIDE MENU -->
+        <div class="absolute right-32 top-5">
+          <nav>
+            <ul
+              class="flex flex-col align-middle gap-2 md:gap-4 md:flex-row md:items-center z-50 md:static absolute top-12 md:w-auto md:opacity-100 opacity-0 right-[-100px] transition-all ease-in duration-500"
+            >
+              <li
+                class="text-lg leading-5 font-bold text-balance text-center md:block selected-user"
+              >
+                <a href="">Home</a>
+              </li>
+              <li
+                class="text-lg leading-5 font-bold text-balance text-center md:block"
+              >
+                <a href="/dist/userView/html/profile.html">Profile</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main class="flex flex-1 justify-center items-center">
+      <!-- CONTAINER -->
+      <div class="w-dvw h-dvh">
+        <p class="main-title ml-6 mt-6 mb-0">Your Classes</p>
+        <section
+          class="p-4 top-content grid grid-flow-row gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-1"
+        >
+          <!-- CARDS -->
+          <div class="card-user w-auto rounded-3xl">
+            <a href="/dist/userView/html/subject.html">
+              <h1 class="font-bold text-xl">System Analysis and Design</h1>
+              <h5 class="font-base text-sm">Professor</h5>
+            </a>
+          </div>
+          <div class="card-user w-auto rounded-3xl">
+            <a href="">
+              <h1 class="font-bold text-xl">Organization and Management</h1>
+              <h5 class="font-base text-sm">Professor</h5>
+            </a>
+          </div>
+          <div class="card-user w-auto rounded-3xl">
+            <a href="">
+              <h1 class="font-bold text-xl">Fundamentals of Database</h1>
+              <h5 class="font-base text-sm">Professor</h5>
+            </a>
+          </div>
+          <div class="card-user w-auto rounded-3xl">
+            <a href="">
+              <h1 class="font-bold text-xl">Information Management</h1>
+              <h5 class="font-base text-sm">Professor</h5>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="/dist/userView/js/side.js"></script>
+  </body>
+</html>
