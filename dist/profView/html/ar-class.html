@@ -115,18 +115,12 @@
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Subject / Class Name </label
             ><select
-              id="subject"
-              name="subject"
+              id="handledSubject"
+              name="handledSubject"
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
             <option value="" class="bg-ISshade3" disabled selected>
               -- Select Subject --
-            </option>
-            <option value="" class="bg-ISshade3">
-              test 1
-            </option>
-            <option value="" class="bg-ISshade3">
-              test 2
             </option>
           </select>
           </div>
@@ -136,22 +130,20 @@
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Section</label
             ><select
-              id="subject"
-              name="subject"
+              id="unhandledSection"
+              name="unhandledSection"
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
             <option value="" class="bg-ISshade3" disabled selected>
-              -- Select Subject --
+              -- Select Section --
             </option>
-            <option value="" class="bg-ISshade3">
-              test 1
-            </option>
-            <option value="" class="bg-ISshade3">
-              test 2
-            </option>
-          </select>
+          </select> 
           </div>
           <button
+            onclick="sendData('createSubHandle', {
+              'subject_ID': document.getElementById('handledSubject').value,
+              'section_ID': document.getElementById('unhandledSection').value
+            });"
             type="submit"
             class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
           >
@@ -167,22 +159,20 @@
               class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
               >Section</label
             ><select
-              id="subject"
-              name="subject"
+              id="handledSection"
+              name="handledSection"
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
             <option value="" class="bg-ISshade3" disabled selected>
-              -- Select Subject --
-            </option>
-            <option value="" class="bg-ISshade3">
-              test 1
-            </option>
-            <option value="" class="bg-ISshade3">
-              test 2
+              -- Select Section --
             </option>
           </select>
           </div>
           <button
+            onclick="sendData('deleteSubHandle', {
+              'section_ID': document.getElementById('handledSection').value
+            });"
+            type="submit"
             class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
           >
             <p class="text-lg mx-auto font-medium">Remove</p>
@@ -190,6 +180,10 @@
         </div>
       </div>
     </main>
-    <script src="/dist/profView/js/sidebar.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/checkToken.js"></script>
+    <script>jQuery(function() {checkToken(0, 0)})</script>
+    <script src="/dist/js/ar-class.js" defer></script>
   </body>
 </html>
