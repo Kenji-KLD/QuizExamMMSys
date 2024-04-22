@@ -42,7 +42,8 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         setcookie("session_token", $session_token, time() + 86400, "/");
         
         echo json_encode([
-            'processed' => true, 
+            'processed' => true,
+            'accountType' => $Model->readAccountType($jsonData['userName']),
             'session_token' => $session_token
         ]);
     }
