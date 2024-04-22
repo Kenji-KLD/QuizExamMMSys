@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer components {
+    .tac-title {
+       @apply text-lg mt-10 text-pretty font-semibold;
+    }
+
+    .tac-content {
+       @apply text-base mt-2 text-balance;
+    }
+
     .item {
         @apply flex gap-3 items-center;
     }
