@@ -14,16 +14,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($registration->validate()) {
             if ($registration->add()) {
+                $_SESSION['notif'] = "Successful";
                 header("Location: 3AdminSubjects.php");
             } else {
-                echo "<script>";
-                echo "alert('New subject Entry failed. Please try again later.');";
-                echo "</script>";
+              
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 3AdminSubjects.php");
             }
         } else {
-            echo "<script>";
-            echo "alert('Subject Entered already Exist.');";
-            echo "</script>";
+          
+            $_SESSION['notif'] = "Data Entry already Exist";
+            header("Location: 3AdminSubjects.php");
         }
         
     } elseif (isset($_POST['delete'])) {
@@ -33,13 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $deleteSubject = new DeleteSubject($subject_ID);
 
     if ($deleteSubject->delete()) {
+        
+        $_SESSION['notif'] = "Successful";
         header("Location: 3AdminSubjects.php");
-        exit; // Ensure script stops after redirection
     } else {
-        echo "<script>";
-        echo "alert('Failed to delete subject.');";
-        echo "window.location='3AdminSubjects.php';";
-        echo "</script>";
+       
+        $_SESSION['notif'] = "Failed to Delete Data";
+        header("Location: 3AdminSubjects.php");
     }
 
 
@@ -54,13 +55,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         if ($editStudent->validate()) {
             if ($editStudent->edit()) {
+               
+                $_SESSION['notif'] = "Successful";
                 header("Location: 3AdminSubjects.php");
-                exit;
             } else {
-                echo "<script>alert('Failed to update Subject details.');</script>";
+              
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 3AdminSubjects.php");
             }
         } else {
-            echo "<script>alert('Subject entered already exist.');</script>";
+           
+            $_SESSION['notif'] = "Data Entry Already Existing";
+            header("Location: 3AdminEditView.php");
         }
         
 }

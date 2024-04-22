@@ -30,10 +30,15 @@ class RegistrationStudent {
     }
 
     public function validate() {
-        if (empty($this->student_ID) || empty($this->username) || empty($this->password) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->sex) || empty($this->address)) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
 
     public function register() {
@@ -106,7 +111,7 @@ class ImportStudent {
                 $sex = $data[8];
                 $address = $data[9];
 
-                // Insert into Account table
+        
                 $stmt = $conn->prepare("INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param("ssssssiss", $userName, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
@@ -128,7 +133,9 @@ class ImportStudent {
             fclose($handle);
             header("Location: 2AdminStudents.php");
         } catch (Exception $e) {
-            die("Error importing file: " . $e->getMessage());
+            $_SESSION['notif'] = "Error importing file: " . $e->getMessage();
+            header("Location: 2AdminStudents.php"); // Redirect with error message
+            exit;
         }
     }
 }
@@ -154,11 +161,15 @@ class EditStudent {
     }
 
     public function validate() {
-        // Validate required fields
-        if (empty($this->username) || empty($this->fName) || empty($this->mName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->address) || empty($this->student_ID)) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
 
     public function edit() {

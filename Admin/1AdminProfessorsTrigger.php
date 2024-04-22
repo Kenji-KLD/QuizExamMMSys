@@ -1,6 +1,9 @@
 <?php
+session_start();
 require_once "connection.php"; 
 include "1AdminFacultyClass.php"; 
+
+$notif = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['add'])) {
@@ -19,18 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($registration->validate()) {
             if ($registration->register()) {
+                $_SESSION['notif'] = "Successful";
                 header("Location: 1AdminProfessors.php");
             } else {
-                echo "<script>";
-                echo "alert('Registration failed. Please try again later.');";
-                echo "</script>";
+                $_SESSION['notif'] = "Invalid Input Data";
+                header("Location: 1AdminProfessors.php");
             }
         } else {
-            echo "<script>";
-            echo "alert('All fields are required.');";
-            echo "</script>";
+            $_SESSION['notif'] = "Data Entry Already Exist";
+            header("Location: 1AdminProfessors.php");
         }
-
+        
     } elseif (isset($_POST['delete'])) {
         
         $user_ID = $_POST['user_ID']; 
@@ -38,11 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $delete = new DeleteFaculty($user_ID);
 
             if ($delete->delete()) {
+                $_SESSION['notif'] = "Deleted Succesfully";
                 header("Location: 1AdminProfessors.php");
             } else {
-                echo "<script>";
-                echo "Failed to Delete faculty.";
-                echo "</script>";
+                $_SESSION['notif'] = "Failed to delete data";
+                header("Location: 1AdminProfessors.php");
             }
        
     } elseif (isset($_POST['edit'])) {
@@ -63,16 +65,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         if ($editFaculty->validate()) {
             if ($editFaculty->edit()) {
+                $_SESSION['notif'] = "Edit Success";
                 header("Location: 1AdminProfessors.php");
           
             } else {
-                echo "<script>";
-                echo "Failed to update faculty details.";
-                echo "</script>";
-                
+                $_SESSION['notif'] = "Invalid Input data";
+                header("Location: 1AdminProfessors.php");
             }
         } else {
-            echo "Invalid input data.";
+            $_SESSION['notif'] = "Data Entry Already Exist";
+            header("Location: 2AdminEditView.php");
         }
 }
 }

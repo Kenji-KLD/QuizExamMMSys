@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,13 +101,16 @@
 <body>
     <div class="container">
     <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
-        <?php include 'sidebar.php'; ?>
+        <?php include 'sidebar.php';?>
+
         <div class="content">
             <div class="form-container">
        
                 <div class="form-wrapper">
                     <CENTER>
+                    
                 <h2>Professor Form</h2>
+                <label><?php echo $notif; ?></label><br>
                 <form action="1AdminProfessorsTrigger.php" method="post">
 
                     <label for="fName">First Name:</label><br>
@@ -127,7 +132,7 @@
                     <input type="email" id="email" name="email" required><br><br>
                     
                     <label for="address">Address:</label><br>
-                    <input type="text" id="address" name="address" required><br><br>
+                    <input type="text" id="address" name="address" ><br><br>
                     
                     <label for="age">age:</label><br>
                     <input type="number" id="age" name="age" required><br><br>

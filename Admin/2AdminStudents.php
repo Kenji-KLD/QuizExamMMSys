@@ -1,3 +1,13 @@
+<?php
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,7 +124,8 @@
             <div class="form-container">
                 <CENTER>
                     <div class="form-wrapper">
-                        <h2>Student Form</h2>
+                        <h2>Student Form</h2><br>
+                        <label ><?php echo $notif; ?></label><br>
                         <form action="2AdminStudentTrigger.php" method="post">
                             <label for="student_ID">student ID:</label>
                             <input type="text" id="student_ID" name="student_ID" required>

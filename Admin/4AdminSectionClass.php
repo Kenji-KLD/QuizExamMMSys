@@ -10,10 +10,15 @@ class AddSection {
     }
 
     public function validate() {
-        if (empty($this->sectionID || empty($this->courseName))) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE section_ID = ?");
+        $stmt->bind_param('s', $this->sectionID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
 
     public function add() {

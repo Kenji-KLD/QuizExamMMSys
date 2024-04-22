@@ -26,10 +26,15 @@ class RegistrationFaculty {
     }
 
     public function validate() {
-        if (empty($this->username) || empty($this->password) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->sex) || empty($this->address)) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
 
     public function register() {
@@ -55,11 +60,7 @@ class RegistrationFaculty {
 
             // Retrieve faculty_ID
             $faculty_id = $conn->insert_id;
-
-         
             $this->insertSubjectHandle($conn, $faculty_id);
-            
-
             $conn->commit();
             return true;
         } catch (Exception $e) {
@@ -103,10 +104,15 @@ class EditFaculty {
     }
 
     public function validate() {
-        if (empty($this->username) || empty($this->fName) || empty($this->lName) || empty($this->email) || empty($this->age) || empty($this->sex) || empty($this->address)) {
-            return false;
+        include "connection.php";
+        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+        return false;
         }
-        return true;
     }
 
     public function edit() {
@@ -125,8 +131,6 @@ class EditFaculty {
                 $this->updatePasswordHandle($conn);
                
             }
-            
-            
             $stmt2 = $conn->prepare("SELECT faculty_ID FROM Faculty WHERE user_id = ?");
             $stmt2->bind_param('i', $this->user_ID);
             $stmt2->execute();
@@ -134,7 +138,6 @@ class EditFaculty {
             $stmt2->fetch();
             $stored_faculty_id = $faculty_id;
             $stmt2->close();
-
 
             $this->updateSubjectHandle($conn, $stored_faculty_id);
                 $conn->commit();
