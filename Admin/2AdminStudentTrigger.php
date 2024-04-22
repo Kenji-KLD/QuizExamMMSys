@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID);
     
         
-        if ($editStudent->validate()) {
+        // if ($editStudent->validate()) {
            
             if ($editStudent->edit()) {
                
@@ -75,10 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['notif'] = "Invalid input data";
                 header("Location: 2AdminStudents.php");
             }
-        } else {
-            $_SESSION['notif'] = "Data Entry Already Existing";
-            header("Location: 2AdminEditView.php");
-        }
+        // } else {
+        //     $_SESSION['notif'] = "Data Entry Already Existing";
+        //     header("Location: 2AdminEditView.php");
+        // }
     }elseif (isset($_POST['import'])) {
         if (isset($_FILES['accounts_file']['tmp_name']) && !empty($_FILES['accounts_file']['tmp_name'])) {
             $userImporter = new ImportStudent($_FILES['accounts_file']['tmp_name']);

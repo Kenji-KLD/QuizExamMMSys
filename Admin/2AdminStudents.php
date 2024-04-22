@@ -8,6 +8,7 @@ $notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
 unset($_SESSION['notif']);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,6 +118,62 @@ unset($_SESSION['notif']);
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.id;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'fName':
+            case 'mName':
+            case 'lName':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+                break;
+            case 'password':
+            case 'username':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+                break;
+            case 'address':
+                regex = /[!$%^&*()_+\=\[\]{};:"\\|<>\?]+/;
+                break;
+            case 'email':
+                regex = /[!#$%^&*()_+\-=\[\]{};':"\\|<>\/?]+/;
+                break;
+            case 'student_ID':
+                regex = /[!@#$%^&*()_+\=\[\]{};,':"\\|.<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
+
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -124,11 +181,11 @@ unset($_SESSION['notif']);
             <div class="form-container">
                 <CENTER>
                     <div class="form-wrapper">
-                        <h2>Student Form</h2><br>
-                        <label ><?php echo $notif; ?></label><br>
-                        <form action="2AdminStudentTrigger.php" method="post">
-                            <label for="student_ID">student ID:</label>
-                            <input type="text" id="student_ID" name="student_ID" required>
+                        <h2>Student Form</h2>
+                        <?php echo $notif; ?>
+                        <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()>
+                            <label for="student_ID">Student ID:</label>
+                            <input type="text" id="student_ID" name="student_ID" placeholder="KLD-00-000000" required>
 
                             <label for="fName">First Name:</label>
                             <input type="text" id="fName" name="fName" required>
@@ -143,21 +200,21 @@ unset($_SESSION['notif']);
                             <input type="text" id="username" name="username" required>
 
                             <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" required>
+                            <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
 
                             <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" placeholder="name@domain.com" required>
 
-                            <label for="age">age:</label>
+                            <label for="age">Age:</label>
                             <input type="number" id="age" name="age" required>
 
-                            <label for="address">address:</label>
+                            <label for="address">Address:</label>
                             <input type="text" id="address" name="address" required>
 
-                            <label for="sex">sex:</label>
+                            <label for="sex">Sex:</label>
                             <select name="sex" id="sex">
                             <option value="MALE"> Male </option>  
-                            <option value=" FEMALE "> FEMALE </option>  
+                            <option value=" FEMALE "> Female </option>  
                             </select>
                             <!-- <label for="section_ID"> Section </label>
                             <select name="section_ID" id="section_ID">

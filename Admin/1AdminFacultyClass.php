@@ -7,33 +7,55 @@ class RegistrationFaculty {
     private $mName;
     private $lName;
     private $email;
-    private $subject_id;
     private $age;
     private $sex;
     private $address;
 
-    public function __construct($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address) {
+    public function __construct($username, $password, $fName, $mName, $lName, $email, $age, $sex, $address) {
         $this->username = $username;
         $this->password = $password;
         $this->fName = $fName;
         $this->mName = $mName;
         $this->lName = $lName;
         $this->email = $email;
-        $this->subject_id = $subject_id;
         $this->age = $age;
         $this->sex = $sex;
         $this->address = $address;
     }
 
     public function validate() {
+        // Include the database connection file
         include "connection.php";
-        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
-        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-        return false;
+    
+        try {
+            // Prepare a SQL statement to check for existing user
+            $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $conn->error);
+            }
+    
+            // Bind the input parameters to the prepared statement
+            $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+            $stmt->execute();
+    
+            // Fetch the results
+            $result = $stmt->get_result();
+            if (!$result) {
+                throw new Exception("Failed to get result: " . $stmt->error);
+            }
+    
+            // Check the number of rows in the result
+            if ($result->num_rows > 0) {
+                // If rows are found, data exists, return false
+                return false;
+            } else {
+                // If no rows are found, data does not exist, return true
+                return true;
+            }
+        } catch (Exception $e) {
+            // Optionally, handle exceptions and errors if necessary
+            error_log('Error in validate function: ' . $e->getMessage());
+            return null; // Or consider re-throwing the exception depending on your error handling strategy
         }
     }
 
@@ -58,22 +80,23 @@ class RegistrationFaculty {
             $stmt2->execute();
             $stmt2->close();
 
-            // Retrieve faculty_ID
-            $faculty_id = $conn->insert_id;
-            $this->insertSubjectHandle($conn, $faculty_id);
+            // // Retrieve faculty_ID
+            // $faculty_id = $conn->insert_id;
+            // $this->insertSubjectHandle($conn, $faculty_id);
             $conn->commit();
             return true;
         } catch (Exception $e) {
-            $conn->rollback();
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 1AdminProfessors.php"); // Redirect with error message
+            exit;
         }
     }
-    private function insertSubjectHandle($conn, $faculty_id) {
-        $stmt = $conn->prepare("INSERT INTO SubjectHandle (faculty_id, subject_id) VALUES (?, ?)");
-        $stmt->bind_param('is', $faculty_id, $this->subject_id);
-        $stmt->execute();
-        $stmt->close();
-    }
+    // private function insertSubjectHandle($conn, $faculty_id) {
+    //     $stmt = $conn->prepare("INSERT INTO SubjectHandle (faculty_id, subject_id) VALUES (?, ?)");
+    //     $stmt->bind_param('is', $faculty_id, $this->subject_id);
+    //     $stmt->execute();
+    //     $stmt->close();
+    // }
 }
 
 class EditFaculty {
@@ -84,12 +107,11 @@ class EditFaculty {
     private $mName;
     private $lName;
     private $email;
-    private $subject_id;
     private $age;
     private $sex;
     private $address;
 
-    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address) {
+    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $age, $sex, $address) {
         $this->user_ID = $user_ID;
         $this->username = $username;   
         $this->password = $password;
@@ -97,23 +119,46 @@ class EditFaculty {
         $this->mName = $mName;
         $this->lName = $lName;
         $this->email = $email;
-        $this->subject_id = $subject_id;
         $this->age = $age;
         $this->sex = $sex;
         $this->address = $address;
     }
 
-    public function validate() {
-        include "connection.php";
-        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
-        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-        return false;
-        }
-    }
+    // public function validate() {
+    //     // Include the database connection file
+    //     include "connection.php";
+    
+    //     try {
+    //         // Prepare a SQL statement to check for existing user
+    //         $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+    //         if (!$stmt) {
+    //             throw new Exception("Failed to prepare statement: " . $conn->error);
+    //         }
+    
+    //         // Bind the input parameters to the prepared statement
+    //         $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+    //         $stmt->execute();
+    
+    //         // Fetch the results
+    //         $result = $stmt->get_result();
+    //         if (!$result) {
+    //             throw new Exception("Failed to get result: " . $stmt->error);
+    //         }
+    
+    //         // Check the number of rows in the result
+    //         if ($result->num_rows > 0) {
+    //             // If rows are found, data exists, return false
+    //             return false;
+    //         } else {
+    //             // If no rows are found, data does not exist, return true
+    //             return true;
+    //         }
+    //     } catch (Exception $e) {
+    //         // Optionally, handle exceptions and errors if necessary
+    //         error_log('Error in validate function: ' . $e->getMessage());
+    //         return null; // Or consider re-throwing the exception depending on your error handling strategy
+    //     }
+    // }
 
     public function edit() {
         include "connection.php";
@@ -131,32 +176,33 @@ class EditFaculty {
                 $this->updatePasswordHandle($conn);
                
             }
-            $stmt2 = $conn->prepare("SELECT faculty_ID FROM Faculty WHERE user_id = ?");
-            $stmt2->bind_param('i', $this->user_ID);
-            $stmt2->execute();
-            $stmt2->bind_result($faculty_id);
-            $stmt2->fetch();
-            $stored_faculty_id = $faculty_id;
-            $stmt2->close();
+            // $stmt2 = $conn->prepare("SELECT faculty_ID FROM Faculty WHERE user_id = ?");
+            // $stmt2->bind_param('i', $this->user_ID);
+            // $stmt2->execute();
+            // $stmt2->bind_result($faculty_id);
+            // $stmt2->fetch();
+            // $stored_faculty_id = $faculty_id;
+            // $stmt2->close();
 
-            $this->updateSubjectHandle($conn, $stored_faculty_id);
+            // $this->updateSubjectHandle($conn, $stored_faculty_id);
                 $conn->commit();
                 $conn->close();
 
                 return true;
 
         } catch (Exception $e) {
-            $conn->rollback();
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 1AdminProfessors.php"); // Redirect with error message
+            exit;
         }
     }
 
-    private function updateSubjectHandle($conn, $stored_faculty_id) {
-        $stmt = $conn->prepare("UPDATE SubjectHandle SET subject_ID = ? WHERE faculty_ID = ?");
-        $stmt->bind_param('si', $this->subject_id, $stored_faculty_id);
-        $stmt->execute();
-        $stmt->close();
-    }
+    // private function updateSubjectHandle($conn, $stored_faculty_id) {
+    //     $stmt = $conn->prepare("UPDATE SubjectHandle SET subject_ID = ? WHERE faculty_ID = ?");
+    //     $stmt->bind_param('si', $this->subject_id, $stored_faculty_id);
+    //     $stmt->execute();
+    //     $stmt->close();
+    // }
     
     private function updatePasswordHandle($conn){
         $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
@@ -187,8 +233,9 @@ class DeleteFaculty{
            
             return true;
         } catch(Exception $e) {
-           
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 1AdminProfessors.php"); // Redirect with error message
+            exit;
         }
     }
 

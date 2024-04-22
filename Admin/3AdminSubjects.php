@@ -72,6 +72,47 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.id;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'subjectID':
+                regex = /[!#$@%^&*()_+\-=.\[\]{};,':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
+
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -82,22 +123,42 @@
                         <h2>Subject Form</h2>
                         <form action="3AdminSubjectTrigger.php" method="post">
                             <label for="subjectID">Subject ID:</label>
-                            <input type="text" id="subjectID" name="subjectID" required>
+                            <input type="text" id="subjectID" name="subjectID" placeholder="CCIS1101" required>
 
                             <label for="subjectName">Subject Name:</label>
-                            <input type="text" id="subjectName" name="subjectName" required>
+                            <input type="text" id="subjectName" name="subjectName" placeholder="Computer Programming 1" required>
 
                             <label for="unitsAmount">Units Amount:</label>
-                            <input type="number" id="unitsAmount" name="unitsAmount" required>
+                            <input type="number" id="unitsAmount" name="unitsAmount" required min="0" required>
 
                             <label for="subjectType">Subject Type:</label>
-                            <input type="text" id="subjectType" name="subjectType" required>
+                            <input type="text" id="subjectType" name="subjectType" placeholder="Lec/Lab" required>
                             
                             <input type="submit" name = "add" value="Submit">
                         </form>
                     </div>
                 </CENTER>
             </div>
+            <div class="form-container">
+            <CENTER>
+                <div class="form-wrapper">
+                    <h2>Assign Subjects</h2>
+                    <form action="assign_subjects_trigger.php" method="post">
+                        <label for="professor">Professor:</label>
+                        <select name="professor" id="professor">
+                            <!-- Options for professors -->
+                        </select>
+
+                        <label for="subject">Subject:</label>
+                        <select name="subject" id="subject">
+                            <!-- Options for subjects -->
+                        </select>
+
+                        <input type="submit" value="Assign">
+                    </form>
+                </div>
+            </CENTER>
+        </div>
             <div class="table-container">
                 <CENTER>
                     <div class="form-wrapper">

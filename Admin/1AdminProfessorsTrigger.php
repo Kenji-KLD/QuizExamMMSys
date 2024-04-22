@@ -13,12 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mName = $_POST['mName'];
         $lName = $_POST['lName'];
         $email = $_POST['email'];
-        $subject_id = $_POST['subject_id'];
         $age = $_POST ['age'];
         $sex = $_POST ['sex'];
         $address = $_POST ['address'];
 
-        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address);
+        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
 
         if ($registration->validate()) {
             if ($registration->register()) {
@@ -56,14 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $lName = $_POST['lName'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $subject_id = $_POST['subject_id'];
         $age = $_POST ['age'];
         $sex = $_POST ['sex'];
         $address = $_POST ['address'];
     
-        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $subject_id, $age, $sex, $address);
+        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
     
-        if ($editFaculty->validate()) {
+        // if ($editFaculty->validate()) {
             if ($editFaculty->edit()) {
                 $_SESSION['notif'] = "Edit Success";
                 header("Location: 1AdminProfessors.php");
@@ -72,10 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['notif'] = "Invalid Input data";
                 header("Location: 1AdminProfessors.php");
             }
-        } else {
-            $_SESSION['notif'] = "Data Entry Already Exist";
-            header("Location: 2AdminEditView.php");
-        }
+        // } else {
+        //     $_SESSION['notif'] = "Data Entry Already Exist";
+        //     header("Location: 2AdminEditView.php");
+        // }
 }
 }
 ?>

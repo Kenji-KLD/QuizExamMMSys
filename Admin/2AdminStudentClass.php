@@ -30,16 +30,41 @@ class RegistrationStudent {
     }
 
     public function validate() {
+        // Include the database connection file
         include "connection.php";
-        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
-        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-        return false;
+    
+        try {
+            // Prepare a SQL statement to check for existing user
+            $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $conn->error);
+            }
+    
+            // Bind the input parameters to the prepared statement
+            $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+            $stmt->execute();
+    
+            // Fetch the results
+            $result = $stmt->get_result();
+            if (!$result) {
+                throw new Exception("Failed to get result: " . $stmt->error);
+            }
+    
+            // Check the number of rows in the result
+            if ($result->num_rows > 0) {
+                // If rows are found, data exists, return false
+                return false;
+            } else {
+                // If no rows are found, data does not exist, return true
+                return true;
+            }
+        } catch (Exception $e) {
+            // Optionally, handle exceptions and errors if necessary
+            error_log('Error in validate function: ' . $e->getMessage());
+            return null; // Or consider re-throwing the exception depending on your error handling strategy
         }
     }
+    
 
     public function register() {
         include "connection.php";
@@ -69,9 +94,9 @@ class RegistrationStudent {
             return true;
 
         } catch (Exception $e) {
-            // Rollback the transaction on failure
-            $conn->rollback();
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 2AdminStudents.php"); // Redirect with error message
+            exit;
         }
     }
    public function insertClassTable($conn){
@@ -97,6 +122,8 @@ class ImportStudent {
         
         try {
             $handle = fopen($this->file, 'r');
+
+            fgetcsv($handle, 1000, ",");
             
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 // Extract data from CSV row
@@ -133,7 +160,7 @@ class ImportStudent {
             fclose($handle);
             header("Location: 2AdminStudents.php");
         } catch (Exception $e) {
-            $_SESSION['notif'] = "Error importing file: " . $e->getMessage();
+            $_SESSION['notif'] = $e->getMessage();
             header("Location: 2AdminStudents.php"); // Redirect with error message
             exit;
         }
@@ -143,9 +170,9 @@ class ImportStudent {
 
 
 class EditStudent {
-    private $user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID;
+    private $user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID;
 
-    public function __construct($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID) {
+    public function __construct($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID) {
        $this->user_ID = $user_ID;
        $this->username = $username;
        $this->fName = $fName;
@@ -157,20 +184,43 @@ class EditStudent {
        $this->sex = $sex;
        $this->password = $password;
        $this->student_ID = $student_ID;
-       $this->section_ID = $section_ID;
     }
 
-    public function validate() {
-        include "connection.php";
-        $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
-        $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-        return false;
-        }
-    }
+    // public function validate() {
+    //     // Include the database connection file
+    //     include "connection.php";
+    
+    //     try {
+    //         // Prepare a SQL statement to check for existing user
+    //         $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
+    //         if (!$stmt) {
+    //             throw new Exception("Failed to prepare statement: " . $conn->error);
+    //         }
+    
+    //         // Bind the input parameters to the prepared statement
+    //         $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
+    //         $stmt->execute();
+    
+    //         // Fetch the results
+    //         $result = $stmt->get_result();
+    //         if (!$result) {
+    //             throw new Exception("Failed to get result: " . $stmt->error);
+    //         }
+    
+    //         // Check the number of rows in the result
+    //         if ($result->num_rows > 0) {
+    //             // If rows are found, data exists, return false
+    //             return false;
+    //         } else {
+    //             // If no rows are found, data does not exist, return true
+    //             return true;
+    //         }
+    //     } catch (Exception $e) {
+    //         // Optionally, handle exceptions and errors if necessary
+    //         error_log('Error in validate function: ' . $e->getMessage());
+    //         return null; // Or consider re-throwing the exception depending on your error handling strategy
+    //     }
+    // }
 
     public function edit() {
         include "connection.php"; 
@@ -211,9 +261,9 @@ class EditStudent {
             return true;
         } catch (Exception $e) {
             $conn->rollback();
-            // Log or display error message
-            echo "Error: " . $e->getMessage();
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 2AdminStudents.php"); // Redirect with error message
+            exit;
         }
     }
 
@@ -250,8 +300,9 @@ class DeleteStudent{
            
             return true;
         } catch(Exception $e) {
-           
-            return false;
+            $_SESSION['notif'] = $e->getMessage();
+            header("Location: 2AdminStudents.php"); // Redirect with error message
+            exit;
         }
     }
 

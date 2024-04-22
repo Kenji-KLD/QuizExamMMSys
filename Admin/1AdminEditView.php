@@ -66,7 +66,56 @@
     </style>
 </head>
 <body>
+<script>
+function restrictSpecialChars(input) {
+        var fieldName = input.name;
+        var regex;
+        
+        // Define regex based on field name
+        switch (fieldName) {
+            case 'fName':
+            case 'mName':
+            case 'lName':
+            case 'username':
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+                break;
+            case 'address':
+                regex = /[!$%^&*()_+\=\[\]{};:"\\|<>\?]+/;
+                break;
+            case 'email':
+                regex = /[!#$%^&*()_+\-=\[\]{};,':"\\|<>\/?]+/;
+                break;
+            default:
+                regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
+                break;
+        }
+        
+        if (regex.test(input.value)) {
+            input.value = input.value.replace(regex, '');
+        }
+    }
 
+    // Attach the restrictSpecialChars function to the input fields
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+        inputFields.forEach(function(input) {
+            input.addEventListener('input', function() {
+                restrictSpecialChars(this);
+            });
+        });
+    });
+    function validatePassword() {
+        var passwordInput = document.getElementById('password');
+        var password = passwordInput.value;
+
+        // Check if the password meets the criteria
+        if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
+            alert('Password must be at least 8 characters long and must not contain any spaces.');
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
 <div class="container">
     <?php
     include "connection.php";
@@ -87,7 +136,7 @@
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc(); 
     
-            echo "<form method='post' action='1AdminProfessorsTrigger.php'>";
+            echo "<form method='post' action='1AdminProfessorsTrigger.php' onsubmit='return validatePassword()'>";
             echo "<h2>Edit Faculty Details</h2>";
             echo "<input type='hidden' name='user_ID' value='{$row['user_ID']}'>";
             echo "Username: <input type='text' name='username' value='{$row['userName']}'><br>";
@@ -95,33 +144,33 @@
             echo "Middle Name: <input type='text' name='mName' value='{$row['mName']}'><br>";
             echo "Last Name: <input type='text' name='lName' value='{$row['lName']}'><br>";
             echo "Email: <input type='email' name='email' value='{$row['email']}'><br>";
-            echo "age: <input type='number' name='age' value='{$row['age']}'><br>";
-            echo "address: <input type='text' name='address' value='{$row['address']}'><br>";
+            echo "Age: <input type='number' name='age' value='{$row['age']}'><br>";
+            echo "Address: <input type='text' name='address' value='{$row['address']}'><br>";
             echo "Gender: <select name = 'sex'>
             <option value = 'MALE'> Male </option>
             <option value = 'FEMALE'> Female </option>
             </select><br>";
             echo "New Password(leave blank to keep current): <input type='password' name='password'><br>";
     
-            echo "Subjects Assigned: ";
-            echo "<select name='subject_id'>";
+            // echo "Subjects Assigned: ";
+            // echo "<select name='subject_id'>";
             
-            // Retrieve subjects from the Subject table
-            $query = "SELECT subject_ID, subjectName FROM Subject";
-            $subjectResult = mysqli_query($conn, $query);
+            // // Retrieve subjects from the Subject table
+            // $query = "SELECT subject_ID, subjectName FROM Subject";
+            // $subjectResult = mysqli_query($conn, $query);
     
-            if (mysqli_num_rows($subjectResult) > 0) {
-                while ($subjectRow = mysqli_fetch_assoc($subjectResult)) {
-                    $subjectID = $subjectRow['subject_ID'];
-                    $subjectName = $subjectRow['subjectName'];
-                    $selected = ($subjectID == $row['subject_ID']) ? "selected" : "";
-                    echo "<option value='$subjectID' $selected>$subjectName</option>";
-                }
-            }
-            //  else {
-            //     echo "<option value=\"N/A\">No subjects available</option>";
+            // if (mysqli_num_rows($subjectResult) > 0) {
+            //     while ($subjectRow = mysqli_fetch_assoc($subjectResult)) {
+            //         $subjectID = $subjectRow['subject_ID'];
+            //         $subjectName = $subjectRow['subjectName'];
+            //         $selected = ($subjectID == $row['subject_ID']) ? "selected" : "";
+            //         echo "<option value='$subjectID' $selected>$subjectName</option>";
+            //     }
             // }
-            echo "</select><br>";
+            // //  else {
+            // //     echo "<option value=\"N/A\">No subjects available</option>";
+            // // }
+            // echo "</select><br>";
     
             echo "<input type='submit' name='edit' value='Save Changes'>";
             echo "</form>";
