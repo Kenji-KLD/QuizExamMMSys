@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "connection.php"; 
 include "4AdminSectionClass.php"; 
 
@@ -13,14 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($registration->validate()) {
             if ($registration->add()) {
                 $_SESSION['notif'] = "Successful";
-                header("Location: 2AdminStudents.php");
+                header("Location: 4AdminSections.php");
             } else {
                 $_SESSION['notif'] = "Invalid Input Data";
-                header("Location: 2AdminStudents.php");
+                header("Location: 4AdminSections.php");
             }
         } else {
             $_SESSION['notif'] = "Data Entry Already Existing";
-            header("Location: 2AdminStudents.php");
+            header("Location: 4AdminSections.php");
         }
 
     } elseif (isset($_POST['delete'])) {
@@ -31,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($deleteSection->delete()) {
         $_SESSION['notif'] = "Successful";
-        header("Location: 2AdminStudents.php");
+        header("Location: 4AdminSections.php");
     } else {
         $_SESSION['notif'] = "Failed to delete data";
-        header("Location: 2AdminStudents.php");
+        header("Location: 4AdminSections.php");
     }
 
 
@@ -47,14 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($edit->validate()) {
             if ($edit->edit()) {
                 $_SESSION['notif'] = "Successful";
-                header("Location: 2AdminStudents.php");
+                header("Location: 4AdminSections.php");
             } else {
                 $_SESSION['notif'] = "Invalid Input Data";
-                header("Location: 2AdminStudents.php");
+                header("Location: 4AdminSections.php");
             }
         } else {
             $_SESSION['notif'] = "Data Entry Already Existing";
-            header("Location: 2AdminStudents.php");
+            header("Location: 4AdminSections.php");
         }
 
     } 

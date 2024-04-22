@@ -1,3 +1,22 @@
+<?php
+ include 'connection.php';  
+ include 'AdminCrud.php'; 
+session_start(); // Start session to use session variables
+
+// Check if $_SESSION['notif'] is set and display it
+$notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif']);
+
+// Check if $_SESSION['notif'] is set and display it
+$notif1 = isset($_SESSION['notif1']) ? $_SESSION['notif1'] : "";
+
+// Unset the session variable to clear the message after displaying
+unset($_SESSION['notif1']);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,7 +140,8 @@ function restrictSpecialChars(input) {
                 <CENTER>
                     <div class="form-wrapper">
                         <h2>Subject Form</h2>
-                        <form action="3AdminSubjectTrigger.php" method="post">
+                        <?php echo $notif; ?><br>
+                        <br><form action="3AdminSubjectTrigger.php" method="post">
                             <label for="subjectID">Subject ID:</label>
                             <input type="text" id="subjectID" name="subjectID" placeholder="CCIS1101" required>
 
@@ -143,18 +163,45 @@ function restrictSpecialChars(input) {
             <CENTER>
                 <div class="form-wrapper">
                     <h2>Assign Subjects</h2>
-                    <form action="assign_subjects_trigger.php" method="post">
-                        <label for="professor">Professor:</label>
-                        <select name="professor" id="professor">
-                            <!-- Options for professors -->
-                        </select>
+                    <?php echo $notif1 ?><br>
+                    <br><form action="3AdminSubjectTrigger.php" method="post">
+                    <label for="faculty_ID">Choose a faculty member:</label>
+                    <select name="faculty_ID" id="faculty_ID">
+                    <option disabled selected>Select Faculty</option>
+                
+                    <?php
+                    try {
+                    $facultyMembers = fetchFacultyList($conn);
+                    foreach ($facultyMembers as $member) {
+                    echo "<option value='{$member['faculty_ID']}'>" . htmlspecialchars($member['fullName']) . "</option>";
+                    }
+                    } catch (Exception $e) {
+                    echo 'Error: ' . $e->getMessage();
+                    }
+                    ?>
+                    </select><br>
 
-                        <label for="subject">Subject:</label>
-                        <select name="subject" id="subject">
-                            <!-- Options for subjects -->
-                        </select>
+                    <br><label for="subjectID">Subject:</label>
+                    <select name="subjectID" id="subjectID">
+                    <option disabled selected>Select Subject</option>
+                    <?php
+                    $query = "SELECT subject_ID, subjectName FROM Subject";
+                    $result = mysqli_query($conn, $query);
 
-                        <input type="submit" value="Assign">
+                    if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                    $subjectID = $row['subject_ID'];
+                    $subjectName = $row['subjectName'];
+                    echo "<option value=\"$subjectID\">$subjectName</option>";
+                    }
+                    } 
+                    // else {
+                    //     echo "<option value=\"N/A\">No subjects available</option>";
+                    // }
+                    ?>
+                        </select><br>
+
+                        <br><input type="submit" name = "assign" value="Assign">
                     </form>
                 </div>
             </CENTER>
@@ -164,8 +211,7 @@ function restrictSpecialChars(input) {
                     <div class="form-wrapper">
                         <h2>Subject List</h2>
                         <?php
-include "connection.php";
-include "AdminCrud.php";
+
 
 $subjectData = fetchSubjectData($conn);
 
