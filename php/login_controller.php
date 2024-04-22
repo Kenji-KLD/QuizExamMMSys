@@ -38,8 +38,11 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
     elseif(password_verify($jsonData['password'], $Model->readPasswordHash($jsonData['userName'])) == true){
         $Model->createSessionToken($jsonData['userName']);
         $session_token = $Model->readSessionToken($jsonData['userName']);
+        $sessionData = $Model->readSessionData($session_token);
+        $userDetails = $Model->readAccountDetails($sessionData['user_ID']);
 
         setcookie("session_token", $session_token, time() + 86400, "/");
+        setcookie("userDetails", json_encode($userDetails), time() + 86400, "/");
         
         echo json_encode([
             'processed' => true,

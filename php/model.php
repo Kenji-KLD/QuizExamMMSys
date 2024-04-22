@@ -77,6 +77,37 @@ class Model{
     // READ FUNCTIONS
 
 
+    public function readAccountDetails($input_userID){
+        $data = [];
+        $query = "
+        SELECT
+            CONCAT(fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(mName, ''), 1), '.'), ''), ' ', lName) AS fullName,
+            email, sex, age
+        FROM Account
+        WHERE user_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
+            $stmt->execute(); $stmt->bind_result($fullName, $email, $sex, $age);
+
+            while($stmt->fetch()){
+                $data = [
+                    'fullName' => $fullName,
+                    'email' => $email,
+                    'sex' => $sex,
+                    'age' => $age
+                ];
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+    
     public function readAccountType($input_username){
         $query = "
         SELECT
@@ -95,10 +126,10 @@ class Model{
             if($student_count > 0){
                 return "STUDENT";
             }
-            elseif($admin_count){
+            elseif($admin_count > 0){
                 return "ADMIN";
             }
-            elseif($faculty_count){
+            elseif($faculty_count > 0){
                 return "FACULTY";
             }
             else{
@@ -329,6 +360,40 @@ class Model{
             $result->free();
 
             return $section_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+    
+
+    // DELETE FUNCTIONS
+
+
+    public function updatePassword($input_sessionToken, $input_oldPassword, $input_newPassword){
+        $sessionData = $this->readSessionData($input_sessionToken);
+        $newPassword = password_hash($input_newPassword, PASSWORD_BCRYPT);
+        $readPasswordQuery = "
+        SELECT password FROM Account WHERE user_id = ?
+        ";
+        $updatePasswordQuery = "
+        UPDATE Account SET password = ? WHERE user_id = ?
+        ";
+
+        try{
+            $stmt1 = $this->db->prepare($readPasswordQuery); $stmt1->bind_param("i", $sessionData['user_ID']);
+            $stmt1->execute(); $stmt1->store_result(); $stmt1->bind_result($oldPassword);
+            $stmt1->fetch();
+
+            if(password_verify($input_oldPassword, $oldPassword)){
+                $stmt2 = $this->db->prepare($updatePasswordQuery); $stmt2->bind_param("si", $newPassword, $sessionData['user_ID']);
+                $stmt2->execute(); $stmt2->close(); $stmt1->close();
+
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         catch(Exception $e){
             $this->logError($e);
