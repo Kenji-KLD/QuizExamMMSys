@@ -1,6 +1,6 @@
-function checkToken(isLogin) {
+function checkToken(isLogin, gotoTokenRedirect) {
     $.ajax({
-        url: "/php/checkSession_loading.php",
+        url: "/php/checkToken_loading.php",
         method: "POST",
         data: {
             isLogin: isLogin
@@ -11,10 +11,10 @@ function checkToken(isLogin) {
         success: function(response){
             var data = JSON.parse(response);
             
-            if(data.processed == true){
+            if(data.processed == true && gotoTokenRedirect == true){
                 switch(data.accountType){
                     case "STUDENT":
-                        window.location.replace('/dist/tac.html');
+                        window.location.replace('/dist/userView/html/home.html');
                         break;
                     case "FACULTY":
                         window.location.replace('/dist/profView/html/home-page.html');

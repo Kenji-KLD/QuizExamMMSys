@@ -17,7 +17,7 @@ function initiateLogin(){
             if(response.processed == true){
                 switch(response.accountType){
                     case "STUDENT":
-                        window.location.replace('/dist/tac.html');
+                        window.location.replace('/dist/userView/html/home.html');
                         break;
                     case "FACULTY":
                         window.location.replace('/dist/profView/html/home-page.html');

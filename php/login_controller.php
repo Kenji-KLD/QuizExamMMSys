@@ -44,7 +44,6 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         echo json_encode([
             'processed' => true,
             'accountType' => $Model->readAccountType($jsonData['userName']),
-            'session_token' => $session_token
         ]);
     }
 
