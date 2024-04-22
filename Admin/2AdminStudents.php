@@ -42,20 +42,24 @@ unset($_SESSION['notif']);
             height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
             padding: 20px;
         }
-        
 
         .table-container {
-            width: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
         }
         .form-wrapper {
             width: 100%; /* Adjust based on your design requirements */
-            max-width: 600px; /* Maximum width of the form */
+            max-width: 800px; /* Maximum width of the table display */
             background-color: #212121; /* Light grey background */
-            padding: 35px;
+            padding: 50px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
             overflow-y: auto; /* Enables vertical scrolling */
             max-height: 90vh; /* Maximum height of the form */
             border-radius: 8px; /* Rounded corners for aesthetics */
+            margin-right: 10px;
         }
 
         #navbarToggle {
@@ -64,31 +68,48 @@ unset($_SESSION['notif']);
             left: 20px;
             cursor: pointer;
         }
+
         .table-container1 {
             display: flex;
-            justify-content: center; /* Keeps the wrapper centered, can be adjusted if needed */
-            align-items: start; /* Aligns the content to the top */
-            height: 100%; /* Ensures the container takes full height of the viewport or its parent */
-            padding: 20px;      
-        }
+            justify-content: center;
+            align-items: start;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
+}
 
         .form-wrapper1 {
             width: 100%; /* Adjust based on your design requirements */
             max-width: 800px; /* Maximum width of the table display */
-            background-color: #212121; /* Dark background color */
+            background-color: #212121; /* Light grey background */
             padding: 20px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
             overflow-y: auto; /* Enables vertical scrolling */
             max-height: 90vh; /* Maximum height of the form */
             border-radius: 8px; /* Rounded corners for aesthetics */
-            margin-left: 40px; /* Adds left margin to shift the wrapper to the right */
+            margin-left: 100px;
+}
+
+        label {
+            display: block;
+            margin-bottom: 8px;
         }
 
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #2c2c2c;
+            color: white;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
 
         th, td {
             border: 1px solid white;
@@ -105,16 +126,38 @@ unset($_SESSION['notif']);
             background-color: #212121;
         }
 
-        .form-wrapper label,
-        .form-wrapper input,
-        .form-wrapper select {
-            display: block;
-            margin-bottom: 10px; /* Adjusted margin */
+        input[class = 'submit' ] ,[class = 'import']{
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, orange, yellow);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        .form-wrapper select {
-            margin-bottom: 20px; /* Larger margin for select element */
+        input[class='edit'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #4e8cff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
+        
+        input[class = 'delete'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #b30000, #ff3333);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+        
     </style>
 </head>
 <body>
@@ -183,7 +226,7 @@ function restrictSpecialChars(input) {
                     <div class="form-wrapper">
                         <h2>Student Form</h2>
                         <?php echo $notif; ?>
-                        <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()>
+                        <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()">
                             <label for="student_ID">Student ID:</label>
                             <input type="text" id="student_ID" name="student_ID" placeholder="KLD-00-000000" required>
 
@@ -238,14 +281,14 @@ function restrictSpecialChars(input) {
                           </select>  
                              -->
 
-                            <input type="submit" name="add" value="Submit">
+                            <input type="submit" class = 'submit' name="add" value="Submit">
 
                         </form>
                         <form action="2AdminStudentTrigger.php" method="post" enctype="multipart/form-data">
                         <h3>Or Import CSV Files</h3>
                         <input type="file" id="accounts_file" name="accounts_file" accept=".csv">
                         <br>
-                        <input type="submit" name="import" value="Import">
+                        <input type="submit" class='import' name="import" value="Import">
                         </form>
 
                     </div>
@@ -281,12 +324,12 @@ if (!empty($studentData)) {
         echo "<form method='post' action='2AdminEditView.php'>";
         echo "<input type='hidden' name='user_ID' value='{$student['user_ID']}'>";
         echo "<input type='hidden' name='student_ID' value='{$student['student_ID']}' >"; // Access student_ID safely
-        echo "<input type='submit' name='edit' value='Edit'>";
+        echo "<input type='submit' class='edit' name='edit' value='Edit'>";
         echo "</form>";
         echo "<form method='post' action='2AdminStudentTrigger.php' onsubmit='return confirm(\"Are you sure you want to delete this student?\");'>";
         echo "<input type='hidden' name='user_ID' value='{$student['user_ID']}'>";
         echo "<input type='hidden' name='student_ID' value='{$student['student_ID']}'>"; // Access student_ID safely
-        echo "<input type='submit' name='delete' value='Delete'>";
+        echo "<input type='submit' class = 'delete' name='delete' value='Delete'>";
         echo "</form>";
         echo "</td>";
     

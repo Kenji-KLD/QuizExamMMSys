@@ -62,11 +62,48 @@ unset($_SESSION['notif1']);
             left: 20px;
             cursor: pointer;
         }
+        .table-container1 {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
+}
+
+        .form-wrapper1 {
+            width: 90%; /* Adjust based on your design requirements */
+            max-width: 800px; /* Maximum width of the table display */
+            background-color: #212121; /* Light grey background */
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+            overflow-y: auto; /* Enables vertical scrolling */
+            max-height: 90vh; /* Maximum height of the form */
+            border-radius: 8px; /* Rounded corners for aesthetics */
+            margin-left: 1px;
+}
+
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #2c2c2c;
+            color: white;
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
         }
+
 
         th, td {
             border: 1px solid white;
@@ -83,11 +120,36 @@ unset($_SESSION['notif1']);
             background-color: #212121;
         }
 
-        .form-wrapper label,
-        .form-wrapper input {
-            display: block;
-            margin-bottom: 10px; /* Adjusted margin */
+        input[class = 'submit' ] ,[class = 'import']{
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, orange, yellow);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
+
+        input[class='edit'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #4e8cff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        input[class = 'delete'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #b30000, #ff3333);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -154,7 +216,7 @@ function restrictSpecialChars(input) {
                             <label for="subjectType">Subject Type:</label>
                             <input type="text" id="subjectType" name="subjectType" placeholder="Lec/Lab" required>
                             
-                            <input type="submit" name = "add" value="Submit">
+                            <input type="submit" class = 'submit' name = "add" value="Submit">
                         </form>
                     </div>
                 </CENTER>
@@ -201,14 +263,14 @@ function restrictSpecialChars(input) {
                     ?>
                         </select><br>
 
-                        <br><input type="submit" name = "assign" value="Assign">
+                        <br><input type="submit" class = 'submit' name = "assign" value="Assign">
                     </form>
                 </div>
             </CENTER>
         </div>
-            <div class="table-container">
+            <div class="table-container1">
                 <CENTER>
-                    <div class="form-wrapper">
+                    <div class="form-wrapper1">
                         <h2>Subject List</h2>
                         <?php
 
@@ -229,11 +291,11 @@ if (!empty($subjectData)) {
         echo "<td>";
         echo "<form method='post' action='3AdminEditView.php'>";
         echo "<input type='hidden' name='subject_ID' value='{$subject['subject_ID']}'>"; // Access student_ID safely
-        echo "<input type='submit' name='edit' value='Edit'>";
+        echo "<input type='submit' class = 'edit' name='edit' value='Edit'>";
         echo "</form>";
         echo "<form method='post' action='3AdminSubjectTrigger.php' onsubmit='return confirm(\"Are you sure you want to delete this student?\");'>";
         echo "<input type='hidden' name='subject_ID' value='{$subject['subject_ID']}'>"; // Access student_ID safely
-        echo "<input type='submit' name='delete' value='Delete'>";
+        echo "<input type='submit' class = 'delete' name='delete' value='Delete'>";
         echo "</form>";
         echo "</td>";
     
