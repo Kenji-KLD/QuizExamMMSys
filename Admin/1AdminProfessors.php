@@ -43,17 +43,22 @@ unset($_SESSION['notif']);
         }
 
         .table-container {
-            width: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            height: 100%; /* This ensures that the container takes full height of the viewport or its parent container */
+            padding: 20px;
         }
         .form-wrapper {
-            width: 100%; /* Adjust based on your design requirements */
-            max-width: 600px; /* Maximum width of the form */
+            width: 150%; /* Adjust based on your design requirements */
+            max-width: 800px; /* Maximum width of the table display */
             background-color: #212121; /* Light grey background */
-            padding: 20px;
+            padding: 50px;
             box-shadow: 0 0 15px rgba(0,0,0,0.2); /* Subtle shadow for depth */
             overflow-y: auto; /* Enables vertical scrolling */
             max-height: 90vh; /* Maximum height of the form */
             border-radius: 8px; /* Rounded corners for aesthetics */
+            margin-right: 10px;
         }
 
         #navbarToggle {
@@ -80,8 +85,24 @@ unset($_SESSION['notif']);
             overflow-y: auto; /* Enables vertical scrolling */
             max-height: 90vh; /* Maximum height of the form */
             border-radius: 8px; /* Rounded corners for aesthetics */
-            margin-left: 1px;
+            margin-left: 100px;
 }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #2c2c2c;
+            color: white;
+        }
 
         table {
             width: 100%;
@@ -103,6 +124,38 @@ unset($_SESSION['notif']);
         tr:nth-child(even) {
             background-color: #212121;
         }
+
+        input[class = 'submit'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, orange, yellow);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[class='edit'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #4e8cff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        input[class = 'delete'] {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to bottom right, #b30000, #ff3333);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
         
     </style>
 </head>
@@ -171,33 +224,33 @@ function restrictSpecialChars(input) {
                     <CENTER>
                 <h2>Professor Form</h2>
                 <?php echo $notif; ?><br>
-                <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
+                <br><form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
 
-                    <label for="fName">First Name:</label><br>
-                    <input type="text" id="fName" name="fName" required><br><br>
+                    <label for="fName">First Name:</label>
+                    <input type="text" id="fName" name="fName" required><br>
 
-                    <label for="mName">Middle Name:</label><br>
-                    <input type="text" id="mName" name="mName"><br><br>
+                    <label for="mName">Middle Name:</label>
+                    <input type="text" id="mName" name="mName"><br>
 
-                    <label for="lName">Last Name:</label><br>
-                    <input type="text" id="lName" name="lName" required><br><br>
+                    <label for="lName">Last Name:</label>
+                    <input type="text" id="lName" name="lName" required><br>
 
-                    <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username" placeholder="" required><br><br>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="" required><br>
 
-                    <label for="password">Password:</label><br>
-                    <input type="password" id="password" name="password" placeholder="At least 8 characters" required><br><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="At least 8 characters" required><br>
 
-                    <label for="email">Email:</label><br>
-                    <input type="email" id="email" name="email" placeholder="name@domain.com" required><br><br>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="name@domain.com" required><br>
                     
-                    <label for="address">Address:</label><br>
-                    <input type="text" id="address" name="address" required><br><br>
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required><br>
                     
-                    <label for="age">Age:</label><br>
-                    <input type="number" id="age" name="age" required min="0" required><br><br>
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required min="0" required><br>
 
-                    <label for="sex">Sex:</label><br>
+                    <label for="sex">Sex:</label>
                     <select name="sex" id="sex">
                     <option value="MALE"> Male </option>
                     <option value="FEMALE"> Female </option>
@@ -223,7 +276,7 @@ function restrictSpecialChars(input) {
                     ?>
                     </select><br><br> -->
 
-                    <input type="submit" name="add" value="Submit">
+                    <input type="submit" class = 'submit' name="add" value="Submit">
                     </form>
                     </CENTER>
                     </div>
@@ -270,11 +323,11 @@ if (!empty($facultyData)) {
         echo "<td>";
         echo "<form method='post' action='1AdminEditView.php'>";
         echo "<input type='hidden' name='user_ID' value='{$faculty['userInfo']['user_ID']}'>";
-        echo "<input type='submit' name='edit' value='Edit' onclick='toggleEdit()'>";
+        echo "<input type='submit' name='edit' class = 'edit' value='Edit' onclick='toggleEdit()'>";
         echo "</form>";
         echo "<form method='post' action='1AdminProfessorsTrigger.php' onsubmit='return confirm(\"Are you sure you want to delete this faculty?\");'>";
         echo "<input type='hidden' name='user_ID' value='{$faculty['userInfo']['user_ID']}'>";
-        echo "<input type='submit' name='delete' value='Delete'>";
+        echo "<input type='submit' name='delete' class = 'delete' value='Delete'>";
         echo "</form>";
         echo "</td>";
 

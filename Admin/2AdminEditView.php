@@ -55,13 +55,13 @@
         }
 
         input[type='submit'] {
-            width: 100%;
+            width: 10%;
             padding: 10px;
-            background-color: #BB86FC;
+            background: linear-gradient(to bottom right, orange, yellow);
             color: white;
             border: none;
             border-radius: 4px;
-            cursor: 
+            cursor: pointer;
         }
     </style>
 </head>

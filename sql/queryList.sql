@@ -64,7 +64,7 @@ WHERE suh.subHandle_ID IS NULL;
 SELECT se.section_ID FROM Section se
 INNER JOIN SectionHandle seh ON se.section_ID = seh.section_ID
 INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-WHERE suh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = 1)
+WHERE suh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = 1);
 
 
 
@@ -78,3 +78,18 @@ WHERE ac.userName = ?;
 SELECT a.* FROM Account a
 INNER JOIN LoginToken l ON a.user_ID = l.user_ID
 WHERE l.session_token = '2gd7ixncim73p2c7mb2hno9ke9ev8k3n';
+
+SELECT 
+    ac.user_ID AS user_ID, 
+    ac.userName AS userName,
+    s.student_ID AS student_ID,
+    ad.admin_ID AS admin_ID,
+    f.faculty_ID AS faculty_ID
+FROM Account ac
+INNER JOIN LoginToken l ON ac.user_ID = l.user_ID
+LEFT JOIN Student s ON s.user_ID = ac.user_ID
+LEFT JOIN Admin ad ON ad.user_ID = ac.user_ID
+LEFT JOIN Faculty f ON f.user_ID = ac.user_ID
+WHERE l.session_token = 'orapfuljt3iqmyylkcs165ngmkhha3wb';
+
+SELECT * FROM LoginToken;

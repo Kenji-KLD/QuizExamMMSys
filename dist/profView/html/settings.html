@@ -108,54 +108,55 @@
       <h1 class="main-title">Settings</h1>
       <div class="bg-ISshade3 w-auto rounded-3xl p-5">
         <h2 class="font-medium">User Profile</h2>
-        <p class="text-[2.5rem] mt-6">Professor Name</p>
-        <p class="text-lg">Email</p>
-        <p>Sex</p>
-        <p>Age</p>
+        <p id="fullName" class="text-[2.5rem] mt-6">Professor Name</p>
+        <p id="email" class="text-lg">Email</p>
+        <p id="sex">Sex</p>
+        <p id="age">Age</p>
       </div>
       <div class="bg-ISshade3 w-auto rounded-3xl p-5 mt-6">
         <h2 class="font-medium">Security and Privacy</h2>
         <p class="mt-6 text-xl">Change Password</p>
         <div class="flex relative mt-10">
           <input
-            type="email"
-            id="Email"
+            type="password"
+            id="oldPass"
             class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
             autocomplete="off"
           />
           <label
-            for="Email"
+            for="oldPass"
             class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
             >Old Password</label
           >
         </div>
         <div class="flex relative mt-16">
           <input
-            type="email"
-            id="Email"
+            type="password"
+            id="newPass"
             class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
             autocomplete="off"
           />
           <label
-            for="Email"
+            for="newPass"
             class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
             >New Password</label
           >
         </div>
         <div class="flex relative mt-16">
           <input
-            type="email"
-            id="Email"
+            type="password"
+            id="confNewPass"
             class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
             autocomplete="off"
           />
           <label
-            for="Email"
+            for="confNewPass"
             class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
             >Confirm New Password</label
           >
         </div>
         <button
+          onclick="changePassword();"
           type="submit"
           class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
         >
@@ -163,6 +164,10 @@
         </button>
       </div>
     </main>
-    <script src="/dist/profView/js/sidebar.js"></script>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/checkToken.js"></script>
+    <script>jQuery(function() {checkToken(0, 0)})</script>
+    <script src="/dist/js/settings.js" defer></script>
   </body>
 </html>
