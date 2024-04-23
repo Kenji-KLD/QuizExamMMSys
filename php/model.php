@@ -437,6 +437,21 @@ class Model{
     // DELETE FUNCTIONS
 
 
+    public function deleteSessionToken($input_sessionToken){
+        $query = "
+        DELETE FROM LoginToken
+        WHERE session_token = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sessionToken);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+    
     public function deleteSubHandle($input_facultyID, $input_sectionID){
         $query = "
         DELETE FROM SectionHandle 
