@@ -143,7 +143,7 @@ unset($_SESSION['notif']);
     </style>
 </head>
 <body>
-<script>
+<!-- <script>
 function restrictSpecialChars(input) {
         var fieldName = input.id;
         var regex;
@@ -172,7 +172,7 @@ function restrictSpecialChars(input) {
             });
         });
     });
-</script>
+</script> -->
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -182,7 +182,7 @@ function restrictSpecialChars(input) {
                     <div class="form-wrapper">
                         <h2>Section Form</h2><br>
                         <?php echo $notif; ?><br>
-                        <br><form action="4AdminSectionsTrigger.php" method="post">
+                        <br><form action="4AdminSectionsTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to ADD this Subject?")'>
                             <label for="sectionID">Section ID:</label>
                             <input type="text" id="sectionID" name="sectionID" required>
 
