@@ -4,7 +4,7 @@ require_once 'functions.php';
 
 class Model{
     private $conn;
-    public $db;
+    private $db;
 
     public function __construct(){
         $this->conn = new Connection();
