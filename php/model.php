@@ -4,7 +4,7 @@ require_once 'functions.php';
 
 class Model{
     private $conn;
-    private $db;
+    public $db;
 
     public function __construct(){
         $this->conn = new Connection();
@@ -215,30 +215,65 @@ class Model{
         }
     }
 
-    public function readQuestionnaire($input_questionnaireID){
+    public function readQuestionnaire($input_questionSetID){
         $data = [];
+        $questions = [];
+
         $query = "
-        SELECT questionNumber, questionText, questionChoices, questionAnswer 
-        FROM QuestionBank
-        WHERE questionnaire_ID = ?
+        SELECT 
+            qs.questionSetTitle,
+            qs.rubrics,
+            qb.question_ID,
+            qb.questionNumber,
+            qb.questionText,
+            cb.choiceLabel
+        FROM QuestionSet qs
+        JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
+        LEFT JOIN ChoiceBank cb ON qb.question_ID = cb.question_ID
+        WHERE qs.questionSet_ID = ?;
         ";
-        
+
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionnaireID);
-            $stmt->execute(); $result = $stmt->get_result();
-            
-            while ($row = $result->fetch_assoc()){
-                $data[] = $row;
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute();
+            $stmt->bind_result($questionSetTitle, $rubrics, $question_ID, $questionNumber, $questionText, $choiceLabel);
+
+            while ($stmt->fetch()) {
+                // Check if the question_ID already exists in the questions array
+                $key = array_search($question_ID, array_column($questions, 'question_ID'));
+
+                if ($key === false) {
+                    // If the question_ID doesn't exist, create a new question array
+                    $question = [
+                        "question_ID" => $question_ID,
+                        "questionNumber" => $questionNumber,
+                        "questionText" => $questionText,
+                        "choices" => []
+                    ];
+                    $questions[] = $question;
+                    $key = count($questions) - 1; // Get the index of the newly added question
+                }
+
+                // Add choiceLabel to the corresponding question's choices array
+                if ($choiceLabel !== null) {
+                    $questions[$key]['choices'][] = $choiceLabel;
+                }
             }
-            
-            $result->free();
+
             $stmt->close();
-            
-            return json_encode($data);
+
+            $data = [
+                'questionSetTitle' => $questionSetTitle,
+                'rubrics' => $rubrics,
+                'questions' => $questions
+            ];
         }
         catch(Exception $e){
             $this->logError($e);
         }
+
+        return json_encode($data);
     }
 
     public function readSectionList($input_section){
@@ -342,6 +377,7 @@ class Model{
     }
 
     public function readSubjectHandle($input_facultyID){
+        $data = [];
         $query = "
         SELECT su.subject_ID AS subject_ID, su.subjectName AS subjectName, se.section_ID AS section_ID
         FROM Faculty f
