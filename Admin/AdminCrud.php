@@ -123,7 +123,7 @@ function fetchClassData($conn){
     $classData = [];
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            $sectionData[] = [
+            $classData[] = [
                 'student_ID' => $row['student_ID'],
                 'section_ID' => $row['section_ID']
             ];

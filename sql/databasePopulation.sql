@@ -54,9 +54,9 @@ INSERT INTO Faculty(user_ID) VALUES
 ;
 
 INSERT INTO QuestionSet(faculty_ID, subject_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, acadYear, acadTerm, acadSem) VALUES
-    (4, 10, "Quiz 1: Ecosystem", "QUIZ", 10,
+    (1, "GEE5000", "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    2024-05-01 00:00:00, "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-01 00:00:00', "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
