@@ -105,7 +105,7 @@
             <br>
             <br>
             <br>
-            <form action="logout.php" method="post">
+            <form action="logout.php" method="post" onsubmit='return confirm("Are you sure you want to LOG OUT?")'>
                 <button type="submit" class="logout-btn">Logout</button>
             </form>     
         </div>
