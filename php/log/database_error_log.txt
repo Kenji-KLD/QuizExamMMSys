@@ -6,3 +6,16 @@
 [2024-04-23 01:23:24] - Error: Subquery returns more than 1 row
 [2024-04-23 01:24:02] - Error: Subquery returns more than 1 row
 [2024-04-23 01:26:46] - Error: Subquery returns more than 1 row
+[2024-04-23 01:27:31] - Error: Subquery returns more than 1 row
+[2024-04-23 01:27:33] - Error: Subquery returns more than 1 row
+[2024-04-23 01:28:19] - Error: Subquery returns more than 1 row
+[2024-04-23 01:28:51] - Error: Subquery returns more than 1 row
+[2024-04-23 01:35:28] - Error: Subquery returns more than 1 row
+[2024-04-23 01:35:29] - Error: Subquery returns more than 1 row
+[2024-04-23 02:54:23] - Error: Subquery returns more than 1 row
+[2024-04-23 02:54:26] - Error: Subquery returns more than 1 row
+[2024-04-23 02:55:13] - Error: Subquery returns more than 1 row
+[2024-04-23 02:56:19] - Error: Subquery returns more than 1 row
+[2024-04-23 03:00:31] - Error: Subquery returns more than 1 row
+[2024-04-23 03:06:42] - Error: Subquery returns more than 1 row
+[2024-04-23 03:06:42] - Error: Subquery returns more than 1 row

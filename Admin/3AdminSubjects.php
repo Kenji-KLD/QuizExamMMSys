@@ -153,7 +153,7 @@ unset($_SESSION['notif1']);
     </style>
 </head>
 <body>
-<script>
+<!-- <script>
 function restrictSpecialChars(input) {
         var fieldName = input.id;
         var regex;
@@ -193,7 +193,7 @@ function restrictSpecialChars(input) {
         }
         return true; // Allow form submission
     }
-</script>
+</script> -->
     <div class="container">
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php'; ?>
@@ -203,7 +203,7 @@ function restrictSpecialChars(input) {
                     <div class="form-wrapper">
                         <h2>Subject Form</h2>
                         <?php echo $notif; ?><br>
-                        <br><form action="3AdminSubjectTrigger.php" method="post">
+                        <br><form action="3AdminSubjectTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to ADD this Subject?")'>
                             <label for="subjectID">Subject ID:</label>
                             <input type="text" id="subjectID" name="subjectID" placeholder="CCIS1101" required>
 
@@ -226,7 +226,7 @@ function restrictSpecialChars(input) {
                 <div class="form-wrapper">
                     <h2>Assign Subjects</h2>
                     <?php echo $notif1 ?><br>
-                    <br><form action="3AdminSubjectTrigger.php" method="post">
+                    <br><form action="3AdminSubjectTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to Assign the selected Faculty?")'>
                     <label for="faculty_ID">Choose a faculty member:</label>
                     <select name="faculty_ID" id="faculty_ID">
                     <option disabled selected>Select Faculty</option>
