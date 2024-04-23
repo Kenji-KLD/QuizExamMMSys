@@ -68,7 +68,17 @@ document.addEventListener('DOMContentLoaded', function () {
             display: flex;
             height: 100vh;
         }
+        #mostIncorrectList {
+        color: darksalmon;
+        }
         
+        #mostIncorrect {
+        color: darksalmon;
+        }
+
+        #mostcorrect {
+        color: darksalmon;
+        }
         
         .content {
             flex: 1;
@@ -88,6 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <img id="navbarToggle" src="navbartoggle.png" alt="Navbar Toggle" onclick="toggleSidebar()" height="40px" width="40px">
         <?php include 'sidebar.php';?>
         <div class="content">
+            
             <h1><CENTER>Welcome to Quiz and Exam Maker Management System</CENTER></h1>
             <canvas id="myDonutChart" width="400" height="400"></canvas>
             <script>
@@ -124,6 +135,33 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     </script>
+    </div>
+    <div class = "content">
+    <h2>Commonly Misanswered Questions:</h2>
+            <ul id="mostIncorrectList"></ul>
+        <script>
+    var mostIncorrectQuestions = [
+                'What is the difference between a statically typed language and a dynamically typed language?',
+                'Can you explain the concept of recursion in programming?',
+                'What are the benefits of using version control systems like Git in software development projects?',
+                'How does a garbage collector work in programming languages like Java?',
+                'What is the purpose of polymorphism in object-oriented programming?',
+                'Describe what an API (Application Programming Interface) is and how it is used in modern software development.',
+                'What is the difference between SQL and NoSQL databases, and when might you choose one over the other?',
+
+
+            ];
+
+            // Display most incorrect questions in the list
+            var mostIncorrectList = document.getElementById('mostIncorrectList');
+            mostIncorrectQuestions.forEach(function(question) {
+                var listItem = document.createElement('li');
+                listItem.textContent = question;
+                mostIncorrectList.appendChild(listItem);
+            });
+                
+            </script>
+    </div>
         </div>
     </div>
 
