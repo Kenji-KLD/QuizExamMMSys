@@ -73,7 +73,7 @@
 include "connection.php";
 include "AdminCrud.php";
 
-$classnData = fetchClassData($conn);
+$classData = fetchClassData($conn);
 
 if (!empty($ClassData)) {
     echo "<table>";

@@ -342,6 +342,7 @@ class Model{
     }
 
     public function readSubjectHandle($input_facultyID){
+        $data = [];
         $query = "
         SELECT su.subject_ID AS subject_ID, su.subjectName AS subjectName, se.section_ID AS section_ID
         FROM Faculty f
