@@ -31,6 +31,10 @@
         @apply p-5 cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE];
     }
 
+    .card-user2 {
+        @apply p-5 cursor-pointer bg-ISblue0;
+    }
+
     .card-stats {
         @apply w-auto rounded-3xl bg-ISshade3 p-5 flex flex-col;
     }
