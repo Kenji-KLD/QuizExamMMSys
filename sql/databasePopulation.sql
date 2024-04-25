@@ -54,16 +54,16 @@ INSERT INTO Faculty(user_ID) VALUES
 ;
 
 INSERT INTO QuestionSet(faculty_ID, subject_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, acadYear, acadTerm, acadSem) VALUES
-    (4, 10, "Quiz 1: Ecosystem", "QUIZ", 10,
+    (1, "GEE5000", "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    2024-05-01 00:00:00, "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-01 00:00:00', "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
     (1, "MULTIPLE_CHOICE", 1, 'Who coined the term "Ecology"?', "A. Ernst Haeckel", 1),
-    (1, "MULTIPLE_CHOICE", 2, 'Who coined the term "Ecosystem"?', "C. Arthur Tansley", 1),
-    (1, "MULTIPLE_CHOICE", 3, 'It is an environment that provides the things an organism needs to live, grow, and reproduce.', "B. Habitat", 1),
-    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "C. Both A & B", 1),
+    (1, "MULTIPLE_CHOICE", 2, 'Who coined the term "Ecosystem"?', "A. Arthur Tansley", 1),
+    (1, "MULTIPLE_CHOICE", 3, 'It is an environment that provides the things an organism needs to live, grow, and reproduce.', "A. Habitat", 1),
+    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "A. Both B & C", 1),
     (1, "MULTIPLE_CHOICE", 5, 'Who coined the term "Ecosystem 5"?', "A. Testing 5", 1),
     (1, "MULTIPLE_CHOICE", 6, 'Who coined the term "Ecosystem 6"?', "A. Testing 6", 1),
     (1, "MULTIPLE_CHOICE", 7, 'Who coined the term "Ecosystem 7"?', "A. Testing 7", 1),
@@ -77,17 +77,17 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (1, "B. Ernesto Heneral"),
     (1, "C. Arthur Tansley"),
     (1, "D. Charles Elton"),
-    (2, "A. Ernst Haeckel"),
+    (2, "A. Arthur Tansley"),
     (2, "B. Ernesto Heneral"),
-    (2, "C. Arthur Tansley"),
+    (2, "C. Ernst Haeckel"),
     (2, "D. Charles Elton"),
-    (3, "A. Ecosystem"),
-    (3, "B. Habitat"),
+    (3, "A. Habitat"),
+    (3, "B. Ecosystem"),
     (3, "C. Biome"),
     (3, "D. Ecology"),
-    (4, "A. Abiotic Factors"),
-    (4, "B. Biotic Factors"),
-    (4, "C. Both A & B"),
+    (4, "A. Both A & B"),
+    (4, "B. Abiotic Factors"),
+    (4, "C. Biotic Factors"),
     (4, "D. None of the above"),
     (5, "A. Testing 5"),
     (5, "B. Testing 5"),

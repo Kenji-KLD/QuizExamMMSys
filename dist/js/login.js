@@ -40,3 +40,9 @@ function initiateLogin(){
         }
     });
 }
+
+jQuery(function() {
+    if(localStorage.getItem('tacRead') == 'true'){
+        document.getElementById("TAC_Checkbox").checked = true;
+    }
+});

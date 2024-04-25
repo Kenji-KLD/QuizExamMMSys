@@ -163,7 +163,7 @@
           </li>
         </div>
         <li class="absolute bottom-5">
-          <a href="/dist/login.html" class="item">
+          <a onclick="logout();" class="item cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -265,7 +265,9 @@
         </div>
       </section>
     </main>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/logout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <script>
       Chart.defaults.color = "#FEFEFE";

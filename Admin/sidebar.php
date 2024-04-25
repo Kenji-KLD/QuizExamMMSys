@@ -93,7 +93,7 @@
                 <li><a href="2AdminStudents.php">Students</a></li>
                 <li><a href="3AdminSubjects.php">Subjects</a></li>
                 <li><a href="4AdminSections.php">Sections</a></li>
-                <li><a href="5AdminClassrooms.php">Classrooms</a></li>
+                <!-- <li><a href="5AdminClassrooms.php">Classrooms</a></li> -->
             </ul>
             <br>
             <br>
@@ -105,7 +105,7 @@
             <br>
             <br>
             <br>
-            <form action="logout.php" method="post">
+            <form action="logout.php" method="post" onsubmit='return confirm("Are you sure you want to LOG OUT?")'>
                 <button type="submit" class="logout-btn">Logout</button>
             </form>     
         </div>

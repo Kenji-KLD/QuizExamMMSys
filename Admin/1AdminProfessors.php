@@ -210,7 +210,7 @@ function restrictSpecialChars(input) {
             alert('Password must be at least 8 characters long and must not contain any spaces.');
             return false; // Prevent form submission
         }
-        return true; // Allow form submission
+        return confirm("Are you sure you want to ADD this faculty?");
     }
 </script>
 

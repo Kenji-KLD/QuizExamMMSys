@@ -23,6 +23,8 @@ function checkToken(isLogin, gotoTokenRedirect) {
                         window.location.replace('/Admin/Adminhome.php');
                         break;
                     default:
+                        document.cookie = "session_token" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                        document.cookie = "userDetails" + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                         window.location.replace('/dist/index.html');
                         break;
                 }
