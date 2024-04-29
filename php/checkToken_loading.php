@@ -11,13 +11,15 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
             'redirect_url' => $_POST['isLogin'] == true ? '' : '/dist/login.html'
         ]);
     }
-    elseif($Model->readSessionData($_COOKIE['session_token']) == false){
+    elseif($Model->readSessionExistence($_COOKIE['session_token']) == false){
+        setcookie('session_token', '', time() - 3600, '/');
+        setcookie('userDetails', '', time() - 3600, '/');
         echo json_encode([
             'processed' => false, 
             'redirect_url' => $_POST['isLogin'] == true ? '' : '/dist/login.html'
         ]);
     }
-    elseif($Model->readSessionData($_COOKIE['session_token']) != false){
+    elseif($Model->readSessionExistence($_COOKIE['session_token']) != false){
         $sessionData = $Model->readSessionData($_COOKIE['session_token']);
         $sessionData['accountType'] = $Model->readAccountType($sessionData['userName']);
         $sessionData['processed'] = true;

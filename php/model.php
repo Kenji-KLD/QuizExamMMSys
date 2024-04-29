@@ -317,6 +317,28 @@ class Model{
         }
     }
 
+    public function readSessionExistence($input_sessionToken){
+        $query = "
+        SELECT session_token FROM LoginToken 
+        WHERE session_token = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sessionToken);
+            $stmt->execute(); $stmt->store_result();
+            if($stmt->num_rows > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+            $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readSessionToken($input_username){
         $query = "
         SELECT session_token FROM LoginToken 
