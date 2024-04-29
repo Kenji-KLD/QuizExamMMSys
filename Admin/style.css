@@ -1,0 +1,162 @@
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e4e4e4; /* Light text */
+        }
+        .header-title {
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #232323; /* Dark background for the sidebar */
+            padding: 20px;
+        }
+        .form-section{
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #333333; /* Darker shade for the form */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto; /* Add vertical scrollbar */
+            max-height: 680px; /* Set max height to enable scrolling */
+        }
+        .list-section {
+            margin-top: 30px;
+            width: 100%;
+            padding: 20px;
+            background-color: #333333; /* Darker shade for the form */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto; /* Enable vertical scrollbar */
+            max-height: 680px; /* Set the maximum height for vertical scrolling */
+        }
+        table {
+            width: 100%;
+            color: #ffffff;
+            overflow-x: auto;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #007bff; /* Bootstrap primary color */
+        }
+        td {
+            background-color: #252525; /* Slightly lighter than form background */
+        }
+        .submit, .edit, .delete {
+            cursor: pointer;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+        }
+        .submit { 
+            display: block;
+            width: 100%; /* Make button full width of container */
+            padding: 15px; /* Increase padding for larger button */
+            font-size: 18px; /* Adjust font size */
+            color: white;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            background-image: linear-gradient(135deg, #F84502, #FFD700); /* Orange to Yellow gradient */
+            transition: background-image 0.3s ease;
+        }
+        .submit:hover {
+            background-image: linear-gradient(135deg, #FFD700, #F84502);
+        }
+        .import{
+            display: block;
+            width: 100%; /* Make button full width of container */
+            padding: 15px; /* Increase padding for larger button */
+            font-size: 18px; /* Adjust font size */
+            color: white;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            background-image: linear-gradient(135deg, #F84502, #FFD700); /* Orange to Yellow gradient */
+            transition: background-image 0.3s ease;
+        }
+        .import:hover{
+            background-image: linear-gradient(135deg, #FFD700, #F84502);
+        }
+        .edit {
+            text-decoration: none;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            background-image: linear-gradient(to right, #007BFF, #0056b3); /* Blue gradient */
+            transition: background-image 0.3s ease;
+             }
+        .edit:hover{
+            background-image: linear-gradient(to right, #0056b3, #003366);
+        }
+        
+        .archive {
+            text-decoration: none;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            background-image: linear-gradient(to right, #ff4b2b, #ff416c); /* Red gradient */
+            transition: background-image 0.3s ease;
+        }
+
+        .archive:hover {
+            background-image: linear-gradient(to right, #ff416c, #ff4b2b);
+        }
+
+        input[type="text"], input[type="password"], input[type="email"], select, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            display: inline-block;
+            border: 1px solid #555; /* Darker borders for inputs */
+            background-color: #333; /* Matching form background */
+            color: #ddd; /* Lighter text for visibility */
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Styling scrollbar (Webkit browsers) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #333333; /* Darker shade for track */
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #555; /* Darker shade for thumb */
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #888; /* Lighter shade for thumb on hover */
+        }
+
+            /* .acounts_file{
+            text-decoration: none;
+            width: 100%;
+            color: white;
+            font-size: 18px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            background-image: linear-gradient(to right, #007BFF, #0056b3); /* Blue gradient */
+           /*() transition: background-image 0.3s ease;
+        } */
+        /* .acounts_file:hover{
+            background-image: linear-gradient(to right, #0056b3, #003366);
+        } */

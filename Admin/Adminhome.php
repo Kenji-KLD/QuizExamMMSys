@@ -1,4 +1,4 @@
-<!-- <?php 
+<?php 
 
 include "connection.php";
 $sql = "SELECT isCorrect, COUNT(*) as count FROM AnswerStatistic GROUP BY isCorrect";
@@ -15,38 +15,7 @@ $conn->close();
 // Encode data to pass to JavaScript
 $chartData = json_encode($data);
 
-?> -->
-
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    var ctx = document.getElementById('myDonutChart').getContext('2d');
-    var data = <?php echo $chartData; ?>;
-    
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Correct', 'Incorrect'],
-            datasets: [{
-                label: 'Answer Statistics',
-                data: [data.Correct, data.Incorrect],
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(255, 99, 132, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
-});
-</script> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">
