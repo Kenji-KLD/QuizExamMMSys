@@ -1,3 +1,5 @@
+    
+
 function restrictSpecialChars(input) {
     var fieldName = input.id;
     var regex;
@@ -51,3 +53,4 @@ function validatePassword() {
     }
     return confirm("Are you sure you want to ADD this Student?");
 }
+
