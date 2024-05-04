@@ -65,6 +65,7 @@ CREATE TABLE QuestionSet(
 	randomCount INT,
 	rubrics TEXT,
 	deadline DATETIME NOT NULL,
+	timeLimit INT NOT NULL,
 	acadYear VARCHAR(9) NOT NULL,
 	acadTerm VARCHAR(8) NOT NULL,
 	acadSem VARCHAR(15) NOT NULL,
