@@ -16,7 +16,9 @@ function changePassword(){
     var newPass = document.getElementById('newPass').value;
     var confNewPass = document.getElementById('confNewPass').value;
 
-    if(newPass != confNewPass){
+    if(confirm("Are you sure you want to change your password") != true){
+    }
+    else if(newPass != confNewPass){
         alert('Passwords do not match');
     }
     else{
