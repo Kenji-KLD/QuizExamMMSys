@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,7 +78,8 @@
         }
     </style>
     <!-- Include Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -103,18 +105,21 @@
             <br>
             <br>
             <br>
-            <form action="logout.php" method="post" onsubmit='return confirm("Are you sure you want to LOG OUT?")'>
-                <button type="submit" class="logout-btn">Logout</button>
+            <form >
+            <button class="submit" onclick="logout();">Logout</button>
             </form>     
         </div>
     </div>
 
-    <!-- JavaScript for toggling sidebar -->
-    <script>
+</body>   
+<script src="../dist/js/logout.js"></script>
+<script src="../dist/js/checkToken.js"></script>
+<script>jQuery(function() {checkToken(0, 0)})</script>
+<script>
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('closed');
         }
+
     </script>
-</body>
 </html>

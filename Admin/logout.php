@@ -1,14 +1,11 @@
 <?php
-// Initialize the session
-session_start();
+include "logout_class.php";
 
-// Unset all session variables
-$_SESSION = array();
+$Model = new logout();
+    $Model->deleteSessionToken($_COOKIE['session_token']);
+    setcookie('session_token', '', time() - 3600, '/');
+    setcookie('userDetails', '', time() - 3600, '/');
+    $Model = null; 
+    exit();
 
-// Destroy the session
-session_destroy();
-
-// Redirect to the login page or any other desired page
-header("Location: ../../dist/index.html");
-exit;
 ?>

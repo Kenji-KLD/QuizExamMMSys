@@ -25,6 +25,8 @@ unset($_SESSION['notif1']);
     <title>Subjects</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="/dist/js/checkToken.js"></script>
+    <script>jQuery(function() {checkToken(0, 0)})</script>
 
 </head>
 <body>
