@@ -53,4 +53,3 @@ function validatePassword() {
     }
     return confirm("Are you sure you want to ADD this Student?");
 }
-

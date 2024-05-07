@@ -84,9 +84,9 @@
 <body>
     <div class="sidebar" id="sidebar">
         <!-- Toggle button for sidebar -->
-        <button class="toggle-btn" onclick="toggleSidebar()">
+        <!-- <button class="toggle-btn" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
-        </button>
+        </button> -->
         <div class="sidebar-content">
             <img src="IICSlogo.jpg" height="150px" width="150px" alt="IICS Logo">
             <ul>
@@ -105,21 +105,21 @@
             <br>
             <br>
             <br>
-            <form >
-            <button class="submit" onclick="logout();">Logout</button>
+            <form onclick="logout();">
+            <button class="submit">Logout</button>
             </form>     
         </div>
     </div>
 
 </body>   
-<script src="../dist/js/logout.js"></script>
-<script src="../dist/js/checkToken.js"></script>
+<script src="..\dist\js\logout.js"></script>
+<script src="..\dist\js\checkToken.js"></script>
 <script>jQuery(function() {checkToken(0, 0)})</script>
-<script>
+<!-- <script>
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('closed');
         }
 
-    </script>
+    </script> -->
 </html>

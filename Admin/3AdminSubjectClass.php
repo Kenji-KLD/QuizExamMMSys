@@ -6,7 +6,7 @@ class AddSubject {
     private $unitsAmount;
     private $subjectType;
 
-    // Constructor for initializing the subject details
+    
     public function __construct($subjectID, $subjectName, $unitsAmount, $subjectType) {
         $this->subjectID = $subjectID;
         $this->subjectName = $subjectName;
@@ -14,13 +14,13 @@ class AddSubject {
         $this->subjectType = $subjectType;
     }
 
-    // Method to validate if a subject ID already exists in the database
+   
    public function validate() {
-        // Include the database connection file
+      
         include "connection.php";
     
         try {
-            // Prepare a SQL statement to check for existing user
+    
             $stmt = $conn->prepare("SELECT 1 FROM Subject WHERE subject_ID = ? AND subjectName = ?");
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement: " . $conn->error);
@@ -28,7 +28,7 @@ class AddSubject {
             $stmt->bind_param('ss', $this->subjectID, $this->subjectName);
             $stmt->execute();
     
-            // Fetch the results
+        
             $result = $stmt->get_result();
             if (!$result) {
                 throw new Exception("Failed to get result: " . $stmt->error);

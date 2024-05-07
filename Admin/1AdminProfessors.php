@@ -1,10 +1,9 @@
 <?php
-session_start(); // Start session to use session variables
+session_start();  
 
-// Check if $_SESSION['notif'] is set and display it
+ 
 $notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
-
-// Unset the session variable to clear the message after displaying
+ 
 unset($_SESSION['notif']);
 ?>
 
@@ -27,7 +26,7 @@ unset($_SESSION['notif']);
         <?php include 'sidebar.php'; ?>
     </div>
 
-    <div class="container" style="margin-left: 300px;"> <!-- Adjust margin-left based on sidebar width -->
+    <div class="container" style="margin-left: 300px;">  
         <div class="row">
             <div class="col-md-4">
                 <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
@@ -59,9 +58,10 @@ unset($_SESSION['notif']);
                         <input type="number" id="age" name="age" required min="0" required><br>
 
                         <label for="sex">Sex:</label>
-                        <select name="sex" id="sex">
-                            <option value="MALE"> Male </option>
-                            <option value="FEMALE"> Female </option>
+                        <select name="sex" id="sex" required>
+                            <option disabled selected> Select Gender </option>
+                            <option value="Male"> Male </option>
+                            <option value="Female"> Female </option>
                         </select><br><br>
 
                         <input type="submit" class="submit" name="add" value="Submit">
@@ -86,10 +86,10 @@ unset($_SESSION['notif']);
                         include "connection.php";
                         include "AdminCrud.php";
 
-                        // Fetch faculty data using the reusable function
+                 
                         $facultyData = fetchFacultyData($conn);
 
-                        // Display the retrieved data
+                       
                         if (!empty($facultyData)) {
                             foreach ($facultyData as $faculty) {
                                 echo "<tr>";
@@ -133,7 +133,7 @@ unset($_SESSION['notif']);
         </div>
     </div>
 
-    <!-- Bootstrap JS and Popper.js -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
