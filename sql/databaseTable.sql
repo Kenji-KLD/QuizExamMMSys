@@ -65,6 +65,7 @@ CREATE TABLE QuestionSet(
 	randomCount INT,
 	rubrics TEXT,
 	deadline DATETIME NOT NULL,
+	timeLimit INT NOT NULL,
 	acadYear VARCHAR(9) NOT NULL,
 	acadTerm VARCHAR(8) NOT NULL,
 	acadSem VARCHAR(15) NOT NULL,
@@ -100,6 +101,15 @@ CREATE TABLE SubjectHandle(
 	PRIMARY KEY(subHandle_ID),
 	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
+);
+
+CREATE TABLE SectionHandle(
+	secHandle_ID BIGINT AUTO_INCREMENT,
+	subHandle_ID BIGINT NOT NULL,
+	section_ID VARCHAR(8) NOT NULL,
+	PRIMARY KEY(secHandle_ID),
+	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
+	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
 );
 
 CREATE TABLE AnswerStatistic(
@@ -141,11 +151,4 @@ CREATE TABLE SectionSubjectList(
 	subject_ID VARCHAR(9) NOT NULL,
 	FOREIGN KEY(section_ID) REFERENCES Section(section_ID),
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
-);
-
-CREATE TABLE SectionHandle(
-	subHandle_ID BIGINT NOT NULL,
-	section_ID VARCHAR(8) NOT NULL,
-	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
-	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
 );

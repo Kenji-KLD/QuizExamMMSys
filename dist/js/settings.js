@@ -1,22 +1,13 @@
-function getCookie(cookieName) {
-    var cookies = document.cookie.split(';');
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.startsWith(cookieName + '=')) {
-            return cookie.substring(cookieName.length + 1);
-        }
-    }
-
-    return null;
-}
+import { getCookie } from '/dist/js/function.js';
 
 function changePassword(){
     var oldPass = document.getElementById('oldPass').value;
     var newPass = document.getElementById('newPass').value;
     var confNewPass = document.getElementById('confNewPass').value;
 
-    if(newPass != confNewPass){
+    if(confirm("Are you sure you want to change your password") != true){
+    }
+    else if(newPass != confNewPass){
         alert('Passwords do not match');
     }
     else{
@@ -50,9 +41,13 @@ function changePassword(){
 }
 
 jQuery(function () {
-    userDetails = JSON.parse(decodeURIComponent(getCookie('userDetails')));
+    let userDetails = JSON.parse(decodeURIComponent(getCookie('userDetails')));
+    let fullName = userDetails['lName'] + ', ' + userDetails['fName'];
+        if (userDetails['mName']) {
+            fullName += ' ' + userDetails['mName'] + '.';
+    }
 
-    document.getElementById('fullName').textContent = userDetails['fullName'];
+    document.getElementById('fullName').textContent = fullName;
     document.getElementById('email').textContent = userDetails['email'];
     document.getElementById('sex').textContent = userDetails['sex'];
     document.getElementById('age').textContent = userDetails['age'];
