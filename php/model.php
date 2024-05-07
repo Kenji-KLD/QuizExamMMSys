@@ -81,7 +81,7 @@ class Model{
         $data = [];
         $query = "
         SELECT
-            CONCAT(fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(mName, ''), 1), '.'), ''), ' ', lName) AS fullName,
+            fName, mName, lName,
             email, sex, age
         FROM Account
         WHERE user_ID = ?
@@ -89,11 +89,13 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($fullName, $email, $sex, $age);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $age);
 
             while($stmt->fetch()){
                 $data = [
-                    'fullName' => $fullName,
+                    'fName' => $fName,
+                    'mName' => $mName,
+                    'lName' => $lName,
                     'email' => $email,
                     'sex' => $sex,
                     'age' => $age
@@ -135,6 +137,44 @@ class Model{
             else{
                 return "ID ERROR";
             }
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readAssessmentList($input_secHandleID){
+        $query = "
+        SELECT 
+            qs.questionSet_ID AS questionSet_ID, 
+            qs.questionSetTitle AS questionSetTitle, 
+            seh.section_ID AS section_ID, 
+            qs.deadline AS deadline
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN QuestionSet qs ON f.faculty_ID = qs.faculty_ID
+        WHERE seh.secHandle_ID = ?
+        ";
+        $data = [];
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($questionSet_ID, $questionSetTitle, $section_ID, $deadline);
+
+            while($stmt->fetch()){
+                $assessmentData = [
+                    'questionSet_ID' => $questionSet_ID,
+                    'questionSetTitle' => $questionSetTitle,
+                    'section_ID' => $section_ID,
+                    'deadline' => $deadline
+                ];
+
+                $data[] = $assessmentData;
+            }
+
+            $stmt->close();
+            return $data;
         }
         catch(Exception $e){
             $this->logError($e);
@@ -276,6 +316,33 @@ class Model{
         return json_encode($data);
     }
 
+    public function readSecHandleID($input_secHandleID){
+        $query = "
+        SELECT seh.section_ID AS section_ID, su.subjectName AS subjectName
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
+        WHERE seh.secHandle_ID = ?
+        ";
+        $secHandleData = [];
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($section_ID, $subjectName); $stmt->fetch();
+
+            $secHandleData = [
+                "section_ID" => $section_ID,
+                "subjectName" => $subjectName
+            ];
+
+            $stmt->close();
+            return $secHandleData;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readSectionList($input_section){
         $query = "
         SELECT 
@@ -310,7 +377,7 @@ class Model{
             }
 
             $stmt->close();
-            return json_encode($data);
+            return $data;
         }
         catch(Exception $e){
             $this->logError($e);
@@ -376,7 +443,6 @@ class Model{
         LEFT JOIN Faculty f ON f.user_ID = ac.user_ID
         WHERE l.session_token = ?;
         ";
-        $data = [];
         
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sessionToken);
@@ -401,7 +467,7 @@ class Model{
     public function readSubjectHandle($input_facultyID){
         $data = [];
         $query = "
-        SELECT su.subject_ID AS subject_ID, su.subjectName AS subjectName, se.section_ID AS section_ID
+        SELECT seh.secHandle_ID AS subHandle_ID, su.subject_ID AS subject_ID, su.subjectName AS subjectName, se.section_ID AS section_ID
         FROM Faculty f
         INNER JOIN SubjectHandle suh ON f.faculty_ID = suh.faculty_ID
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
@@ -412,10 +478,11 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_facultyID);
-            $stmt->execute(); $stmt->bind_result($subject_ID, $subjectName, $section_ID);
+            $stmt->execute(); $stmt->bind_result($secHandle_ID, $subject_ID, $subjectName, $section_ID);
 
             while($stmt->fetch()){
                 $subjectHandleData = [
+                    'secHandle_ID' => $secHandle_ID,
                     'subject_ID' => $subject_ID,
                     'subjectName' => $subjectName,
                     'section_ID' => $section_ID

@@ -1,4 +1,10 @@
+import { getCookie } from '/dist/js/function.js';
+
 jQuery(function () {
+    let userDetails = JSON.parse(decodeURIComponent(getCookie('userDetails')));
+
+    document.getElementById('fName').textContent = userDetails['fName'];
+
     $.ajax({
         url: "/php/home-page_loading.php",
         method: "POST",
@@ -6,8 +12,7 @@ jQuery(function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function (response) {
-            console.log(response);
-            data = JSON.parse(response);
+            let data = JSON.parse(response);
             
             // Get the parent element
             const subjectHandle = document.getElementById("subjectHandle");
@@ -18,7 +23,7 @@ jQuery(function () {
                 card.classList.add("card", "w-auto", "rounded-3xl");
 
                 const link = document.createElement("a");
-                link.href = "class-page-1.html";
+                link.href = "class-page-1.html?secHandle_ID=" + item.secHandle_ID;
 
                 const h1 = document.createElement("h1");
                 h1.classList.add("font-bold", "text-xl");

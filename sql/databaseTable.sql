@@ -103,6 +103,15 @@ CREATE TABLE SubjectHandle(
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
 );
 
+CREATE TABLE SectionHandle(
+	secHandle_ID BIGINT AUTO_INCREMENT,
+	subHandle_ID BIGINT NOT NULL,
+	section_ID VARCHAR(8) NOT NULL,
+	PRIMARY KEY(secHandle_ID),
+	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
+	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
+);
+
 CREATE TABLE AnswerStatistic(
 	student_ID VARCHAR(13) NOT NULL,
 	question_ID BIGINT NOT NULL,
@@ -142,11 +151,4 @@ CREATE TABLE SectionSubjectList(
 	subject_ID VARCHAR(9) NOT NULL,
 	FOREIGN KEY(section_ID) REFERENCES Section(section_ID),
 	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
-);
-
-CREATE TABLE SectionHandle(
-	subHandle_ID BIGINT NOT NULL,
-	section_ID VARCHAR(8) NOT NULL,
-	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
-	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
 );
