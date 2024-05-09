@@ -26,6 +26,15 @@
             overflow-y: auto; /* Add vertical scrollbar */
             max-height: 680px; /* Set max height to enable scrolling */
         }
+        .for-student{
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #333333; /* Darker shade for the form */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto; /* Add vertical scrollbar */
+            max-height: 600px; /* Set max height to enable scrolling */
+        }
         .list-section {
             margin-top: 30px;
             width: 100%;
@@ -73,6 +82,26 @@
         .submit:hover {
             background-image: linear-gradient(135deg, #FFD700, #F84502);
         }
+        .logout-btn {
+            display: block;
+            width: 100%; /* Make button full width of container */
+            padding: 15px; /* Increase padding for larger button */
+            font-size: 18px; /* Adjust font size */
+            color: white;
+            border: none;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer;
+            background-color: #000; /* Black background color */
+            transition: background-color 0.3s ease; /* Smooth transition for background color */
+        
+            /* Optional: Add box-shadow for depth effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Black box-shadow */
+        }
+        
+        .logout-btn:hover {
+            background-color: #333; /* Darker shade of black on hover */
+        }
+        
         .import{
             display: block;
             width: 100%; /* Make button full width of container */
@@ -130,6 +159,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+        
         #mostIncorrectList {
             color: darksalmon;
             }

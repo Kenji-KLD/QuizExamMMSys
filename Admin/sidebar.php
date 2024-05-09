@@ -80,13 +80,14 @@
     <!-- Include Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
         <!-- Toggle button for sidebar -->
-        <button class="toggle-btn" onclick="toggleSidebar()">
+        <!-- <button class="toggle-btn" onclick="toggleSidebar()">
             <i class="fas fa-bars"></i>
-        </button>
+        </button> -->
         <div class="sidebar-content">
             <img src="IICSlogo.jpg" height="150px" width="150px" alt="IICS Logo">
             <ul>
@@ -106,20 +107,20 @@
             <br>
             <br>
             <form >
-            <button class="submit" onclick="logout();">Logout</button>
+            <button onclick="logout()" type="button" class="submit">Logout</button>
             </form>     
         </div>
     </div>
+    <script src="../dist/js/logout.js"></script>
+    <script src="../dist/js/checkToken.js"></script>
+    <script>jQuery(function() {checkToken(0,0)})</script>
 
-</body>   
-<script src="../dist/js/logout.js"></script>
-<script src="../dist/js/checkToken.js"></script>
-<script>jQuery(function() {checkToken(0, 0)})</script>
-<script>
+</body>
+<!-- <script>
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('closed');
         }
 
-    </script>
+    </script> -->
 </html>

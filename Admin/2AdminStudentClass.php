@@ -30,38 +30,38 @@ class RegistrationStudent {
     }
 
     public function validate() {
-        // Include the database connection file
+        
         include "connection.php";
     
         try {
-            // Prepare a SQL statement to check for existing user
+         
             $stmt = $conn->prepare("SELECT 1 FROM Account WHERE userName = ? AND fName = ? AND lName = ?");
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement: " . $conn->error);
             }
     
-            // Bind the input parameters to the prepared statement
+         
             $stmt->bind_param('sss', $this->username, $this->fName, $this->lName);
             $stmt->execute();
     
-            // Fetch the results
+           
             $result = $stmt->get_result();
             if (!$result) {
                 throw new Exception("Failed to get result: " . $stmt->error);
             }
     
-            // Check the number of rows in the result
+        
             if ($result->num_rows > 0) {
-                // If rows are found, data exists, return false
+             
                 return false;
             } else {
-                // If no rows are found, data does not exist, return true
+             
                 return true;
             }
         } catch (Exception $e) {
-            // Optionally, handle exceptions and errors if necessary
+            
             error_log('Error in validate function: ' . $e->getMessage());
-            return null; // Or consider re-throwing the exception depending on your error handling strategy
+            return null;  
         }
     }
     
@@ -72,14 +72,14 @@ class RegistrationStudent {
         $conn->begin_transaction(); 
 
         try {
-            // Insert into Account table
+         
             $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, age, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
             $stmt1->bind_param('ssssssiss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address);
             $stmt1->execute();
             $stmt1->close();
 
-            // Retrieve user_ID
+            
             $user_ID = $conn->insert_id;
 
             $stmt2 = $conn->prepare("INSERT INTO Student (student_ID, user_ID) VALUES (?,?)");
@@ -126,8 +126,8 @@ class ImportStudent {
             fgetcsv($handle, 1000, ",");
             
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                // Extract data from CSV row
-                $student_ID = $data[0]; // Assuming the first column contains the custom student_ID
+                
+                $student_ID = $data[0]; 
                 $userName = $data[1];
                 $password = password_hash($data[2], PASSWORD_DEFAULT);
                 $fName = $data[3];
@@ -144,15 +144,15 @@ class ImportStudent {
                 $stmt->bind_param("ssssssiss", $userName, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
                 $stmt->execute();
 
-                // Get the auto-generated user_ID
+                // get the user_ID
                 $user_ID = $stmt->insert_id;
 
-                // Insert into Student table with custom student_ID
+                
                 $stmt1 = $conn->prepare("INSERT INTO Student(student_ID, user_ID) VALUES (?, ?)");
                 $stmt1->bind_param("si", $student_ID, $user_ID);
                 $stmt1->execute();
 
-                // Close prepared statements
+                
                 $stmt->close();
                 $stmt1->close();
             }
@@ -267,8 +267,7 @@ class EditStudent {
         }
     }
 
-    private function updatePasswordHandle($conn) {
-        // Hash the password
+    private function updatePasswordHandle($conn) { 
         $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
 
         $stmt = $conn->prepare("UPDATE Account SET password = ? WHERE user_ID = ?");
@@ -301,7 +300,7 @@ class DeleteStudent{
             return true;
         } catch(Exception $e) {
             $_SESSION['notif'] = $e->getMessage();
-            header("Location: 2AdminStudents.php"); // Redirect with error message
+            header("Location: 2AdminStudents.php");  
             exit;
         }
     }

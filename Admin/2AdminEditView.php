@@ -47,7 +47,7 @@
 
                         echo "<form method='post' action='2AdminStudentTrigger.php'>";
                         echo "<input type='hidden' name='user_ID' value='{$row['user_ID']}'>";
-                        echo "<h2>Edit Student Details</h2>"; // Place the header within the form
+                        echo "<h2>Edit Student Details</h2>";  
                         echo "Student ID: <input type='text' name='student_ID' value='{$row['student_ID']}' readonly><br>";
                         echo "Username: <input type='text' name='username' value='{$row['userName']}'><br>";
                         echo "First Name: <input type='text' name='fName' value='{$row['fName']}'><br>";
@@ -82,8 +82,7 @@
             
         </div>
     </div>
-
-    <!-- Bootstrap JS and Popper.js -->
+ 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

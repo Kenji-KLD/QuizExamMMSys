@@ -1,10 +1,11 @@
 <?php
-session_start(); // Start session to use session variables
+include "connection.php";
+include "AdminCrud.php";
 
-// Check if $_SESSION['notif'] is set and display it
+session_start(); 
+ 
 $notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : "";
-
-// Unset the session variable to clear the message after displaying
+ 
 unset($_SESSION['notif']);
 ?>
 
@@ -17,8 +18,6 @@ unset($_SESSION['notif']);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
-    <script src="/dist/js/checkToken.js"></script>
-    <script>jQuery(function() {checkToken(0, 0)})</script>
 </head>
 <body>
 
@@ -27,9 +26,10 @@ unset($_SESSION['notif']);
         <?php include 'sidebar.php'; ?>
     </div>
 
-    <div class="container" style="margin-left: 300px;"> <!-- Adjust margin-left based on sidebar width -->
+    <div class="container" style="margin-left: 300px;">  
         <div class="row">
             <div class="col-md-4">
+
                         <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()">
                         <div class="form-section">
                         <center><h2>Student Form</h2></center>
@@ -63,13 +63,13 @@ unset($_SESSION['notif']);
 
                             <label for="sex">Sex:</label>
                             <select name="sex" id="sex">
-                            <option value="MALE"> Male </option>  
-                            <option value=" FEMALE "> Female </option>  
+                            <option disabled selected> Select Gender </option>
+                            <option value="Male"> Male </option>  
+                            <option value="Female"> Female </option>  
                             </select>
                             <!-- <label for="section_ID"> Section </label>
                             <select name="section_ID" id="section_ID">
-                    <?php
-                    //for drop down list
+                    <?php 
                      include "connection.php";
                     $query = "SELECT section_ID, course FROM Section WHERE course != 'q1w2e3r4t'";
                     $result = mysqli_query($conn, $query);
@@ -89,20 +89,29 @@ unset($_SESSION['notif']);
                              -->
 
                             <input type="submit" class = 'submit' name="add" value="Submit">
-                   
                         </form>
+
                         <form action="2AdminStudentTrigger.php" method="post" enctype="multipart/form-data">
-                        <h3>Or Import CSV Files</h3>
-                        <input type="file" id="accounts_file" class= "acounts_file" name="accounts_file" accept=".csv">
-                        <br>
-                        <br>
-                        <input type="submit" class='import' name="import" value="Import">
+                            <h3>Or Import CSV Files</h3>
+                                <input type="file" id="accounts_file" class= "acounts_file" name="accounts_file" accept=".csv">
+                                <br>
+                                <br>
+                                <input type="submit" class='import' name="import" value="Import">
                         </form>
                         </div>
-                </div>
+                    </div>
 
-            <div class="col-md-8">
-                <div class="list-section">
+        <div class="col-md-8">
+                <div class="form-section">
+                    <form action="" method="GET">
+                        <input type="text" placeholder="Search term..." name="search">
+                        <select name="search_by">
+                            <option value="name">Name</option>
+                            <option value="email">Email</option>
+                            <option value="student_id">Student ID</option>
+                        </select>
+                            <button type="submit" class="submit">Search</button>
+                    </form><br>
                 <center><h2>Student List</h2></center><br>
                     <table>
                     <tr>
@@ -116,13 +125,29 @@ unset($_SESSION['notif']);
                         <th>Action</th>
                     </tr>
                         <?php
-                        include "connection.php";
-                        include "AdminCrud.php";
-                        
-                        // Fetch student data using the reusable function
                         $studentData = fetchStudentData($conn);
+
+                          
+                        if (!empty($_GET['search'])) {
+                            $searchTerm = $_GET['search'];
+                            $searchBy = isset($_GET['search_by']) ? $_GET['search_by'] : 'name';
                         
-                        // Display the retrieved data
+                            $studentData = array_filter($studentData, function ($student) use ($searchTerm, $searchBy) {
+                                switch ($searchBy) {
+                                    case 'name':
+                                        $fullName = $student['fName'] . ' ' . $student['lName'];
+                                        return strpos(strtolower($fullName), strtolower($searchTerm)) !== false;
+                                    case 'email':
+                                        return strpos(strtolower($student['email']), strtolower($searchTerm)) !== false;
+                                    case 'student_id':
+                                        return strpos(strtolower($student['student_ID']), strtolower($searchTerm)) !== false;
+                                    default:
+                                        return false;
+                                }
+                            });
+                        }
+                        
+                         
                         if (!empty($studentData)) {
                             foreach ($studentData as $student) {
                                 echo "<tr>";
@@ -160,7 +185,7 @@ unset($_SESSION['notif']);
         </div>
     </div>
 
-    <!-- Bootstrap JS and Popper.js -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

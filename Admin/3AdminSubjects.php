@@ -25,8 +25,6 @@ unset($_SESSION['notif1']);
     <title>Subjects</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="/dist/js/checkToken.js"></script>
-    <script>jQuery(function() {checkToken(0, 0)})</script>
 
 </head>
 <body>
@@ -48,11 +46,20 @@ unset($_SESSION['notif1']);
                             <label for="subjectName">Subject Name:</label>
                             <input type="text" id="subjectName" name="subjectName" placeholder="Computer Programming 1" required>
 
-                            <label for="unitsAmount">Units:</label>
-                            <input type="number" id="unitsAmount" name="unitsAmount" required min="0" required>
+                            <label for="unitsAmount" >Units:</label>
+                            <select name="unitsAmount" id="unitsAmount" required>
+                            <option disabled selected> Select Unit </option>
+                            <option value="1"> 1 </option>
+                            <option value="2"> 2 </option>
+                            <option value="3"> 3 </option>
+                            </select>
 
                             <label for="subjectType">Subject Type:</label>
-                            <input type="text" id="subjectType" name="subjectType" placeholder="Lec/Lab" required>
+                            <select name="subjectType" id="subjectType">
+                            <option disabled selected> Select Subject Type </option>
+                            <option value="Lecture"> Lecture </option>
+                            <option value="Laboratory"> Laboratory </option>
+                            </select>
                             
                             <input type="submit" class = 'submit' name = "add" value="Submit">
                             </form>

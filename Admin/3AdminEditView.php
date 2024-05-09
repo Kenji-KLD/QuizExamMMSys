@@ -45,7 +45,10 @@
                             echo "<h2>Edit Subject Details</h2>";
                             echo "Subject ID: <input type='text' name='subject_ID' value='{$row['subject_ID']}' readonly><br>";
                             echo "Subject Name: <input type='text' name='subjectName' value='{$row['subjectName']}'><br>";
-                            echo "Units Amount: <input type='number' name='unitsAmount' value='{$row['unitsAmount']}' required min='0'><br>";
+                            echo "Gender: <select name='sex'>";
+                            echo "<option value='MALE'" . ($row['unit'] == 'MALE' ? ' selected' : '') . ">Male</option>";
+                            echo "<option value='FEMALE'" . ($row['sex'] == 'FEMALE' ? ' selected' : '') . ">Female</option>";
+                            echo "</select><br>";
                             echo "Subject Type: <input type='text' name='subjectType' value='{$row['subjectType']}'><br>";
                             
                             echo "<input type='submit' class='submit' name='edit' value='Save Changes'>";
@@ -69,8 +72,7 @@
             
         </div>
     </div>
-
-    <!-- Bootstrap JS and Popper.js -->
+ 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>

@@ -54,3 +54,18 @@ function validatePassword() {
     return confirm("Are you sure you want to ADD this Student?");
 }
 
+function logout(){
+    $.ajax({
+      url: "logout.php",
+      method: "POST",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      },
+      success: function(){
+        window.location.replace('/dist/index.html');
+      },
+      error: function(error){
+        console.error(error);
+      }
+    });
+  }
