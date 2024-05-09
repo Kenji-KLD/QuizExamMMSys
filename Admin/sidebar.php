@@ -80,6 +80,7 @@
     <!-- Include Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <div class="sidebar" id="sidebar">
@@ -105,16 +106,16 @@
             <br>
             <br>
             <br>
-            <form onclick="logout();">
-            <button class="submit">Logout</button>
+            <form >
+            <button onclick="logout()" type="button" class="submit">Logout</button>
             </form>     
         </div>
     </div>
+    <script src="../dist/js/logout.js"></script>
+    <script src="../dist/js/checkToken.js"></script>
+    <script>jQuery(function() {checkToken(0,0)})</script>
 
-</body>   
-<script src="..\dist\js\logout.js"></script>
-<script src="..\dist\js\checkToken.js"></script>
-<script>jQuery(function() {checkToken(0, 0)})</script>
+</body>
 <!-- <script>
         function toggleSidebar() {
             var sidebar = document.getElementById('sidebar');

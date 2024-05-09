@@ -1,6 +1,11 @@
-
 <?php
 class logout{
+
+    function deleteCookie($cookieName){
+        // Deletes and unsets a cookie
+        setcookie($cookieName, "", time() - 1, "/");
+        unset($_COOKIE[$cookieName]);
+    }
 
     private function logError($error){
         $logDirectory = __DIR__ . '/log';
@@ -24,22 +29,22 @@ class logout{
       
         file_put_contents($logFilePath, $logMessage, FILE_APPEND);
     }
+
     
-
- public function deleteSessionToken($input_sessionToken){
+public function deleteSessionToken($input_sessionToken){
     include "connection.php";
-    $query = "
-    DELETE FROM LoginToken
-    WHERE session_token = ?
-    ";
+        $query = "
+        DELETE FROM LoginToken
+        WHERE session_token = ?
+        ";
 
-    try{
-        $stmt = $this->$conn->prepare($query); $stmt->bind_param("s", $input_sessionToken);
-        $stmt->execute(); $stmt->close();
-    }
-    catch(Exception $e){
-        $this->logError($e);
+        try{
+            $stmt = $this->$conn->prepare($query); $stmt->bind_param("s", $input_sessionToken);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
     }
 }
-}
-?>
+    ?>
