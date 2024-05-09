@@ -1,13 +1,21 @@
 import { getParameterByName } from '/dist/js/function.js';
 
 jQuery(function () {
-    let secHandle_ID = getParameterByName('secHandle_ID');
+    // Changing href redirects to contain GET variable
+    const assessmentsLink = document.getElementById('assessmentsLink');
+    assessmentsLink.setAttribute('href', assessmentsLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const makeLink = document.getElementById('makeLink');
+    makeLink.setAttribute('href', makeLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const holdLink = document.getElementById('holdLink');
+    holdLink.setAttribute('href', holdLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const statisticsLink = document.getElementById('statisticsLink');
+    statisticsLink.setAttribute('href', statisticsLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
 
     $.ajax({
         url: "/php/class-page-1_loading.php",
         method: "POST",
         data: {
-            secHandle_ID: secHandle_ID
+            secHandle_ID: getParameterByName('secHandle_ID')
         },
         beforeSend: function(xhr) {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');

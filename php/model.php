@@ -167,7 +167,8 @@ class Model{
                     'questionSet_ID' => $questionSet_ID,
                     'questionSetTitle' => $questionSetTitle,
                     'section_ID' => $section_ID,
-                    'deadline' => $deadline
+                    'deadlineDate' => substr($deadline, 0, 10),
+                    'deadlineTime' => substr($deadline, 11)
                 ];
 
                 $data[] = $assessmentData;
@@ -458,6 +459,33 @@ class Model{
 
             $stmt->close();
             return $sessionData;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readStudentDetails($input_userID){
+        $query = "
+        SELECT s.student_ID AS student_ID, c.section_ID AS section_ID, a.email AS email
+        FROM Student s
+        INNER JOIN Account a ON s.user_ID = a.user_ID
+        INNER JOIN Class c ON s.student_ID = c.student_ID
+        WHERE a.user_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
+            $stmt->execute(); $stmt->bind_result($student_ID, $section, $email); $stmt->fetch();
+
+            $data = [
+                'student_ID' => $student_ID,
+                'section' => $section,
+                'email' => $email
+            ];
+
+            $stmt->close();
+            return $data;
         }
         catch(Exception $e){
             $this->logError($e);

@@ -22,7 +22,6 @@ function changePassword(){
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             },
             success: function(response){
-                console.log(response);
                 data = JSON.parse(response);
 
                 if(data.processed == true){

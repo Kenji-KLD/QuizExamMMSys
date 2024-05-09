@@ -86,7 +86,7 @@
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
           <li class="menu-hover">
-            <a href="/dist/profView/html/class-page-1.html" class="item">
+            <a id="manageLink" href="/dist/profView/html/class-page-1.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -124,7 +124,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="/dist/profView/html/hold-assessments.html" class="item">
+            <a id="holdLink" href="/dist/profView/html/hold-assessments.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -143,7 +143,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="/dist/profView/html/view-statistics.html" class="item">
+            <a id="statisticsLink" href="/dist/profView/html/view-statistics.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -346,7 +346,9 @@
         </div>
       </div>
     </main>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/make-assessments.js" type="module"></script>
     <script src="/dist/js/logout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script>
