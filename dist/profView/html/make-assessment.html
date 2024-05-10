@@ -86,7 +86,11 @@
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
           <li class="menu-hover">
-            <a id="manageLink" href="/dist/profView/html/class-page-1.html" class="item">
+            <a
+              id="manageLink"
+              href="/dist/profView/html/class-page-1.html"
+              class="item"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -124,7 +128,11 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a id="holdLink" href="/dist/profView/html/hold-assessments.html" class="item">
+            <a
+              id="holdLink"
+              href="/dist/profView/html/hold-assessments.html"
+              class="item"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -143,7 +151,11 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a id="statisticsLink" href="/dist/profView/html/view-statistics.html" class="item">
+            <a
+              id="statisticsLink"
+              href="/dist/profView/html/view-statistics.html"
+              class="item"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -218,7 +230,7 @@
             <input
               type="text"
               id="Title"
-              class="input-line py-1 w-[50%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+              class="input-line py-1 w-[65%] border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
               autocomplete="off"
             />
             <label
@@ -252,7 +264,7 @@
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
               <option value="" class="bg-ISshade3" disabled selected>
-                -- Select Subject --
+                -- Select Year --
               </option>
               <option value="" class="bg-ISshade3">test 1</option>
               <option value="" class="bg-ISshade3">test 2</option>
@@ -269,7 +281,7 @@
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
               <option value="" class="bg-ISshade3" disabled selected>
-                -- Select Subject --
+                -- Select Term --
               </option>
               <option value="" class="bg-ISshade3">test 1</option>
               <option value="" class="bg-ISshade3">test 2</option>
@@ -286,7 +298,7 @@
               class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
             >
               <option value="" class="bg-ISshade3" disabled selected>
-                -- Select Subject --
+                -- Select Semester --
               </option>
               <option value="" class="bg-ISshade3">test 1</option>
               <option value="" class="bg-ISshade3">test 2</option>
@@ -294,8 +306,8 @@
           </div>
         </div>
         <div>
-          <p class="assessment-subhead">Assessment Format</p>
           <div class="flex flex-col gap-4">
+            <p class="assessment-subhead mb-0">Assessment Format</p>
             <div class="flex gap-4 items-center">
               <input
                 type="radio"
@@ -317,7 +329,23 @@
               <label for="Exam" class="text-lg">Exam</label>
             </div>
           </div>
-          <div class="flex items-center gap-4 mt-12">
+          <div class="flex flex-col gap-4 mt-5">
+            <label for="TimeDuration" class="assessment-subhead mb-0"
+              >Time Duration</label
+            >
+            <select
+              id="TimeDuration"
+              name="timeDuration"
+              class="input-line appearance-none w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer text-[#FEFEFE]"
+            >
+              <option value="" class="bg-ISshade3" disabled selected>
+                -- Select Time --
+              </option>
+              <option value="" class="bg-ISshade3">test 1</option>
+              <option value="" class="bg-ISshade3">test 2</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-4 mt-5">
             <p class="assessment-subhead">Randomize Questions</p>
             <input type="checkbox" class="size-5" />
           </div>
