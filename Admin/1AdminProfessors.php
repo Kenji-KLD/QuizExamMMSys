@@ -30,7 +30,7 @@ unset($_SESSION['notif']);
                 <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
                     <div class="form-section">
                     <center><h2>Professor Form</h2></center>
-                    <?php echo $notif; ?><br>
+                    <?php echo '<center><span class="notification">' . $notif . '</span></center><br>'; ?>
                         <label for="fName">First Name:</label>
                         <input type="text" id="fName" name="fName" required><br>
 

@@ -39,7 +39,7 @@ unset($_SESSION['notif1']);
                 <form action="3AdminSubjectTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to ADD this Subject?")'>
                     <div class="form-section">
                     <center><h2>Subject Form</h2></center>
-                    <?php echo $notif; ?><br>
+                    <?php echo '<center><span class="notification">' . $notif . '</span></center><br>'; ?>
                             <label for="subjectID">Subject ID:</label>
                             <input type="text" id="subjectID" name="subjectID" placeholder="CCIS1101" required>
 
@@ -69,8 +69,8 @@ unset($_SESSION['notif1']);
            
                 <form action="3AdminSubjectTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to Assign the selected Faculty?")'>
                     <div class="form-section">
-                    <center><h2>Subject Form</h2></center>
-                    <?php echo $notif1; ?><br>
+                    <center><h2>Coursework Assignment</h2></center>
+                    <?php echo '<center><span class="notification">' . $notif1 . '</span></center><br>'; ?>
                     <label for="faculty_ID">Choose a faculty member:</label>
                     <select name="faculty_ID" id="faculty_ID">
                     <option disabled selected>Select Faculty</option>
@@ -150,7 +150,7 @@ unset($_SESSION['notif1']);
                 
                     echo "</table>";
                 } else {
-                    echo "<p>No student records found</p>";
+                    echo "<p>No records found</p>";
                 }
                 
                 $conn->close();
