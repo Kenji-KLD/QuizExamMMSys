@@ -150,7 +150,7 @@ unset($_SESSION['notif1']);
                 
                     echo "</table>";
                 } else {
-                    echo "<p>No student records found</p>";
+                    echo "<p>No records found</p>";
                 }
                 
                 $conn->close();
