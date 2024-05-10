@@ -135,13 +135,13 @@ function fetchClassData($conn){
 
 }
 function fetchFacultyList($conn) {
-    // Define the SQL query to join Account and Faculty tables
-    $sql = "SELECT Faculty.faculty_ID, Account.fName, Account.mName, Account.lName 
+    // Define the SQL query to join Faculty and Account tables
+    $sql = "SELECT Faculty.faculty_ID, Account.fName, Account.mName, Account.lName
             FROM Faculty
             JOIN Account ON Faculty.user_ID = Account.user_ID
-            ORDER BY Account.lName, Account.fName"; // Sorting by last name and first name
+            WHERE NOT Account.userName LIKE 'delete%'
+            ORDER BY Account.lName, Account.fName"; 
 
-    // Prepare and execute the SQL statement
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         throw new Exception("Prepare statement failed: " . $conn->error);
