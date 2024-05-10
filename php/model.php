@@ -264,6 +264,7 @@ class Model{
         SELECT 
             qs.questionSetTitle,
             qs.rubrics,
+            qs.timeLimit,
             qb.question_ID,
             qb.questionNumber,
             qb.questionText,

@@ -55,23 +55,39 @@ CREATE TABLE LoginToken(
 	FOREIGN KEY(user_ID) REFERENCES Account(user_ID)
 );
 
-CREATE TABLE QuestionSet(
-	questionSet_ID BIGINT AUTO_INCREMENT,
+CREATE TABLE SubjectHandle(
+	subHandle_ID BIGINT AUTO_INCREMENT,
 	faculty_ID BIGINT NOT NULL,
 	subject_ID VARCHAR(9) NOT NULL,
+	PRIMARY KEY(subHandle_ID),
+	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
+	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
+);
+
+CREATE TABLE SectionHandle(
+	secHandle_ID BIGINT AUTO_INCREMENT,
+	subHandle_ID BIGINT NOT NULL,
+	section_ID VARCHAR(8) NOT NULL,
+	PRIMARY KEY(secHandle_ID),
+	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
+	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
+);
+
+CREATE TABLE QuestionSet(
+	questionSet_ID BIGINT AUTO_INCREMENT,
+	secHandle_ID BIGINT,
 	questionSetTitle VARCHAR(64) NOT NULL,
 	questionSetType VARCHAR(4) NOT NULL,
 	questionTotal INT NOT NULL,
 	randomCount INT,
 	rubrics TEXT,
 	deadline DATETIME NOT NULL,
-	timeLimit INT NOT NULL,
+	timeLimit BIGINT NOT NULL,
 	acadYear VARCHAR(9) NOT NULL,
 	acadTerm VARCHAR(8) NOT NULL,
 	acadSem VARCHAR(15) NOT NULL,
 	PRIMARY KEY(questionSet_ID),
-	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
-	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
+	FOREIGN KEY(secHandle_ID) REFERENCES SectionHandle(secHandle_ID)
 );
 
 CREATE TABLE QuestionBank(
@@ -92,24 +108,6 @@ CREATE TABLE ChoiceBank(
 	choiceLabel TEXT NOT NULL,
 	PRIMARY KEY(choice_ID),
 	FOREIGN KEY(question_ID) REFERENCES QuestionBank(question_ID)
-);
-
-CREATE TABLE SubjectHandle(
-	subHandle_ID BIGINT AUTO_INCREMENT,
-	faculty_ID BIGINT NOT NULL,
-	subject_ID VARCHAR(9) NOT NULL,
-	PRIMARY KEY(subHandle_ID),
-	FOREIGN KEY(faculty_ID) REFERENCES Faculty(faculty_ID),
-	FOREIGN KEY(subject_ID) REFERENCES Subject(subject_ID)
-);
-
-CREATE TABLE SectionHandle(
-	secHandle_ID BIGINT AUTO_INCREMENT,
-	subHandle_ID BIGINT NOT NULL,
-	section_ID VARCHAR(8) NOT NULL,
-	PRIMARY KEY(secHandle_ID),
-	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
-	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
 );
 
 CREATE TABLE AnswerStatistic(

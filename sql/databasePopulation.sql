@@ -53,10 +53,29 @@ INSERT INTO Faculty(user_ID) VALUES
     (4)
 ;
 
-INSERT INTO QuestionSet(faculty_ID, subject_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, acadYear, acadTerm, acadSem) VALUES
-    (1, "GEE5000", "Quiz 1: Ecosystem", "QUIZ", 10,
+INSERT INTO Class(student_ID, section_ID) VALUES
+    ("KLD-22-000247", "BSIS201"),
+    ("KLD-22-000192", "BSIS201"),
+    ("KLD-22-000420", "BSIS201")
+;
+
+INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
+    ("BSIS201", "GEE5000"),
+    ("BSIS201", "PCIS2209")
+;
+
+INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
+    (1, "PCIS2205")
+;
+
+INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+    (1, "BSIS201")
+;
+
+INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES
+    (1, "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    '2024-05-01 00:00:00', "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-01 00:00:00', 7200, "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
@@ -113,23 +132,4 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (10, "B. Testing 10"),
     (10, "C. Testing 10"),
     (10, "D. Testing 10")
-;
-
-INSERT INTO Class(student_ID, section_ID) VALUES
-    ("KLD-22-000247", "BSIS201"),
-    ("KLD-22-000192", "BSIS201"),
-    ("KLD-22-000420", "BSIS201")
-;
-
-INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
-    ("BSIS201", "GEE5000"),
-    ("BSIS201", "PCIS2209")
-;
-
-INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
-    (1, "PCIS2205")
-;
-
-INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
-    (1, "BSIS201")
 ;

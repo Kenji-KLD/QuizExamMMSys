@@ -1,5 +1,24 @@
 import { getParameterByName } from '/dist/js/function.js';
 
+var originalStyle = {
+    removeButton: document.getElementById('removeButton').style.display,
+    selectColumn: document.getElementById('selectColumn').style.display,
+};
+
+window.toggleRemove = function () {
+    var removeButton = document.getElementById('removeButton');
+    var selectColumn = document.getElementById('selectColumn');
+    var checkboxes = document.getElementsByClassName('tableSelect');
+    
+    removeButton.style.display = (removeButton.style.display !== 'none') ? 'none' : originalStyle['removeButton'];
+    selectColumn.style.display = (selectColumn.style.display !== 'none') ? 'none' : originalStyle['selectColumn'];
+    
+    Array.from(checkboxes).forEach(checkbox => {
+        checkbox.style.display = (checkbox.style.display !== 'none') ? 'none' : '';
+        checkbox.checked = false;
+    });
+}
+
 jQuery(function () {
     // Changing href redirects to contain GET variable
     const assessmentsLink = document.getElementById('assessmentsLink');
@@ -35,7 +54,7 @@ jQuery(function () {
             data.studentList.forEach(student => {
                 const row = $("<tr></tr>");
                 row.html(`
-                    <td class="text-center"><input type="checkbox" id="student${studentCount}"></td>
+                    <td class="text-center tableSelect"><input type="checkbox" id="student${studentCount}"></td>
                     <td>${student.fullName}</td>
                     <td>${student.age}</td>
                     <td>${student.sex}</td>
@@ -45,6 +64,8 @@ jQuery(function () {
                 tableBody.append(row);
                 studentCount++;
             });
+
+            toggleRemove();
         },
         error: function(error){
             console.error(error);
