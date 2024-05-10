@@ -33,7 +33,7 @@ unset($_SESSION['notif']);
                         <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()">
                         <div class="form-section">
                         <center><h2>Student Form</h2></center>
-                        <?php echo '<center><span class="notification">' . $notif . '</span></center><br>'; ?>
+                        <center><?php echo $notif ?></center><br>
                             <label for="student_ID">Student ID:</label>
                             <input type="text" id="student_ID" name="student_ID" placeholder="KLD-00-000000" required>
 
