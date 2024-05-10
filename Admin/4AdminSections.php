@@ -40,10 +40,10 @@ unset($_SESSION['notif1']);
                 <form action="4AdminSectionsTrigger.php" method="post" onsubmit='return confirm("Are you sure you want to ADD this Subject?")'>
                     <div class="form-section">
                     <center><h2>Section Form</h2></center>
-                    <?php echo '<center><span class="notification">' . $notif . '</span></center><br>'; ?>
+                    <center><?php echo $notif; ?></center><br>
                             <label for="sectionID">Section ID:</label>
                             <input type="text" id="sectionID" name="sectionID" required>
-
+    
                             <label for="courseName">Course Name:</label>
                             <input type="text" id="courseName" name="courseName" required>
                             
