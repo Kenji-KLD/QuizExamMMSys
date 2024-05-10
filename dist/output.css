@@ -1078,6 +1078,18 @@ video {
   height: 100vh;
 }
 
+.h-svh {
+  height: 100svh;
+}
+
+.h-auto {
+  height: auto;
+}
+
+.h-full {
+  height: 100%;
+}
+
 .w-4 {
   width: 1rem;
 }
