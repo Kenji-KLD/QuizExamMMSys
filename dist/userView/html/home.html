@@ -37,7 +37,9 @@
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           />
         </svg>
-        <span class="bg-side w-[190px] h-[200px] rounded-3xl bg-ISshade3 absolute z-10 top-0 right-[-10px] opacity-0 transition-all ease-in duration-500 md:hidden"></span>
+        <span
+          class="bg-side w-[190px] h-[200px] rounded-3xl bg-ISshade3 absolute z-10 top-0 right-[-10px] opacity-0 transition-all ease-in duration-500 md:hidden"
+        ></span>
 
         <!-- SIDE MENU -->
         <div class="absolute right-32 top-5">
@@ -63,7 +65,10 @@
     <main class="flex flex-1 justify-center items-center">
       <!-- CONTAINER -->
       <div class="w-dvw h-dvh">
-        <p class="stats-title ml-6 mt-6 mb-0">Hi, <p id="fName">Student</p></p>
+        <div class="flex">
+          <h1 class="stats-title ml-6 mt-6 mb-0">Hi,</h1>
+          <p id="fName" class="stats-title ml-3 mt-6 mb-0">Student</p>
+        </div>
         <p class="main-title font-medium ml-6 mt-4 mb-0">Your Classes</p>
         <section
           class="p-4 top-content grid grid-flow-row gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-1"
