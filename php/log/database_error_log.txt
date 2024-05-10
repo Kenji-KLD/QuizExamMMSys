@@ -21,3 +21,12 @@
 [2024-04-23 03:06:42] - Error: Subquery returns more than 1 row
 [2024-05-09 12:58:46] - Error: Unknown column 'seh.secHandle_ID' in 'field list'
 [2024-05-09 13:00:55] - Error: Unknown column 'seh.secHandle_ID' in 'field list'
+[2024-05-10 02:02:27] - Error: Unknown column 'seh.secHandle_ID' in 'field list'
+[2024-05-10 02:02:28] - Error: Subquery returns more than 1 row
+[2024-05-10 02:02:30] - Error: Subquery returns more than 1 row
+[2024-05-10 02:02:51] - Error: Subquery returns more than 1 row
+[2024-05-10 02:03:13] - Error: Subquery returns more than 1 row
+[2024-05-10 02:04:05] - Error: Unknown column 'seh.secHandle_ID' in 'field list'
+[2024-05-10 02:04:06] - Error: Subquery returns more than 1 row
+[2024-05-10 02:04:07] - Error: Subquery returns more than 1 row
+[2024-05-10 02:04:08] - Error: Unknown column 'seh.secHandle_ID' in 'field list'

@@ -280,33 +280,48 @@ class EditStudent {
 
 
 
-class DeleteStudent{
+class DeleteStudent {
     private $user_ID;
 
-    public function __construct($user_ID){
+    public function __construct($user_ID) {
         $this->user_ID = $user_ID;
     }
 
+    // Helper function to generate a random string of characters and digits
+    private function generateRandomString($length = 12) {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
+    }
+
     public function delete() {
-        include "connection.php"; 
+        include "connection.php";
 
         try {
-           
-            $stmt1 = $conn->prepare("UPDATE account SET userName = 'q1w2e3r4t5y6mamz' where user_ID = ?");
-            
-            $stmt1->bind_param('i', $this->user_ID);
-            $stmt1->execute();
-           
+            // Generate a random string to concatenate with 'deleted'
+            $randomString = $this->generateRandomString();
+
+            // Update the userName field to 'deleted' + random string
+            $newUserName = 'deleted_' . $randomString;
+
+            $stmt = $conn->prepare("UPDATE account SET userName = ? WHERE user_ID = ?");
+            $stmt->bind_param('si', $newUserName, $this->user_ID);
+            $stmt->execute();
+
             return true;
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $_SESSION['notif'] = $e->getMessage();
-            header("Location: 2AdminStudents.php");  
+            header("Location: 1AdminProfessors.php");
             exit;
         }
     }
-
-
 }
+
 
 
 ?>
