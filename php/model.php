@@ -151,9 +151,7 @@ class Model{
             seh.section_ID AS section_ID, 
             qs.deadline AS deadline
         FROM SectionHandle seh
-        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
-        INNER JOIN QuestionSet qs ON f.faculty_ID = qs.faculty_ID
+        INNER JOIN QuestionSet qs ON seh.secHandle_ID = qs.secHandle_ID
         WHERE seh.secHandle_ID = ?
         ";
         $data = [];
