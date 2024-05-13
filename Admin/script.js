@@ -1,39 +1,39 @@
-    
-
+// Function to restrict special characters based on input field
 function restrictSpecialChars(input) {
     var fieldName = input.id;
     var regex;
-    
+
     // Define regex based on field name
     switch (fieldName) {
         case 'fName':
         case 'mName':
         case 'lName':
-            regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?]+/;
-            break;
-        case 'password':
         case 'username':
             regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
             break;
+        case 'password':
+            regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+            break;
         case 'address':
-            regex = /[!$%^&*()_+\=\[\]{};:"\\|<>\?]+/;
+            regex = /[!$%^&*()_+\=\[\]{};:"\\|<>?]+/;
             break;
         case 'email':
             regex = /[!#$%^&*()_+\-=\[\]{};':"\\|<>\/?]+/;
             break;
-        case 'student_ID':
-            regex = /[!@#$%^&*()_+\=\[\]{};,':"\\|.<>\/?]+/;
-            break;
+        case 'birthdate':
+            // No need to restrict special characters for birthdate
+            return; // Exit early for birthdate field
         default:
             regex = /[!@#$%^&*()_+\=\[\]{};':"\\|<>\/?]+/;
             break;
     }
-    
+
     if (regex.test(input.value)) {
         input.value = input.value.replace(regex, '');
     }
 }
 
+// Add event listeners for input fields to restrict special characters
 document.addEventListener('DOMContentLoaded', function() {
     var inputFields = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
     inputFields.forEach(function(input) {
@@ -41,31 +41,53 @@ document.addEventListener('DOMContentLoaded', function() {
             restrictSpecialChars(this);
         });
     });
+
+    // Add event listener for birthdate input to validate format
+    document.getElementById('birthdate').addEventListener('input', function() {
+        var input = this.value;
+        var validDate = /^\d{4}\/\d{2}\/\d{2}$/.test(input);
+        if (!validDate) {
+            document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use YYYY/MM/DD.';
+        } else {
+            document.getElementById('birthdate-error').textContent = '';
+        }
+    });
 });
-function validatePassword() {
+
+// Function to validate the birthdate format
+function validateDate(input) {
+    var dateString = input.value.trim();
+    var validDate = /^\d{4}\/\d{2}\/\d{2}$/.test(dateString);
+
+    if (!validDate) {
+        document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use YYYY/MM/DD.';
+        return false;
+    } else {
+        document.getElementById('birthdate-error').textContent = '';
+        return true;
+    }
+}
+
+// Event listener to validate birthdate format as user types
+document.getElementById('birthdate').addEventListener('input', function() {
+    validateDate(this);
+});
+
+// Function to handle overall form validation before submission
+function validateForm() {
+    var birthdateInput = document.getElementById('birthdate');
+    if (!validateDate(birthdateInput)) {
+        return false; // Prevent form submission if birthdate is invalid
+    }
+
     var passwordInput = document.getElementById('password');
     var password = passwordInput.value;
 
-    // Check if the password meets the criteria
+    // Check password criteria
     if (password.length < 8 || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) || /\s/.test(password)) {
-        alert('Password must be at least 8 characters long and must not contain any spaces.');
+        alert('Password must be at least 8 characters long and must not contain spaces or special characters.');
         return false; // Prevent form submission
     }
-    return confirm("Are you sure you want to ADD this Student?");
-}
 
-function logout(){
-    $.ajax({
-      url: "logout.php",
-      method: "POST",
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      },
-      success: function(){
-        window.location.replace('/dist/index.html');
-      },
-      error: function(error){
-        console.error(error);
-      }
-    });
-  }
+    return confirm("Are you sure you want to submit this form?");
+}

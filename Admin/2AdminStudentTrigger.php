@@ -13,11 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $lName = $_POST['lName'];
         $email = $_POST['email'];
         $section_ID = 'N/A';
-        $age = $_POST['age'];
+        $birthdate = $_POST['birthdate'];
         $sex = $_POST['sex'];
         $address = $_POST['address'];
+
+        $mysqlDate = date('Y-m-d', strtotime($birthdate));
     
-        $registration = new RegistrationStudent($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $age, $sex, $address);
+        $registration = new RegistrationStudent($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $mysqlDate, $sex, $address);
     
         if ($registration->validate()) {
             if ($registration->register()) {
@@ -53,15 +55,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mName = $_POST['mName'];
         $lName = $_POST['lName'];
         $email = $_POST['email'];
-        $age = $_POST['age'];
+        $birthdate = $_POST['birthdate'];
         $address = $_POST['address'];
         $sex = $_POST['sex'];
         $password = $_POST['password'];
         $student_ID = $_POST['student_ID']; 
         $section_ID = $_POST['section_ID'];
+        
+
+        $mysqlDate = date('Y-m-d', strtotime($birthdate));
     
         
-        $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID, $section_ID);
+        $editStudent = new EditStudent($user_ID, $username, $fName, $mName, $lName, $email, $mysqlDate, $address, $sex, $password, $student_ID, $section_ID);
     
         
         // if ($editStudent->validate()) {

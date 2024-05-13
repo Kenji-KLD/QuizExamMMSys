@@ -26,8 +26,9 @@ unset($_SESSION['notif']);
 
     <div class="container" style="margin-left: 300px;">  
         <div class="row">
+            
             <div class="col-md-4">
-                <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validatePassword()">
+                <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validateForm()">
                     <div class="form-section">
                     <center><h2>Professor Form</h2></center>
                     <center><?php echo $notif ?></center><br>
@@ -52,8 +53,10 @@ unset($_SESSION['notif']);
                         <label for="address">Address:</label>
                         <input type="text" id="address" name="address" required><br>
                         
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" name="age" required min="0" required><br>
+                        <label for="birthdate">Birthdate: (YYYY-MM-DD)</label>
+                        <input type="text" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" required>
+                        <small style="color: red;" id="birthdate-error"></small>
+
 
                         <label for="sex">Sex:</label>
                         <select name="sex" id="sex" required>
@@ -74,7 +77,7 @@ unset($_SESSION['notif']);
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Age</th>
+                            <th>Birthdate</th>
                             <th>Address</th>
                             <th>Gender</th>
                             <th>Subjects</th>
@@ -93,7 +96,7 @@ unset($_SESSION['notif']);
                                 echo "<tr>";
                                 echo "<td>{$faculty['userInfo']['fName']} {$faculty['userInfo']['mName']} {$faculty['userInfo']['lName']}</td>";
                                 echo "<td>{$faculty['userInfo']['email']}</td>";
-                                echo "<td>{$faculty['userInfo']['age']}</td>";
+                                echo "<td>{$faculty['userInfo']['birthdate']}</td>";
                                 echo "<td>{$faculty['userInfo']['address']}</td>";
                                 echo "<td>{$faculty['userInfo']['sex']}</td>";
                                 echo "<td>";

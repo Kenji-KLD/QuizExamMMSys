@@ -9,12 +9,12 @@ class RegistrationStudent {
     private $lName;
     private $email;
     private $section_ID;
-    private $age;
+    private $mysqlDate;
     private $sex;
     private $address;
 
 
-    public function __construct($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $age, $sex, $address) {
+    public function __construct($student_ID, $username, $password, $fName, $mName, $lName, $email, $section_ID, $mysqlDate, $sex, $address) {
         $this->student_ID = $student_ID;
         $this->username = $username;
         $this->password = $password;
@@ -23,7 +23,7 @@ class RegistrationStudent {
         $this->lName = $lName;
         $this->email = $email;
         $this->section_ID;
-        $this->age = $age;
+        $this->mysqlDate = $mysqlDate;
         $this->section_ID = $section_ID;
         $this->sex = $sex;
         $this->address = $address;
@@ -73,9 +73,9 @@ class RegistrationStudent {
 
         try {
          
-            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, age, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
-            $stmt1->bind_param('ssssssiss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address);
+            $stmt1->bind_param('sssssssss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->mysqlDate, $this->sex, $this->address);
             $stmt1->execute();
             $stmt1->close();
 
@@ -134,14 +134,14 @@ class ImportStudent {
                 $mName = $data[4];
                 $lName = $data[5];
                 $email = $data[6];
-                $age = $data[7];
+                $birthdate = $birthdate[7];
                 $sex = $data[8];
                 $address = $data[9];
 
         
-                $stmt = $conn->prepare("INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address) 
+                $stmt = $conn->prepare("INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssssiss", $userName, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
+                $stmt->bind_param("sssssssss", $userName, $password, $fName, $mName, $lName, $email, $birthdate, $sex, $address);
                 $stmt->execute();
 
                 // get the user_ID
@@ -170,16 +170,16 @@ class ImportStudent {
 
 
 class EditStudent {
-    private $user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID;
+    private $user_ID, $username, $fName, $mName, $lName, $email, $mysqlDate, $address, $sex, $password, $student_ID;
 
-    public function __construct($user_ID, $username, $fName, $mName, $lName, $email, $age, $address, $sex, $password, $student_ID) {
+    public function __construct($user_ID, $username, $fName, $mName, $lName, $email, $mysqlDate, $address, $sex, $password, $student_ID) {
        $this->user_ID = $user_ID;
        $this->username = $username;
        $this->fName = $fName;
        $this->mName = $mName;
        $this->lName = $lName;
        $this->email = $email;
-       $this->age = $age;
+       $this->mysqlDate = $mysqlDate;
        $this->address = $address;
        $this->sex = $sex;
        $this->password = $password;
@@ -228,8 +228,8 @@ class EditStudent {
         
         try {
             
-            $stmt = $conn->prepare("UPDATE Account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, age = ?, sex = ?, address = ? WHERE user_ID = ?");
-            $stmt->bind_param('sssssissi', $this->username, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address, $this->user_ID);
+            $stmt = $conn->prepare("UPDATE Account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, birthdate = ?, sex = ?, address = ? WHERE user_ID = ?");
+            $stmt->bind_param('ssssssssi', $this->username, $this->fName, $this->mName, $this->lName, $this->email, $this->mysqlDate, $this->sex, $this->address, $this->user_ID);
             $stmt->execute();
             // $stmt->close();
 
