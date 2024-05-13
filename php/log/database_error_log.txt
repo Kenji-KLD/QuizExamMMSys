@@ -30,3 +30,4 @@
 [2024-05-10 02:04:06] - Error: Subquery returns more than 1 row
 [2024-05-10 02:04:07] - Error: Subquery returns more than 1 row
 [2024-05-10 02:04:08] - Error: Unknown column 'seh.secHandle_ID' in 'field list'
+[2024-05-13 08:01:24] - Error: Unknown column 'age' in 'field list'

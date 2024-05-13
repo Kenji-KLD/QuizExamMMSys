@@ -9,7 +9,7 @@ INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, ad
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("admin", "$2y$10$hKTXF3EesCmn9sRCaCbzE.vZxfbNd1J6XHU9PVuzw7i4oYk2.UbuK", 
     "Admin", "", "Lorem Ipsum", 
-    "aloremipsum@kld.edu.ph", 30, "Male", 
+    "aloremipsum@kld.edu.ph", "2000/12/30", "Male", 
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("faculty", "$2y$10$/l/3bssfbuFr/8FqC1vNsO21jGqZMsf2vIXXuF84jL9bLbJ9YRSES", 
     "Faculty", "", "Lorem Ipsum", 

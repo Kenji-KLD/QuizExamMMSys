@@ -6,7 +6,7 @@ CREATE TABLE Account(
 	mName VARCHAR(32),
 	lName VARCHAR(32) NOT NULL,
 	email VARCHAR(64) NOT NULL,
-	age INT NOT NULL,
+	birthdate DATE NOT NULL,
 	sex VARCHAR(6) NOT NULL,
 	address TEXT NOT NULL,
 	PRIMARY KEY(user_ID)
