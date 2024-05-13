@@ -38,6 +38,47 @@ class Model{
     // CREATE FUNCTIONS
 
 
+    public function createAnswerStatistic($input_studentID, $input_questionID, $input_studentAnswer, $input_isCorrect){
+        $query = "
+        INSERT INTO AnswerStatistic (student_ID, question_ID, studentAnswer, isCorrect) VALUES (?, ?, ?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("sisi", $input_studentID, $input_questionID, $input_studentAnswer, $input_isCorrect);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createScore($input_studentID, $input_questionSetID, $input_dateTaken){
+        $scoreQuery = "
+        SELECT COUNT(*) AS score
+        FROM AnswerStatistic ans
+        INNER JOIN QuestionBank qb ON ans.question_ID = qb.question_ID
+        WHERE ans.isCorrect = 1 AND qb.questionSet_ID = ?;
+        ";
+
+        $query = "
+        INSERT INTO Score (student_ID, questionSet_ID, passed, score, dateTaken) VALUES (?, ?, ?, ?, ?)
+        ";
+
+        try{
+            $stmtScore = $this->db->prepare($scoreQuery); $stmtScore->bind_param("i", $input_questionSetID);
+            $stmtScore->execute(); $stmtScore->bind_result($input_score);
+            $stmtScore->fetch(); $stmtScore->close();
+
+            $input_passed = (float)$input_score >= (float)$input_score * 0.6 ? 1 : 0;
+
+            $stmt = $this->db->prepare($query); $stmt->bind_param("siiis", $input_studentID, $input_questionSetID, $input_passed, $input_score, $input_dateTaken);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+    
     public function createSessionToken($input_username){
         try{ do{ $token = lowercaseNumericString(32); // Generates a unique user session token. 32 characters long.
             $query = "
@@ -254,9 +295,44 @@ class Model{
         }
     }
 
+    public function readQuestionAnswer($input_questionSetID){
+        $data = [];
+
+        $query = "
+        SELECT question_ID, questionAnswer FROM QuestionBank
+        WHERE questionSet_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->bind_result($question_ID, $questionAnswer);
+
+            while($stmt->fetch()){
+                $row = [
+                    "question_ID" => $question_ID,
+                    "questionAnswer" => $questionAnswer
+                ];
+
+                $data[] = $row;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readQuestionnaire($input_questionSetID){
         $data = [];
         $questions = [];
+
+        $limitValueQuery = "
+        SELECT IFNULL(randomCount, 1000000) AS limit_value 
+        FROM QuestionSet 
+        WHERE questionSet_ID = ?
+        ";
 
         $query = "
         SELECT 
@@ -267,17 +343,39 @@ class Model{
             qb.questionNumber,
             qb.questionText,
             cb.choiceLabel
-        FROM QuestionSet qs
-        JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-        LEFT JOIN ChoiceBank cb ON qb.question_ID = cb.question_ID
-        WHERE qs.questionSet_ID = ?;
+        FROM 
+            QuestionSet qs
+        JOIN (
+            SELECT DISTINCT qb_inner.question_ID
+            FROM QuestionBank qb_inner
+            WHERE qb_inner.questionSet_ID = ?
+            ORDER BY
+                CASE WHEN (SELECT randomCount FROM QuestionSet WHERE questionSet_ID = ?) IS NULL 
+                    THEN qb_inner.question_ID 
+                    ELSE RAND() 
+                END
+            LIMIT ?
+        ) AS selected_questions ON qs.questionSet_ID = ?
+        JOIN 
+            QuestionBank qb ON selected_questions.question_ID = qb.question_ID
+        LEFT JOIN 
+            ChoiceBank cb ON qb.question_ID = cb.question_ID
+        WHERE 
+            qs.questionSet_ID = ?;
         ";
 
         try{
+            $stmtLimit = $this->db->prepare($limitValueQuery);
+            $stmtLimit->bind_param("i", $input_questionSetID);
+            $stmtLimit->execute();
+            $stmtLimit->bind_result($limitValue);
+            $stmtLimit->fetch();
+            $stmtLimit->close();
+            
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param("i", $input_questionSetID);
+            $stmt->bind_param("iiiii", $input_questionSetID, $input_questionSetID, $limitValue, $input_questionSetID, $input_questionSetID);
             $stmt->execute();
-            $stmt->bind_result($questionSetTitle, $rubrics, $question_ID, $questionNumber, $questionText, $choiceLabel);
+            $stmt->bind_result($questionSetTitle, $rubrics, $timeLimit, $question_ID, $questionNumber, $questionText, $choiceLabel);
 
             while ($stmt->fetch()) {
                 // Check if the question_ID already exists in the questions array
@@ -306,6 +404,7 @@ class Model{
             $data = [
                 'questionSetTitle' => $questionSetTitle,
                 'rubrics' => $rubrics,
+                'timeLimit' => $timeLimit,
                 'questions' => $questions
             ];
         }
@@ -314,6 +413,49 @@ class Model{
         }
 
         return json_encode($data);
+    }
+
+    public function readStudentScore($input_studentID, $input_questionSetID){
+        $titleQuery = "
+        SELECT questionSetTitle FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        $scoreQuery = "
+        SELECT score FROM Score
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        $questionTotalQuery = "
+        SELECT COUNT(qb.question_ID), qs.randomCount
+        FROM QuestionSet qs
+        INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
+        WHERE qs.questionSet_ID = ?
+        ";
+
+        try{
+            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
+            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
+            $titleStmt->fetch(); $titleStmt->close();
+
+            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
+            $scoreStmt->execute(); $scoreStmt->bind_result($score);
+            $scoreStmt->fetch(); $scoreStmt->close();
+            
+            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
+            $totalStmt->execute(); $totalStmt->bind_result($actualCount, $randomCount);
+            $totalStmt->fetch(); $totalStmt->close();
+            $total = $randomCount == null ? $actualCount : $randomCount;
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'score' => $score,
+                'total' => $total
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
     }
 
     public function readSecHandleID($input_secHandleID){
@@ -482,6 +624,41 @@ class Model{
                 'section' => $section,
                 'email' => $email
             ];
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readStudentSubject($input_sectionID){
+        $query = "
+        SELECT seh.secHandle_ID, su.subjectName, a.fName, a.mName, a.lName
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Account a ON f.user_ID = a.user_ID
+        WHERE section_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sectionID);
+            $stmt->execute(); $stmt->bind_result($secHandle_ID, $subjectName, $fName, $mName, $lName);
+
+            while($stmt->fetch()){
+                $subjectHandleData = [
+                    'secHandle_ID' => $secHandle_ID,
+                    'subjectName' => $subjectName,
+                    'fName' => $fName,
+                    'mName' => $mName,
+                    'lName' => $lName
+                ];
+
+                $data[] = $subjectHandleData;
+            }
 
             $stmt->close();
             return $data;
