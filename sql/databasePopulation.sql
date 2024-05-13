@@ -134,6 +134,11 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (10, "D. Testing 10")
 ;
 
+INSERT INTO `setdisallow` (`student_ID`, `questionSet_ID`, `isDisallowed`) VALUES
+('KLD-22-000420', 1, 0),
+('KLD-22-000247', 1, 0),
+('KLD-22-000192', 1, 0);
+
 INSERT INTO `answerstatistic` (`student_ID`, `question_ID`, `studentAnswer`, `isCorrect`) VALUES
     ('KLD-22-000247', 1, 'A. Ernst Haeckel', 1),
     ('KLD-22-000247', 2, 'A. Arthur Tansley', 1),

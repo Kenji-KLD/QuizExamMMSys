@@ -70,8 +70,12 @@ window.createAssessment = function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response) {
-            if(response.processed == true){
+            console.log(response);
+            let data = JSON.parse(response);
+
+            if(data.processed == true){
                 alert("Success!");
+                location.reload();
             }
         },
         error: function(error) {

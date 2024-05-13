@@ -55,3 +55,13 @@
 [2024-05-13 21:40:07] - Error: Column 'questionTotal' cannot be null
 [2024-05-13 21:40:14] - Error: Column 'questionTotal' cannot be null
 [2024-05-13 21:42:55] - Error: Column 'questionTotal' cannot be null
+[2024-05-13 23:20:04] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '...' at line 3
+[2024-05-13 23:24:58] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '...' at line 3
+[2024-05-13 23:26:07] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '...' at line 3
+[2024-05-13 23:27:09] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '...' at line 3
+[2024-05-13 23:30:43] - Error: Cannot add or update a child row: a foreign key constraint fails (`quizsystem`.`setdisallow`, CONSTRAINT `setdisallow_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`student_ID`))
+[2024-05-13 23:30:43] - Error: Cannot add or update a child row: a foreign key constraint fails (`quizsystem`.`setdisallow`, CONSTRAINT `setdisallow_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`student_ID`))
+[2024-05-13 23:30:43] - Error: Cannot add or update a child row: a foreign key constraint fails (`quizsystem`.`setdisallow`, CONSTRAINT `setdisallow_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`student_ID`))
+[2024-05-13 23:34:32] - Error: Column 'questionSet_ID' cannot be null
+[2024-05-13 23:34:32] - Error: Column 'questionSet_ID' cannot be null
+[2024-05-13 23:34:32] - Error: Column 'questionSet_ID' cannot be null

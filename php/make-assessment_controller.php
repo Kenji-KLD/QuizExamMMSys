@@ -68,6 +68,9 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         $questionTotal++;
     }
 
+    $secHandleData = $Model->readSecHandleID($_POST['secHandle_ID']);
+    $studentList = $Model->readSectionList($secHandleData['section_ID']);
+
     $questionSet_ID = $Model->createQuestionSet(
         $_POST['secHandle_ID'],
         $questionSetData['questionSetTitle'],
@@ -94,6 +97,10 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         foreach($question['choices'] as $choice){
             $Model->createChoice($question_ID, $choice);
         }
+    }
+
+    foreach($studentList as $student) {
+        $Model->createSetDisallow($student['student_ID'], $questionSet_ID, true);
     }
 
     echo json_encode([

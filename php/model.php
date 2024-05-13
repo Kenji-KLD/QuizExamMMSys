@@ -169,6 +169,21 @@ class Model{
         }
     }
 
+    public function createSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        INSERT INTO SetDisallow (student_ID, questionSet_ID, isDisallowed) VALUES (?, ?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("sii", $input_studentID, $input_questionSetID, $input_isDisallowed);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function createScore($input_studentID, $input_questionSetID, $input_dateTaken){
         $scoreQuery = "
         SELECT COUNT(*) AS score
@@ -590,6 +605,7 @@ class Model{
     public function readSectionList($input_section){
         $query = "
         SELECT 
+            s.student_ID,
             CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, 
             a.birthdate AS birthdate, 
             a.sex AS sex, 
@@ -605,13 +621,12 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_section);
-            $stmt->execute(); $stmt->bind_result($fullName, $birthdate, $sex, $email, $address);
-
-
+            $stmt->execute(); $stmt->bind_result($student_ID, $fullName, $birthdate, $sex, $email, $address);
 
             // Name of outgoing variables here
             while($stmt->fetch()){
                 $studentData = [
+                    "student_ID" => $student_ID,
                     "fullName" => $fullName,
                     "age" => $this->calculateAge($birthdate),
                     "sex" => $sex,
@@ -704,6 +719,34 @@ class Model{
 
             $stmt->close();
             return $sessionData;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readSetDisallow($input_questionSetID){
+        $data = [];
+        $query = "
+        SELECT student_ID, isDisallowed FROM SetDisallow
+        WHERE questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->bind_result($student_ID, $isDisallowed);
+
+            while($stmt->fetch()){
+                $setDisallowData = [
+                    'student_ID' => $student_ID,
+                    'isDisallowed' => $isDisallowed
+                ];
+
+                $data[] = $setDisallowData;
+            }
+
+            $stmt->close();
+            return $data;
         }
         catch(Exception $e){
             $this->logError($e);
@@ -902,6 +945,22 @@ class Model{
             else{
                 return false;
             }
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function updateSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        UPDATE SetDisallow
+        SET isDisallowed = ?
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("isi", $input_isDisallowed, $input_studentID, $input_questionSetID);
+            $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
             $this->logError($e);

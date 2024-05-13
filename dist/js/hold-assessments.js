@@ -3,7 +3,7 @@ import { getParameterByName } from '/dist/js/function.js';
 function createAssessmentCard(assessment) {
     return `
         <div class="card w-auto rounded-3xl relative">
-            <a href="/dist/profView/html/attendance.html?questionSet_ID=${assessment.questionSet_ID}">
+            <a href="/dist/profView/html/attendance.html?questionSet_ID=${assessment.questionSet_ID}&secHandle_ID=${getParameterByName('secHandle_ID')}">
                 <h1 class="font-bold text-xl">${assessment.questionSetTitle}</h1>
                 <h5 class="font-base text-sm mb-8">${assessment.section_ID}</h5>
                 <p class="font-base text-sm">${assessment.deadlineDate}</p>
