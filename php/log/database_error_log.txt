@@ -50,3 +50,8 @@
 [2024-05-13 17:54:38] - Error: Unknown column 'age' in 'field list'
 [2024-05-13 17:54:53] - Error: Unknown column 'age' in 'field list'
 [2024-05-13 17:55:36] - Error: Unknown column 'age' in 'field list'
+[2024-05-13 21:39:04] - Error: Column 'questionTotal' cannot be null
+[2024-05-13 21:39:19] - Error: Column 'questionTotal' cannot be null
+[2024-05-13 21:40:07] - Error: Column 'questionTotal' cannot be null
+[2024-05-13 21:40:14] - Error: Column 'questionTotal' cannot be null
+[2024-05-13 21:42:55] - Error: Column 'questionTotal' cannot be null

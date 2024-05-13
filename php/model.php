@@ -71,6 +71,104 @@ class Model{
         }
     }
 
+    public function createChoice($input_questionID, $input_choiceLabel){
+        $query = "
+        INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES (?, ?)
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("is", $input_questionID, $input_choiceLabel);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createQuestion($input_questionSetID, $input_questionFormat, $input_questionNumber, $input_questionText, $input_questionAnswer, $input_pointsGiven){
+        $query = "
+        INSERT INTO QuestionBank(
+            questionSet_ID,
+            questionFormat,
+            questionNumber,
+            questionText,
+            questionAnswer,
+            pointsGiven
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("isissi", 
+                $input_questionSetID, 
+                $input_questionFormat, 
+                $input_questionNumber, 
+                $input_questionText, 
+                $input_questionAnswer, 
+                $input_pointsGiven
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($question_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $question_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createQuestionSet($input_secHandleID, $input_questionSetTitle, $input_questionSetType, $input_questionTotal, $input_randomCount, $input_deadline, $input_timeLimit, $input_acadYear, $input_acadTerm, $input_acadSem){
+        $query = "
+        INSERT INTO QuestionSet(
+            secHandle_ID, 
+            questionSetTitle, 
+            questionSetType, 
+            questionTotal, 
+            randomCount, 
+            deadline, 
+            timeLimit, 
+            acadYear, 
+            acadTerm, 
+            acadSem
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("issiisisss", 
+                $input_secHandleID,
+                $input_questionSetTitle,
+                $input_questionSetType,
+                $input_questionTotal, 
+                $input_randomCount, 
+                $input_deadline, 
+                $input_timeLimit, 
+                $input_acadYear, 
+                $input_acadTerm, 
+                $input_acadSem
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($questionSet_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $questionSet_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function createScore($input_studentID, $input_questionSetID, $input_dateTaken){
         $scoreQuery = "
         SELECT COUNT(*) AS score
@@ -462,49 +560,6 @@ class Model{
         return json_encode($data);
     }
 
-    public function readStudentScore($input_studentID, $input_questionSetID){
-        $titleQuery = "
-        SELECT questionSetTitle FROM QuestionSet
-        WHERE questionSet_ID = ?
-        ";
-
-        $scoreQuery = "
-        SELECT score FROM Score
-        WHERE student_ID = ? AND questionSet_ID = ?
-        ";
-        
-        $questionTotalQuery = "
-        SELECT COUNT(qb.question_ID), qs.randomCount
-        FROM QuestionSet qs
-        INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-        WHERE qs.questionSet_ID = ?
-        ";
-
-        try{
-            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
-            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
-            $titleStmt->fetch(); $titleStmt->close();
-
-            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
-            $scoreStmt->execute(); $scoreStmt->bind_result($score);
-            $scoreStmt->fetch(); $scoreStmt->close();
-            
-            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
-            $totalStmt->execute(); $totalStmt->bind_result($actualCount, $randomCount);
-            $totalStmt->fetch(); $totalStmt->close();
-            $total = $randomCount == null ? $actualCount : $randomCount;
-
-            return [
-                'questionSetTitle' => $questionSetTitle,
-                'score' => $score,
-                'total' => $total
-            ];
-        }
-        catch(Exception $e){
-            $this->logError($e);
-        }
-    }
-
     public function readSecHandleID($input_secHandleID){
         $query = "
         SELECT seh.section_ID AS section_ID, su.subjectName AS subjectName
@@ -676,6 +731,48 @@ class Model{
 
             $stmt->close();
             return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readStudentScore($input_studentID, $input_questionSetID){
+        $titleQuery = "
+        SELECT questionSetTitle FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        $scoreQuery = "
+        SELECT score FROM Score
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        $questionTotalQuery = "
+        SELECT questionTotal, randomCount
+        FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        try{
+            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
+            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
+            $titleStmt->fetch(); $titleStmt->close();
+
+            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
+            $scoreStmt->execute(); $scoreStmt->bind_result($score);
+            $scoreStmt->fetch(); $scoreStmt->close();
+            
+            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
+            $totalStmt->execute(); $totalStmt->bind_result($questionTotal, $randomCount);
+            $totalStmt->fetch(); $totalStmt->close();
+            $total = $randomCount == null ? $questionTotal : $randomCount;
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'score' => $score,
+                'total' => $total
+            ];
         }
         catch(Exception $e){
             $this->logError($e);

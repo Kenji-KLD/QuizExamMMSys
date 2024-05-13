@@ -223,7 +223,7 @@
             </svg>
           </label>
           <span id="file-name" class="ml-4">-No file selected-</span>
-          <input id="file-upload" type="file" accept=".csv" />
+          <input id="file-upload" type="file" accept=".csv" onchange="handleUpload()"/>
         </div>
       </div>
       <div class="w-dvh grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
@@ -251,6 +251,7 @@
             <!-- DATE AND TIME -->
             <div class="flex">
               <input
+                id="Deadline"
                 type="datetime-local"
                 class="input-line py-1 w-full border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
               />
@@ -269,8 +270,7 @@
               <option value="" class="bg-ISshade3" disabled selected>
                 -- Select Year --
               </option>
-              <option value="" class="bg-ISshade3">test 1</option>
-              <option value="" class="bg-ISshade3">test 2</option>
+              <option value="2023-2024" class="bg-ISshade3">2023-2024</option>
             </select>
           </div>
           <div class="flex relative mt-16">
@@ -286,8 +286,8 @@
               <option value="" class="bg-ISshade3" disabled selected>
                 -- Select Term --
               </option>
-              <option value="" class="bg-ISshade3">test 1</option>
-              <option value="" class="bg-ISshade3">test 2</option>
+              <option value="Midterm" class="bg-ISshade3">Midterm</option>
+              <option value="Finals" class="bg-ISshade3">Finals</option>
             </select>
           </div>
           <div class="flex relative mt-16">
@@ -303,8 +303,8 @@
               <option value="" class="bg-ISshade3" disabled selected>
                 -- Select Semester --
               </option>
-              <option value="" class="bg-ISshade3">test 1</option>
-              <option value="" class="bg-ISshade3">test 2</option>
+              <option value="1st Semester" class="bg-ISshade3">1st Semester</option>
+              <option value="2nd Semester" class="bg-ISshade3">2nd Semester</option>
             </select>
           </div>
         </div>
@@ -316,7 +316,7 @@
                 type="radio"
                 name="assessment-format"
                 id="Quiz"
-                value="Quiz"
+                value="QUIZ"
                 class="size-6"
               />
               <label for="Quiz" class="text-lg">Quiz</label>
@@ -326,7 +326,7 @@
                 type="radio"
                 name="assessment-format"
                 id="Exam"
-                value="Exam"
+                value="EXAM"
                 class="size-6"
               />
               <label for="Exam" class="text-lg">Exam</label>
@@ -344,15 +344,17 @@
               <option value="" class="bg-ISshade3" disabled selected>
                 -- Select Time --
               </option>
-              <option value="" class="bg-ISshade3">test 1</option>
-              <option value="" class="bg-ISshade3">test 2</option>
+              <option value="1800" class="bg-ISshade3">30 Minutes</option>
+              <option value="3600" class="bg-ISshade3">1 Hour</option>
+              <option value="5400" class="bg-ISshade3">1 Hour 30 Minutes</option>
+              <option value="7200" class="bg-ISshade3">2 Hours</option>
             </select>
           </div>
           <div class="flex items-center gap-4 mt-5">
             <p class="assessment-subhead">Randomize Questions</p>
-            <input type="checkbox" class="size-5" />
+            <input onclick="toggleQuestionAmmtField();" type="checkbox" id="isRandomized" class="size-5" />
           </div>
-          <div class="flex flex-col gap-4">
+          <div id="QuestionAmmtField" class="flex flex-col gap-4">
             <div class="flex gap-4 items-center">
               <label for="QuestionAmmt" class="text-lg"
                 >Question Display Amount</label
@@ -369,7 +371,8 @@
             </div>
           </div>
           <button
-            type="submit"
+            type="button"
+            onclick="createAssessment();"
             class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
           >
             <p class="text-lg mx-auto font-medium">Create</p>
@@ -379,7 +382,7 @@
     </main>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
-    <script src="/dist/js/make-assessments.js" type="module"></script>
+    <script src="/dist/js/make-assessment.js" type="module"></script>
     <script src="/dist/js/logout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     <script>
