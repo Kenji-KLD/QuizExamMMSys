@@ -82,7 +82,7 @@ INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questio
     (1, "MULTIPLE_CHOICE", 1, 'Who coined the term "Ecology"?', "A. Ernst Haeckel", 1),
     (1, "MULTIPLE_CHOICE", 2, 'Who coined the term "Ecosystem"?', "A. Arthur Tansley", 1),
     (1, "MULTIPLE_CHOICE", 3, 'It is an environment that provides the things an organism needs to live, grow, and reproduce.', "A. Habitat", 1),
-    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "A. Both B & C", 1),
+    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "A. Both A & B", 1),
     (1, "MULTIPLE_CHOICE", 5, 'Who coined the term "Ecosystem 5"?', "A. Testing 5", 1),
     (1, "MULTIPLE_CHOICE", 6, 'Who coined the term "Ecosystem 6"?', "A. Testing 6", 1),
     (1, "MULTIPLE_CHOICE", 7, 'Who coined the term "Ecosystem 7"?', "A. Testing 7", 1),
