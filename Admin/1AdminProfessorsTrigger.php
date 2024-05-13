@@ -13,11 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mName = $_POST['mName'];
         $lName = $_POST['lName'];
         $email = $_POST['email'];
-        $age = $_POST ['age'];
+        $birthdate = $_POST ['birthdate'];
         $sex = $_POST ['sex'];
         $address = $_POST ['address'];
 
-        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
+        $mysqlDate = date('Y-m-d', strtotime($birthdate));
+
+
+        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address);
 
         if ($registration->validate()) {
             if ($registration->register()) {
@@ -39,10 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $delete = new DeleteFaculty($user_ID);
 
             if ($delete->delete()) {
-                $_SESSION['notif'] = "Deleted Succesfully";
+                $_SESSION['notif'] = "Archived Succesfully";
                 header("Location: 1AdminProfessors.php");
             } else {
-                $_SESSION['notif'] = "Failed to delete data";
+                $_SESSION['notif'] = "Failed to Archive data";
                 header("Location: 1AdminProfessors.php");
             }
        
@@ -55,11 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $lName = $_POST['lName'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $age = $_POST ['age'];
+        $birthdate = $_POST ['birthdate'];
         $sex = $_POST ['sex'];
         $address = $_POST ['address'];
+
+        $mysqlDate = date('Y-m-d', strtotime($birthdate));
     
-        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $age, $sex, $address);
+        $editFaculty = new EditFaculty ($user_ID, $username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address);
     
         // if ($editFaculty->validate()) {
             if ($editFaculty->edit()) {

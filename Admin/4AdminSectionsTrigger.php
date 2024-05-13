@@ -31,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $deleteSection = new DeleteSection($section_ID);
 
     if ($deleteSection->delete()) {
-        $_SESSION['notif'] = "Successful";
+        $_SESSION['notif'] = "Archived Successfully";
         header("Location: 4AdminSections.php");
     } else {
-        $_SESSION['notif'] = "Failed to delete data";
+        $_SESSION['notif'] = "Failed to archive data";
         header("Location: 4AdminSections.php");
     }
 

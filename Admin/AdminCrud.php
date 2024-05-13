@@ -1,7 +1,7 @@
 <?php
 
 function fetchFacultyData($conn) {
-    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.sex, SH.subject_ID, S.subjectName
+    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.address, A.sex, SH.subject_ID, S.subjectName
             FROM Account A
             LEFT JOIN Faculty F ON A.user_ID = F.user_ID
             LEFT JOIN SubjectHandle SH ON F.faculty_ID = SH.faculty_ID
@@ -22,7 +22,7 @@ function fetchFacultyData($conn) {
                         'mName' => $row['mName'],
                         'lName' => $row['lName'],
                         'email' => $row['email'],
-                        'age' => $row['age'],
+                        'birthdate' => $row['birthdate'],
                         'address' => $row['address'],
                         'sex' => $row['sex']
                     ],
@@ -42,7 +42,7 @@ function fetchFacultyData($conn) {
 
 function fetchStudentData($conn) {
     // Query to fetch student data
-    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.address, A.sex, S.student_ID, C.section_ID, Sec.course
+    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.address, A.sex, S.student_ID, C.section_ID, Sec.course
             FROM Account A
             LEFT JOIN Student S ON A.user_ID = S.user_ID
             LEFT JOIN Class C ON S.student_ID = C.student_ID
@@ -62,7 +62,7 @@ function fetchStudentData($conn) {
                 'mName' => $row['mName'],
                 'lName' => $row['lName'],
                 'email' => $row['email'],
-                'age' => $row['age'],
+                'birthdate' => $row['birthdate'],
                 'address' => $row['address'],
                 'sex' => $row['sex'],
                 'student_ID' => $row['student_ID'], // Include student_ID in the array

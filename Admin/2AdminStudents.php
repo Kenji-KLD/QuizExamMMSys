@@ -55,8 +55,9 @@ unset($_SESSION['notif']);
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email" placeholder="name@domain.com" required>
 
-                            <label for="age">Age:</label>
-                            <input type="number" id="age" name="age" required>
+                            <label for="birthdate">Birthdate: (YYYY-MM-DD)</label>
+                            <input type="text" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" required>
+                            <small style="color: red;" id="birthdate-error"></small>
 
                             <label for="address">Address:</label>
                             <input type="text" id="address" name="address" required>
@@ -119,7 +120,7 @@ unset($_SESSION['notif']);
                         <th> Name </th>
                         <th>Email</th>
                         <th>Section</th>
-                        <th> Age </th>
+                        <th> Birthdate </th>
                         <th> Sex </th>
                         <th> Address </th>
                         <th>Action</th>
@@ -155,7 +156,7 @@ unset($_SESSION['notif']);
                                 echo "<td>{$student['fName']} {$student['mName']} {$student['lName']}</td>";
                                 echo "<td>{$student['email']}</td>";
                                 echo "<td>{$student['sectionInfo']['section_ID']}</td>";
-                                echo "<td>{$student['age']}</td>";
+                                echo "<td>{$student['birthdate']}</td>";
                                 echo "<td>{$student['sex']}</td>";
                                 echo "<td>{$student['address']}</td>";
                             

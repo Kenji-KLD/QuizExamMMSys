@@ -7,18 +7,18 @@ class RegistrationFaculty {
     private $mName;
     private $lName;
     private $email;
-    private $age;
+    private $mysqlDate;
     private $sex;
     private $address;
 
-    public function __construct($username, $password, $fName, $mName, $lName, $email, $age, $sex, $address) {
+    public function __construct($username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address) {
         $this->username = $username;
         $this->password = $password;
         $this->fName = $fName;
         $this->mName = $mName;
         $this->lName = $lName;
         $this->email = $email;
-        $this->age = $age;
+        $this->mysqlDate = $mysqlDate;
         $this->sex = $sex;
         $this->address = $address;
     }
@@ -65,9 +65,9 @@ class RegistrationFaculty {
         $conn->begin_transaction(); 
         try {
            
-            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, age, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
-            $stmt1->bind_param('ssssssiss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address);
+            $stmt1->bind_param('sssssssss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email,$this->mysqlDate, $this->sex, $this->address);
             $stmt1->execute();
             $stmt1->close();
 
@@ -107,11 +107,11 @@ class EditFaculty {
     private $mName;
     private $lName;
     private $email;
-    private $age;
+    private $mysqlDate;
     private $sex;
     private $address;
 
-    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $age, $sex, $address) {
+    public function __construct($user_ID, $username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address) {
         $this->user_ID = $user_ID;
         $this->username = $username;   
         $this->password = $password;
@@ -119,7 +119,7 @@ class EditFaculty {
         $this->mName = $mName;
         $this->lName = $lName;
         $this->email = $email;
-        $this->age = $age;
+        $this->mysqlDate = $mysqlDate;
         $this->sex = $sex;
         $this->address = $address;
     }
@@ -167,8 +167,8 @@ class EditFaculty {
 
         $conn->begin_transaction(); 
         try {
-            $stmt = $conn->prepare("UPDATE account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, age = ?, sex = ?, address = ? WHERE user_ID = ?");
-                $stmt->bind_param('sssssissi', $this->username, $this->fName, $this->mName, $this->lName, $this->email, $this->age, $this->sex, $this->address, $this->user_ID);
+            $stmt = $conn->prepare("UPDATE account SET userName = ?, fName = ?, mName = ?, lName = ?, email = ?, birthdate = ?, sex = ?, address = ? WHERE user_ID = ?");
+                $stmt->bind_param('ssssssssi', $this->username, $this->fName, $this->mName, $this->lName, $this->email,  $this->mysqlDate, $this->sex, $this->address, $this->user_ID);
                 $stmt->execute();
                 $stmt->close();
 

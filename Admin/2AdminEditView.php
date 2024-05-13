@@ -4,7 +4,7 @@
     if (isset($_POST['edit'])) {
         $user_ID = $_POST['user_ID'];
 
-        $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.age, A.sex, A.address, S.student_ID, C.section_ID
+        $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.sex, A.address, S.student_ID, C.section_ID
                 FROM Account A
                 LEFT JOIN Student S ON A.user_ID = S.user_ID
                 LEFT JOIN Class C ON S.student_ID = C.student_ID
@@ -54,7 +54,9 @@
                         echo "Middle Name: <input type='text' name='mName' value='{$row['mName']}'><br>";
                         echo "Last Name: <input type='text' name='lName' value='{$row['lName']}'><br>";
                         echo "Email: <input type='email' name='email' value='{$row['email']}'><br>";
-                        echo "Age: <input type='number' name='age' value='{$row['age']}'><br>";
+                        echo "<label for='birthdate'>Birthdate: (YYYY-MM-DD)</label>";
+                        echo "<input type='text' id='birthdate' name='birthdate' placeholder='YYYY-MM-DD' value='{$row['birthdate']}'required>";
+                        echo "<small style='color: red;' id='birthdate-error'></small>";
                         echo "Address: <input type='text' name='address' value='{$row['address']}'><br>";
                         echo "Gender: <select name='sex'>";
                         echo "<option value='MALE'" . ($row['sex'] == 'MALE' ? ' selected' : '') . ">Male</option>";
