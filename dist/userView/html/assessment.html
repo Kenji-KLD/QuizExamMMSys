@@ -21,7 +21,7 @@
     </header>
     <main class="flex flex-1 justify-center items-center">
       <!-- CONTAINER -->
-      <div class="w-dvw h-dvh">
+      <div class="w-dvw h-full">
         <div
           class="p-0 md:p-4 bg-ISshade3/10 rounded-3xl backdrop-blur-[2.25px] border border-ISshade1 mt-4 space-y-6"
         >
@@ -29,7 +29,8 @@
           <div>
             <form action="" class="my-10">
               <button
-                type="submit"
+                onclick="promptSubmitQuestionnaire();"
+                type="button"
                 class="flex cursor-pointer my-10 mx-auto bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
               >
                 <p class="text-lg mx-auto font-medium">Submit</p>
@@ -41,6 +42,6 @@
     </main>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/userView/js/side.js"></script>
-    <script src="/dist/js/assessment.js"></script>
+    <script src="/dist/js/assessment.js" type="module"></script>
   </body>
 </html>

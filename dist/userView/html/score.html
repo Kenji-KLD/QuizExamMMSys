@@ -15,9 +15,9 @@
       <!-- CONTAINER -->
       <div class="h-dvh">
         <div class="w-full md:w-[500px] md:bg-ISwhite/10 md:rounded-3xl md:p-4 md:backdrop-blur-[2.25px] md:border md:border-ISshade1 md:mt-32">
-          <p class="stats-title ml-6 mt-12 md:mt-4 mb-0">Quiz 1</p>
+          <p id="questionSetTitle" class="stats-title ml-6 mt-12 md:mt-4 mb-0">Quiz 1</p>
           <p class="assessment-subhead ml-6 mt-0 mb-0">Score</p>
-          <p class="stats-title ml-6 mt-10 mb-0 antialiased">00/00</p>
+          <p class="stats-title ml-6 mt-10 mb-0 antialiased"><a id="score">00</a>/<a id="total">00</a></p>
           <div class="ml-6 mt-16 mb-0 rounded-3xl px-8 w-fit bg-ISshade3">
             <a href="/dist/userView/html/home.html" class="item">
               <span class="assessment-subhead">Proceed</span>
@@ -26,6 +26,8 @@
         </div>
       </div>
     </main>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/userView/js/side.js"></script>
+    <script src="/dist/js/score.js" type="module"></script>
   </body>
 </html>

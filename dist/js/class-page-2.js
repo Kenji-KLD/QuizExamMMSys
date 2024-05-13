@@ -45,7 +45,7 @@ jQuery(function () {
     statisticsLink.setAttribute('href', statisticsLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
 
     $.ajax({
-        url: "/php/class-page-2_loading.php",
+        url: "/php/questionSetList_loading.php",
         method: "POST",
         data: {
             secHandle_ID: getParameterByName('secHandle_ID')

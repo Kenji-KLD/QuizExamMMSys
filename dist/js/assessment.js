@@ -1,3 +1,81 @@
+import { getParameterByName } from '/dist/js/function.js';
+
+window.promptSubmitQuestionnaire = function () {
+    if(confirm("Are you sure you want to submit your answers?")){
+        submitQuestionnaire();
+    }
+};
+
+window.submitQuestionnaire = function () {
+    // Define an empty array to store the formatted data
+    const answerList = [];
+
+    // Define a variable that increments if nulls are present
+    var hasNull = 0;
+
+    // Select all <article> elements in the document
+    const articles = document.querySelectorAll('article');
+
+    // Loop through each <article> element
+    articles.forEach(article => {
+        // Find the <input> element with name="question_ID" within the current article
+        const questionIdInput = article.querySelector('input[name="question_ID"]');
+        
+        // Get the value of the question_ID
+        const questionId = questionIdInput.value;
+        
+        // Initialize a variable to store the selected answer
+        let selectedAnswer = null; hasNull++;
+        
+        // Find all radio buttons (input[type="radio"]) within the current article
+        const radioButtons = article.querySelectorAll('input[type="radio"]');
+        
+        // Loop through each radio button to check if it is selected
+        radioButtons.forEach(radioButton => {
+            if (radioButton.checked) {
+                // Get the value of the selected radio button
+                selectedAnswer = radioButton.value; hasNull--;
+            }
+        });
+        
+        // Create an object with the question_ID and the selected answer
+        const answerObject = {
+            'question_ID': questionId,
+            'questionAnswer': selectedAnswer
+        };
+        
+        // Push the object into the answerList array
+        answerList.push(answerObject);
+    });
+
+    if(hasNull == 0){
+        $.ajax({
+            url: "/php/assessment_controller.php",
+            method: "POST",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            },
+            data: {
+                questionSet_ID: getParameterByName('questionSet_ID'),
+                answerList: JSON.stringify(answerList)
+            },
+            success: function (response) {
+                
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+    else{
+        alert("You have not selected an answer to all questions!");
+    }
+};
+
+window.terminateQuestionnaire = function () {
+
+};
+
 jQuery(function () {
     $.ajax({
         url: "/php/assessment_loading.php",
@@ -6,10 +84,10 @@ jQuery(function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         data: {
-            questionSet_ID: 1
+            questionSet_ID: getParameterByName('questionSet_ID')
         },
         success: function (response) {
-            data = JSON.parse(response);
+            let data = JSON.parse(response);
 
             document.getElementById('questionSetTitle').innerHTML = data.questionSetTitle;
             document.getElementById('rubrics').innerHTML = data.rubrics;
@@ -31,6 +109,12 @@ jQuery(function () {
                 const form = document.createElement('form');
                 form.action = '#';
 
+                // Create a hidden input for question_ID
+                const questionIdInput = document.createElement('input');
+                questionIdInput.type = 'hidden';
+                questionIdInput.name = `question_ID`;
+                questionIdInput.value = question.question_ID;
+
                 // Create a new h1 element for the question number
                 const questionNumber = document.createElement('h1');
                 questionNumber.classList.add('question-number', 'font-bold', 'text-xl');
@@ -41,7 +125,8 @@ jQuery(function () {
                 questionText.classList.add('question-content', 'font-base', 'text-base', 'mb-8');
                 questionText.textContent = question.questionText;
 
-                // Append the question number and question text to the form
+                // Append the question id, question number and question text to the form
+                form.appendChild(questionIdInput);
                 form.appendChild(questionNumber);
                 form.appendChild(questionText);
 

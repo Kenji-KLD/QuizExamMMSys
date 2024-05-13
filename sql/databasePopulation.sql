@@ -53,17 +53,36 @@ INSERT INTO Faculty(user_ID) VALUES
     (4)
 ;
 
-INSERT INTO QuestionSet(faculty_ID, subject_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, acadYear, acadTerm, acadSem) VALUES
-    (1, "GEE5000", "Quiz 1: Ecosystem", "QUIZ", 10,
+INSERT INTO Class(student_ID, section_ID) VALUES
+    ("KLD-22-000247", "BSIS201"),
+    ("KLD-22-000192", "BSIS201"),
+    ("KLD-22-000420", "BSIS201")
+;
+
+INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
+    ("BSIS201", "GEE5000"),
+    ("BSIS201", "PCIS2209")
+;
+
+INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
+    (1, "PCIS2205")
+;
+
+INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+    (1, "BSIS201")
+;
+
+INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES
+    (1, "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    '2024-05-01 00:00:00', "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-01 00:00:00', 7200, "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
     (1, "MULTIPLE_CHOICE", 1, 'Who coined the term "Ecology"?', "A. Ernst Haeckel", 1),
     (1, "MULTIPLE_CHOICE", 2, 'Who coined the term "Ecosystem"?', "A. Arthur Tansley", 1),
     (1, "MULTIPLE_CHOICE", 3, 'It is an environment that provides the things an organism needs to live, grow, and reproduce.', "A. Habitat", 1),
-    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "A. Both B & C", 1),
+    (1, "MULTIPLE_CHOICE", 4, 'What is/are the component/s of an ecosystem?', "A. Both A & B", 1),
     (1, "MULTIPLE_CHOICE", 5, 'Who coined the term "Ecosystem 5"?', "A. Testing 5", 1),
     (1, "MULTIPLE_CHOICE", 6, 'Who coined the term "Ecosystem 6"?', "A. Testing 6", 1),
     (1, "MULTIPLE_CHOICE", 7, 'Who coined the term "Ecosystem 7"?', "A. Testing 7", 1),
@@ -113,23 +132,4 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (10, "B. Testing 10"),
     (10, "C. Testing 10"),
     (10, "D. Testing 10")
-;
-
-INSERT INTO Class(student_ID, section_ID) VALUES
-    ("KLD-22-000247", "BSIS201"),
-    ("KLD-22-000192", "BSIS201"),
-    ("KLD-22-000420", "BSIS201")
-;
-
-INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
-    ("BSIS201", "GEE5000"),
-    ("BSIS201", "PCIS2209")
-;
-
-INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
-    (1, "PCIS2205")
-;
-
-INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
-    (1, "BSIS201")
 ;

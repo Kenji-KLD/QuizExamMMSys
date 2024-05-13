@@ -224,12 +224,15 @@
         <section class="main-content mt-10">
           <div class="flex gap-6">
             <button
-              type="submit"
+              id="editButton"
+              onclick="toggleRemove();"
+              type="button"
               class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
             >
               <p class="text-lg mx-auto my-auto font-medium">Edit</p>
             </button>
             <button
+              id="removeButton"
               type="submit"
               class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
             >
@@ -241,7 +244,7 @@
             <table class="w-full ">
               <thead>
                 <tr>
-                  <th class="w-6">Selection</th>
+                  <th id="selectColumn" class="w-6">Select</th>
                   <th>Full Name</th>
                   <th>Age</th>
                   <th>Sex</th>  
