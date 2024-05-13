@@ -1,68 +1,11 @@
 <?php
-include 'connection.php';
-
-// Function to execute SQL queries
-function executeQuery($sql) {
-    global $conn;
-    $result = $conn->query($sql);
-    if (!$result) {
-        die("Query failed: " . $conn->error);
-    }
-    return $result;
-}
-
-// Function to calculate number of passed and failed students per subject term
-function calculatePassedFailed($subjectID, $term) {
-    $sql = "SELECT SUM(IF(score >= 50, 1, 0)) AS passed_count,
-                   SUM(IF(score < 50, 1, 0)) AS failed_count
-            FROM Score
-            INNER JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
-            WHERE QuestionSet.subject_ID = '$subjectID' AND QuestionSet.acadTerm = '$term'";
-
-    $result = executeQuery($sql);
-    return $result->fetch_assoc();
-}
-
-// Function to get highest and lowest scores per subject term
-function getHighestLowestScores($subjectID, $term) {
-    $sql = "SELECT MAX(score) AS highest_score, MIN(score) AS lowest_score
-            FROM Score
-            INNER JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
-            WHERE QuestionSet.subject_ID = '$subjectID' AND QuestionSet.acadTerm = '$term'";
-
-    $result = executeQuery($sql);
-    return $result->fetch_assoc();
-}
-
-// Function to get the lowest answered question and its details per subject term
-// Function to get the lowest answered question and its text per subject term
-function getLowestAnsweredQuestion($subjectID, $term) {
-    global $conn;
-
-    $sql = "SELECT MIN(qs.questionTotal - IFNULL((SELECT COUNT(*) FROM AnswerStatistic AS as1 WHERE as1.question_ID = qb.question_ID), 0)) AS lowest_unanswered,
-                   qb.questionText AS lowest_question_text
-            FROM QuestionSet qs
-            INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-            WHERE qs.subject_ID = '$subjectID' AND qs.acadTerm = '$term'
-            GROUP BY qs.questionSet_ID
-            ORDER BY lowest_unanswered ASC
-            LIMIT 1";
-
-    $result = $conn->query($sql);
-
-    if ($result && $result->num_rows > 0) {
-        return $result->fetch_assoc(); // Return the lowest answered question details
-    } else {
-        return null; // Return null if no data found
-    }
-}
+include 'connection.php ';
+include 'get_statistics.php';
 
 
-// Example usage (replace 'your_subject_id' and 'your_academic_term' with actual values)
 $subjectID = 'your_subject_id';
 $term = 'your_academic_term';
 
-// Retrieve statistics
 $passedFailedStats = calculatePassedFailed($subjectID, $term);
 $scoreStats = getHighestLowestScores($subjectID, $term);
 $lowestAnsweredQuestion = getLowestAnsweredQuestion($subjectID, $term);
@@ -113,7 +56,6 @@ $lowestAnsweredQuestion = getLowestAnsweredQuestion($subjectID, $term);
             </div>
 
             <div class="col-md-4">
-                <!-- Additional content or sidebar -->
             </div>
         </div>
     </div>

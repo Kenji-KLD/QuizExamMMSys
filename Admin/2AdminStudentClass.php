@@ -126,8 +126,21 @@ class ImportStudent {
             fgetcsv($handle, 1000, ",");
             
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                
                 $student_ID = $data[0]; 
+                
+                if (empty($student_ID)) {
+                    continue; 
+                }
+
+                $check_stmt = $conn->prepare("SELECT student_ID FROM Student WHERE student_ID = ?");
+                $check_stmt->bind_param("s", $student_ID);
+                $check_stmt->execute();
+                $check_result = $check_stmt->get_result();
+
+                if ($check_result->num_rows > 0) {
+                    continue; 
+                }
+
                 $userName = $data[1];
                 $password = password_hash($data[2], PASSWORD_DEFAULT);
                 $fName = $data[3];
@@ -138,22 +151,18 @@ class ImportStudent {
                 $sex = $data[8];
                 $address = $data[9];
 
-        
+                // Insert into Account table
                 $stmt = $conn->prepare("INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 $stmt->bind_param("sssssssss", $userName, $password, $fName, $mName, $lName, $email, $birthdate, $sex, $address);
                 $stmt->execute();
-
-                // get the user_ID
                 $user_ID = $stmt->insert_id;
+                $stmt->close();
 
-                
+                // Insert into Student table
                 $stmt1 = $conn->prepare("INSERT INTO Student(student_ID, user_ID) VALUES (?, ?)");
                 $stmt1->bind_param("si", $student_ID, $user_ID);
                 $stmt1->execute();
-
-                
-                $stmt->close();
                 $stmt1->close();
             }
     
@@ -166,6 +175,7 @@ class ImportStudent {
         }
     }
 }
+
 
 
 
