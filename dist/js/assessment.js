@@ -87,6 +87,7 @@ jQuery(function () {
             questionSet_ID: getParameterByName('questionSet_ID')
         },
         success: function (response) {
+            console.log(response);
             let data = JSON.parse(response);
 
             document.getElementById('questionSetTitle').innerHTML = data.questionSetTitle;

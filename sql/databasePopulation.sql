@@ -1,11 +1,11 @@
 INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES
     ("Kenji667", "$2y$10$uaopU3O/dB95DSCNNEtApObugn4BUAkXHSAXBjWLwbMz8.ltpNJPW", 
     "Kenji", "", "Gabunada", 
-    "kgabunada@kld.edu.ph", 21, "Male",
+    "kgabunada@kld.edu.ph", '2002-07-16', "Male",
     "B2 L29 Scotland St. Sunnycrest Village Salitran II, Dasmariñas, Cavite 4114"),
     ("MasterAibu", "$2y$10$oOl/QWtH.3OnhmItx0xgAuOkNSFfZ0vgnXoHM/o0f3cH/IwAWGa9O", 
     "Aibu", "", "Kuan", 
-    "akuan@kld.edu.ph", 20, "Male", 
+    "akuan@kld.edu.ph", '2003-05-05', "Male", 
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("admin", "$2y$10$hKTXF3EesCmn9sRCaCbzE.vZxfbNd1J6XHU9PVuzw7i4oYk2.UbuK", 
     "Admin", "", "Lorem Ipsum", 
@@ -13,11 +13,11 @@ INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, s
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("faculty", "$2y$10$/l/3bssfbuFr/8FqC1vNsO21jGqZMsf2vIXXuF84jL9bLbJ9YRSES", 
     "Faculty", "", "Lorem Ipsum", 
-    "floremipsum@kld.edu.ph", 32, "Male", 
+    "floremipsum@kld.edu.ph", '2000/12/30', "Male", 
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("Hiroshi", "$2y$10$Nec0GYyGV2drsr6sJrFT/uNvpSMyhoPsAbVqDYbCEV3pwtOSxjagO", 
     "David", "Lavilla", "Agonia", 
-    "dlagonia@kld.edu.ph", 19, "Male",
+    "dlagonia@kld.edu.ph", '2000/12/30', "Male",
     "Greenwich St. Chester Place Burol Main, Dasmariñas, Cavite 4114")
 ;
 
@@ -132,4 +132,26 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (10, "B. Testing 10"),
     (10, "C. Testing 10"),
     (10, "D. Testing 10")
+;
+
+INSERT INTO `setdisallow` (`student_ID`, `questionSet_ID`, `isDisallowed`) VALUES
+('KLD-22-000420', 1, 0),
+('KLD-22-000247', 1, 0),
+('KLD-22-000192', 1, 0);
+
+INSERT INTO `answerstatistic` (`student_ID`, `question_ID`, `studentAnswer`, `isCorrect`) VALUES
+    ('KLD-22-000247', 1, 'A. Ernst Haeckel', 1),
+    ('KLD-22-000247', 2, 'A. Arthur Tansley', 1),
+    ('KLD-22-000247', 3, 'A. Habitat', 1),
+    ('KLD-22-000247', 4, 'A. Both A & B', 1),
+    ('KLD-22-000247', 5, 'A. Testing 5', 1),
+    ('KLD-22-000247', 6, 'A. Testing 6', 1),
+    ('KLD-22-000247', 7, 'A. Testing 7', 1),
+    ('KLD-22-000247', 8, 'A. Testing 8', 1),
+    ('KLD-22-000247', 9, 'A. Testing 9', 1),
+    ('KLD-22-000247', 10, 'A. Testing 10', 1)
+;
+
+INSERT INTO `score` (`student_ID`, `questionSet_ID`, `passed`, `score`, `dateTaken`) VALUES
+    ('KLD-22-000247', 1, 1, 10, '2024-05-12 16:14:32')
 ;

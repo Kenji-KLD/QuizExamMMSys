@@ -11,6 +11,25 @@ class Model{
         $this->db = $this->conn->conn;
     }
 
+    private function calculateAge($birthdate) {
+        // Create a DateTime object from the birthdate string
+        $birthDateObj = DateTime::createFromFormat('Y-m-d', $birthdate);
+
+        if (!$birthDateObj) {
+            // Handle invalid date format
+            return false;
+        }
+
+        // Get the current date
+        $currentDateObj = new DateTime();
+
+        // Calculate the difference between the current date and the birthdate
+        $age = $currentDateObj->diff($birthDateObj);
+
+        // Return the age in years
+        return $age->y;
+    }
+
     private function logError($error){
         $logDirectory = __DIR__ . '/log';
         $logFilePath = $logDirectory . '/database_error_log.txt';
@@ -45,6 +64,119 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("sisi", $input_studentID, $input_questionID, $input_studentAnswer, $input_isCorrect);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createChoice($input_questionID, $input_choiceLabel){
+        $query = "
+        INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES (?, ?)
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("is", $input_questionID, $input_choiceLabel);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createQuestion($input_questionSetID, $input_questionFormat, $input_questionNumber, $input_questionText, $input_questionAnswer, $input_pointsGiven){
+        $query = "
+        INSERT INTO QuestionBank(
+            questionSet_ID,
+            questionFormat,
+            questionNumber,
+            questionText,
+            questionAnswer,
+            pointsGiven
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("isissi", 
+                $input_questionSetID, 
+                $input_questionFormat, 
+                $input_questionNumber, 
+                $input_questionText, 
+                $input_questionAnswer, 
+                $input_pointsGiven
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($question_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $question_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createQuestionSet($input_secHandleID, $input_questionSetTitle, $input_questionSetType, $input_questionTotal, $input_randomCount, $input_deadline, $input_timeLimit, $input_acadYear, $input_acadTerm, $input_acadSem){
+        $query = "
+        INSERT INTO QuestionSet(
+            secHandle_ID, 
+            questionSetTitle, 
+            questionSetType, 
+            questionTotal, 
+            randomCount, 
+            deadline, 
+            timeLimit, 
+            acadYear, 
+            acadTerm, 
+            acadSem
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("issiisisss", 
+                $input_secHandleID,
+                $input_questionSetTitle,
+                $input_questionSetType,
+                $input_questionTotal, 
+                $input_randomCount, 
+                $input_deadline, 
+                $input_timeLimit, 
+                $input_acadYear, 
+                $input_acadTerm, 
+                $input_acadSem
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($questionSet_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $questionSet_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function createSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        INSERT INTO SetDisallow (student_ID, questionSet_ID, isDisallowed) VALUES (?, ?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("sii", $input_studentID, $input_questionSetID, $input_isDisallowed);
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
@@ -123,14 +255,14 @@ class Model{
         $query = "
         SELECT
             fName, mName, lName,
-            email, sex, age
+            email, sex, birthdate
         FROM Account
         WHERE user_ID = ?
         ";
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $age);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $birthdate);
 
             while($stmt->fetch()){
                 $data = [
@@ -139,7 +271,7 @@ class Model{
                     'lName' => $lName,
                     'email' => $email,
                     'sex' => $sex,
-                    'age' => $age
+                    'age' => $this->calculateAge($birthdate)
                 ];
             }
 
@@ -215,6 +347,34 @@ class Model{
 
             $stmt->close();
             return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readFacultyName($input_secHandleID){
+        $query = "
+        SELECT a.fName, a.mName, a.lName 
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Account a ON f.user_ID = a.user_ID
+        WHERE seh.secHandle_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName); $stmt->fetch();
+
+            $nameData = [
+                "fName" => $fName,
+                "mName" => $mName,
+                "lName" => $lName
+            ];
+
+            $stmt->close();
+            return $nameData;
         }
         catch(Exception $e){
             $this->logError($e);
@@ -415,49 +575,6 @@ class Model{
         return json_encode($data);
     }
 
-    public function readStudentScore($input_studentID, $input_questionSetID){
-        $titleQuery = "
-        SELECT questionSetTitle FROM QuestionSet
-        WHERE questionSet_ID = ?
-        ";
-
-        $scoreQuery = "
-        SELECT score FROM Score
-        WHERE student_ID = ? AND questionSet_ID = ?
-        ";
-        
-        $questionTotalQuery = "
-        SELECT COUNT(qb.question_ID), qs.randomCount
-        FROM QuestionSet qs
-        INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-        WHERE qs.questionSet_ID = ?
-        ";
-
-        try{
-            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
-            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
-            $titleStmt->fetch(); $titleStmt->close();
-
-            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
-            $scoreStmt->execute(); $scoreStmt->bind_result($score);
-            $scoreStmt->fetch(); $scoreStmt->close();
-            
-            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
-            $totalStmt->execute(); $totalStmt->bind_result($actualCount, $randomCount);
-            $totalStmt->fetch(); $totalStmt->close();
-            $total = $randomCount == null ? $actualCount : $randomCount;
-
-            return [
-                'questionSetTitle' => $questionSetTitle,
-                'score' => $score,
-                'total' => $total
-            ];
-        }
-        catch(Exception $e){
-            $this->logError($e);
-        }
-    }
-
     public function readSecHandleID($input_secHandleID){
         $query = "
         SELECT seh.section_ID AS section_ID, su.subjectName AS subjectName
@@ -488,8 +605,9 @@ class Model{
     public function readSectionList($input_section){
         $query = "
         SELECT 
+            s.student_ID,
             CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, 
-            a.age AS age, 
+            a.birthdate AS birthdate, 
             a.sex AS sex, 
             a.email AS email, 
             a.address AS address
@@ -503,13 +621,14 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_section);
-            $stmt->execute(); $stmt->bind_result($fullName, $age, $sex, $email, $address);
+            $stmt->execute(); $stmt->bind_result($student_ID, $fullName, $birthdate, $sex, $email, $address);
 
             // Name of outgoing variables here
             while($stmt->fetch()){
                 $studentData = [
+                    "student_ID" => $student_ID,
                     "fullName" => $fullName,
-                    "age" => $age,
+                    "age" => $this->calculateAge($birthdate),
                     "sex" => $sex,
                     "email" => $email,
                     "address" => $address
@@ -606,6 +725,34 @@ class Model{
         }
     }
 
+    public function readSetDisallow($input_questionSetID){
+        $data = [];
+        $query = "
+        SELECT student_ID, isDisallowed FROM SetDisallow
+        WHERE questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->bind_result($student_ID, $isDisallowed);
+
+            while($stmt->fetch()){
+                $setDisallowData = [
+                    'student_ID' => $student_ID,
+                    'isDisallowed' => $isDisallowed
+                ];
+
+                $data[] = $setDisallowData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readStudentDetails($input_userID){
         $query = "
         SELECT s.student_ID AS student_ID, c.section_ID AS section_ID, a.email AS email
@@ -627,6 +774,48 @@ class Model{
 
             $stmt->close();
             return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readStudentScore($input_studentID, $input_questionSetID){
+        $titleQuery = "
+        SELECT questionSetTitle FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        $scoreQuery = "
+        SELECT score FROM Score
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        $questionTotalQuery = "
+        SELECT questionTotal, randomCount
+        FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        try{
+            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
+            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
+            $titleStmt->fetch(); $titleStmt->close();
+
+            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
+            $scoreStmt->execute(); $scoreStmt->bind_result($score);
+            $scoreStmt->fetch(); $scoreStmt->close();
+            
+            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
+            $totalStmt->execute(); $totalStmt->bind_result($questionTotal, $randomCount);
+            $totalStmt->fetch(); $totalStmt->close();
+            $total = $randomCount == null ? $questionTotal : $randomCount;
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'score' => $score,
+                'total' => $total
+            ];
         }
         catch(Exception $e){
             $this->logError($e);
@@ -756,6 +945,22 @@ class Model{
             else{
                 return false;
             }
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function updateSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        UPDATE SetDisallow
+        SET isDisallowed = ?
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("isi", $input_isDisallowed, $input_studentID, $input_questionSetID);
+            $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
             $this->logError($e);
