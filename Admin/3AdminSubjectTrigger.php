@@ -36,11 +36,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($deleteSubject->delete()) {
         
-        $_SESSION['notif'] = "Successful";
+        $_SESSION['notif'] = "Archived Successfully";
         header("Location: 3AdminSubjects.php");
     } else {
        
-        $_SESSION['notif'] = "Failed to Delete Data";
+        $_SESSION['notif'] = "Failed to Archive Data";
         header("Location: 3AdminSubjects.php");
     }
 

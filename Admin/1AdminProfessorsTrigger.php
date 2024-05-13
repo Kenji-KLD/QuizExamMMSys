@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $delete = new DeleteFaculty($user_ID);
 
             if ($delete->delete()) {
-                $_SESSION['notif'] = "Archive Succesfully";
+                $_SESSION['notif'] = "Archived Succesfully";
                 header("Location: 1AdminProfessors.php");
             } else {
                 $_SESSION['notif'] = "Failed to Archive data";
