@@ -221,6 +221,34 @@ class Model{
         }
     }
 
+    public function readFacultyName($input_secHandleID){
+        $query = "
+        SELECT a.fName, a.mName, a.lName 
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Account a ON f.user_ID = a.user_ID
+        WHERE seh.secHandle_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName); $stmt->fetch();
+
+            $nameData = [
+                "fName" => $fName,
+                "mName" => $mName,
+                "lName" => $lName
+            ];
+
+            $stmt->close();
+            return $nameData;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readHandledSection($input_facultyID){
         $data = [];
         $query = "
