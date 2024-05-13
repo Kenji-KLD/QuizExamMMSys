@@ -1,4 +1,4 @@
-INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address) VALUES
+INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES
     ("Kenji667", "$2y$10$uaopU3O/dB95DSCNNEtApObugn4BUAkXHSAXBjWLwbMz8.ltpNJPW", 
     "Kenji", "", "Gabunada", 
     "kgabunada@kld.edu.ph", 21, "Male",

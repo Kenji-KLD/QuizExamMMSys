@@ -55,9 +55,9 @@ unset($_SESSION['notif']);
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email" placeholder="name@domain.com" required>
 
-                            <label for="birthdate">Birthdate: (YYYY-MM-DD)</label>
-                            <input type="text" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" required>
-                            <small style="color: red;" id="birthdate-error"></small>
+                            <label for="birthdate">Birthdate: (YYYY/MM/DD)</label>
+                            <input type="text" id="birthdate" name="birthdate" placeholder="YYYY/MM/DD" required>
+                            <small style="color: red;" id="birthdate-error"></small><br>
 
                             <label for="address">Address:</label>
                             <input type="text" id="address" name="address" required>
@@ -94,11 +94,11 @@ unset($_SESSION['notif']);
 
                         <form action="2AdminStudentTrigger.php" method="post" enctype="multipart/form-data">
                             <h3>Or Import CSV Files</h3>
-                                <input type="file" id="accounts_file" class= "acounts_file" name="accounts_file" accept=".csv">
-                                <br>
-                                <br>
-                                <input type="submit" class='import' name="import" value="Import">
+                            <input type="file" id="accounts_file" class="accounts_file" name="accounts_file" accept=".csv">
+                            <br><br>
+                            <input type="submit" class="import" name="import" value="Import">
                         </form>
+
                         </div>
                     </div>
 

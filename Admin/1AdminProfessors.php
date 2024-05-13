@@ -50,12 +50,12 @@ unset($_SESSION['notif']);
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" placeholder="name@domain.com" required><br>
                         
+                        <label for="birthdate">Birthdate: (YYYY/MM/DD)</label>
+                        <input type="text" id="birthdate" name="birthdate" placeholder="YYYY/MM/DD" required>
+                        <small style="color: red;" id="birthdate-error"></small><br>
+
                         <label for="address">Address:</label>
                         <input type="text" id="address" name="address" required><br>
-                        
-                        <label for="birthdate">Birthdate: (YYYY-MM-DD)</label>
-                        <input type="text" id="birthdate" name="birthdate" placeholder="YYYY-MM-DD" required>
-                        <small style="color: red;" id="birthdate-error"></small>
 
 
                         <label for="sex">Sex:</label>
