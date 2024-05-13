@@ -73,7 +73,7 @@ class RegistrationStudent {
 
         try {
          
-            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, birthdate , sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
             $stmt1->bind_param('sssssssss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email, $this->mysqlDate, $this->sex, $this->address);
             $stmt1->execute();
@@ -134,7 +134,7 @@ class ImportStudent {
                 $mName = $data[4];
                 $lName = $data[5];
                 $email = $data[6];
-                $birthdate = $birthdate[7];
+                $birthdate = $data[7];
                 $sex = $data[8];
                 $address = $data[9];
 

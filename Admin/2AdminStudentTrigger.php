@@ -41,10 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $delete = new DeleteStudent($user_ID);
 
             if ($delete->delete()) {
-                $_SESSION['notif'] = "Deleted Successfully";
+                $_SESSION['notif'] = "Archived Successfully";
                 header("Location: 2AdminStudents.php");
             } else {
-                $_SESSION['notif'] = "Failed to delete";
+                $_SESSION['notif'] = "Failed to Arhive data";
                 header("Location: 2AdminStudents.php");
             }
        
