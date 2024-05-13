@@ -11,6 +11,25 @@ class Model{
         $this->db = $this->conn->conn;
     }
 
+    private function calculateAge($birthdate) {
+        // Create a DateTime object from the birthdate string
+        $birthDateObj = DateTime::createFromFormat('Y-m-d', $birthdate);
+
+        if (!$birthDateObj) {
+            // Handle invalid date format
+            return false;
+        }
+
+        // Get the current date
+        $currentDateObj = new DateTime();
+
+        // Calculate the difference between the current date and the birthdate
+        $age = $currentDateObj->diff($birthDateObj);
+
+        // Return the age in years
+        return $age->y;
+    }
+
     private function logError($error){
         $logDirectory = __DIR__ . '/log';
         $logFilePath = $logDirectory . '/database_error_log.txt';
@@ -123,14 +142,14 @@ class Model{
         $query = "
         SELECT
             fName, mName, lName,
-            email, sex, age
+            email, sex, birthdate
         FROM Account
         WHERE user_ID = ?
         ";
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $age);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $birthdate);
 
             while($stmt->fetch()){
                 $data = [
@@ -139,7 +158,7 @@ class Model{
                     'lName' => $lName,
                     'email' => $email,
                     'sex' => $sex,
-                    'age' => $age
+                    'age' => $this->calculateAge($birthdate)
                 ];
             }
 
@@ -517,7 +536,7 @@ class Model{
         $query = "
         SELECT 
             CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, 
-            a.age AS age, 
+            a.birthdate AS birthdate, 
             a.sex AS sex, 
             a.email AS email, 
             a.address AS address
@@ -531,13 +550,15 @@ class Model{
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_section);
-            $stmt->execute(); $stmt->bind_result($fullName, $age, $sex, $email, $address);
+            $stmt->execute(); $stmt->bind_result($fullName, $birthdate, $sex, $email, $address);
+
+
 
             // Name of outgoing variables here
             while($stmt->fetch()){
                 $studentData = [
                     "fullName" => $fullName,
-                    "age" => $age,
+                    "age" => $this->calculateAge($birthdate),
                     "sex" => $sex,
                     "email" => $email,
                     "address" => $address
