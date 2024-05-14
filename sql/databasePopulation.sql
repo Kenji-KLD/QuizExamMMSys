@@ -53,10 +53,10 @@ INSERT INTO Faculty(user_ID) VALUES
     (4)
 ;
 
-INSERT INTO Class(student_ID, section_ID) VALUES
-    ("KLD-22-000247", "BSIS201"),
-    ("KLD-22-000192", "BSIS201"),
-    ("KLD-22-000420", "BSIS201")
+INSERT INTO Class(student_ID, secHandle_ID) VALUES
+    ("KLD-22-000247", 1),
+    ("KLD-22-000192", 1),
+    ("KLD-22-000420", 1)
 ;
 
 INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
@@ -75,7 +75,7 @@ INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
 INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES
     (1, "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    '2024-05-01 00:00:00', 7200, "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-20 23:59:59', 7200, "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
