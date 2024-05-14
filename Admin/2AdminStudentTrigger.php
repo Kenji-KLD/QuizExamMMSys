@@ -85,13 +85,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // }
     }elseif (isset($_POST['import'])) {
         if (isset($_FILES['accounts_file']['tmp_name']) && !empty($_FILES['accounts_file']['tmp_name'])) {
-            $userImporter = new ImportStudent($_FILES['accounts_file']['tmp_name']);
+            $file_tmp_name = $_FILES['accounts_file']['tmp_name'];
+            $userImporter = new ImportStudent($file_tmp_name);
             $userImporter->import();
         } else {
             $_SESSION['notif'] = "No file uploaded";
             header("Location: 2AdminStudents.php");
+            exit;
         }
     }
+    
     
     
 }

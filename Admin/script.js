@@ -57,16 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
 // Function to validate the birthdate format
 function validateDate(input) {
     var dateString = input.value.trim();
-    var validDate = /^\d{4}\/\d{2}\/\d{2}$/.test(dateString);
+    var validDate = /^\d{2}\/\d{2}\/\d{4}$/.test(dateString); // Updated regex for DD/MM/YYYY format
 
     if (!validDate) {
-        document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use YYYY/MM/DD.';
+        document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use DD/MM/YYYY.';
         return false;
     } else {
         document.getElementById('birthdate-error').textContent = '';
         return true;
     }
 }
+
 
 // Event listener to validate birthdate format as user types
 document.getElementById('birthdate').addEventListener('input', function() {
@@ -77,7 +78,7 @@ document.getElementById('birthdate').addEventListener('input', function() {
 function validateForm() {
     var birthdateInput = document.getElementById('birthdate');
     if (!validateDate(birthdateInput)) {
-        return false; // Prevent form submission if birthdate is invalid
+        return false;
     }
 
     var passwordInput = document.getElementById('password');

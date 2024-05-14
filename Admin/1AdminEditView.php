@@ -52,8 +52,8 @@ if (isset($_POST['edit'])) {
                             echo "Middle Name: <input type='text' name='mName' value='{$row['mName']}'><br>";
                             echo "Last Name: <input type='text' name='lName' value='{$row['lName']}'><br>";
                             echo "Email: <input type='email' name='email' value='{$row['email']}'><br>";
-                            echo "<label for='birthdate'>Birthdate: (YYYY-MM-DD)</label>";
-                            echo "<input type='text' id='birthdate' name='birthdate' placeholder='YYYY-MM-DD' value='{$row['birthdate']}' required>";
+                            echo "<label for='birthdate'>Birthdate: (YYYY/MM/DD)</label>";
+                            echo "<input type='text' id='birthdate' name='birthdate' placeholder='YYYY/MM/DD' value='{$row['birthdate']}' required>";
                             echo "<small style='color: red;' id='birthdate-error'></small>";
                             echo "Address: <input type='text' name='address' value='{$row['address']}'><br>";
                             echo "Gender: <select name='sex'>";
