@@ -11,6 +11,7 @@ jQuery(function() {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response){
+            console.log(response);
             let data = JSON.parse(response);
 
             const container = document.getElementById('subjectList'); // Assuming subjectList is the container element
@@ -22,7 +23,7 @@ jQuery(function() {
             data.forEach(item => {
                 let fullName = item.lName + ', ' + item.fName;
                 if (item.mName) {
-                    fullName += ' ' + item.mName + '.';
+                    fullName += ' ' + item.mName.charAt(0) + '.';
                 }
 
                 // Create elements for card

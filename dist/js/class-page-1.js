@@ -40,6 +40,7 @@ jQuery(function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response){
+            console.log(response);
             const data = JSON.parse(response);
 
             // Display subHandle_ID's Handled Subject and Section

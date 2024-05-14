@@ -189,7 +189,7 @@ class Model{
         SELECT COUNT(*) AS score
         FROM AnswerStatistic ans
         INNER JOIN QuestionBank qb ON ans.question_ID = qb.question_ID
-        WHERE ans.isCorrect = 1 AND qb.questionSet_ID = ?;
+        WHERE ans.isCorrect = 1 AND ans.student_ID = ? AND qb.questionSet_ID = ?;
         ";
 
         $query = "
@@ -197,7 +197,7 @@ class Model{
         ";
 
         try{
-            $stmtScore = $this->db->prepare($scoreQuery); $stmtScore->bind_param("i", $input_questionSetID);
+            $stmtScore = $this->db->prepare($scoreQuery); $stmtScore->bind_param("si", $input_studentID, $input_questionSetID);
             $stmtScore->execute(); $stmtScore->bind_result($input_score);
             $stmtScore->fetch(); $stmtScore->close();
 
@@ -316,6 +316,31 @@ class Model{
         }
     }
 
+    public function readAssessment($input_questionSetID){
+        $query = "
+        SELECT qs.questionSetTitle, seh.section_ID, qs.deadline
+        FROM QuestionSet qs
+        INNER JOIN SectionHandle seh ON qs.secHandle_ID = seh.secHandle_ID
+        WHERE qs.questionSet_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->store_result(); $stmt->bind_result($questionSetTitle, $section_ID, $deadline);
+            $stmt->fetch(); $stmt->close();
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'section_ID' => $section_ID,
+                'deadlineDate' => substr($deadline, 0, 10),
+                'deadlineTime' => substr($deadline, 11)
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
     public function readAssessmentList($input_secHandleID){
         $query = "
         SELECT 
@@ -340,6 +365,93 @@ class Model{
                     'section_ID' => $section_ID,
                     'deadlineDate' => substr($deadline, 0, 10),
                     'deadlineTime' => substr($deadline, 11)
+                ];
+
+                $data[] = $assessmentData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readAssessmentAllowed($input_studentID){
+        $data = [];
+        $query = "
+        SELECT 
+            sd.questionSet_ID, 
+            qs.questionSetTitle, 
+            qs.questionTotal, 
+            qs.randomCount, 
+            qs.deadline 
+        FROM 
+            SetDisallow sd
+        INNER JOIN 
+            QuestionSet qs 
+        ON 
+            sd.questionSet_ID = qs.questionSet_ID
+        WHERE 
+            sd.student_ID = ?
+        AND 
+            sd.isDisallowed = 0 
+        AND 
+            qs.deadline > NOW()
+        AND NOT EXISTS (
+            SELECT 1
+            FROM Score sc
+            WHERE sc.student_ID = ?
+            AND sc.questionSet_ID = sd.questionSet_ID
+        )
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("ss", $input_studentID, $input_studentID);
+            $stmt->execute(); $stmt->bind_result($questionSet_ID, $questionSetTitle, $questionTotal, $randomCount, $deadline);
+
+            while($stmt->fetch()){
+                $assessmentData[] = [
+                    'questionSet_ID' => $questionSet_ID, 
+                    'questionSetTitle' => $questionSetTitle, 
+                    'total' => $total = $randomCount == null ? $questionTotal : $randomCount,
+                    'date' => substr($deadline, 0, 10),
+                    'time' => substr($deadline, 11)
+                ];
+
+                $data[] = $assessmentData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e);
+        }
+    }
+
+    public function readAssessmentScored($input_studentID){
+        $data = [];
+        $query = "
+        SELECT s.questionSet_ID, s.score, qs.questionSetTitle, qs.questionTotal, qs.randomCount, s.dateTaken 
+        FROM Score s
+        INNER JOIN QuestionSet qs ON s.questionSet_ID = qs.questionSet_ID
+        WHERE s.student_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
+            $stmt->execute(); $stmt->bind_result($questionSet_ID, $score, $questionSetTitle, $questionTotal, $randomCount, $dateTaken);
+
+            while($stmt->fetch()){
+                $assessmentData[] = [
+                    'questionSet_ID' => $questionSet_ID, 
+                    'questionSetTitle' => $questionSetTitle, 
+                    'score' => $score, 
+                    'total' => $total = $randomCount == null ? $questionTotal : $randomCount,
+                    'date' => substr($dateTaken, 0, 10),
+                    'time' => substr($dateTaken, 11)
                 ];
 
                 $data[] = $assessmentData;
@@ -602,7 +714,7 @@ class Model{
         }
     }
 
-    public function readSectionList($input_section){
+    public function readSectionList($input_secHandleID){
         $query = "
         SELECT 
             s.student_ID,
@@ -614,13 +726,13 @@ class Model{
         FROM Account a
         INNER JOIN Student s ON a.user_ID = s.user_ID
         INNER JOIN Class c ON s.student_ID = c.student_ID
-        WHERE c.section_ID = ?
+        WHERE c.secHandle_ID = ?
         ORDER BY fullName;
         ";
         $data = [];
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_section);
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_secHandleID);
             $stmt->execute(); $stmt->bind_result($student_ID, $fullName, $birthdate, $sex, $email, $address);
 
             // Name of outgoing variables here
@@ -755,20 +867,18 @@ class Model{
 
     public function readStudentDetails($input_userID){
         $query = "
-        SELECT s.student_ID AS student_ID, c.section_ID AS section_ID, a.email AS email
+        SELECT s.student_ID AS student_ID, a.email AS email
         FROM Student s
         INNER JOIN Account a ON s.user_ID = a.user_ID
-        INNER JOIN Class c ON s.student_ID = c.student_ID
         WHERE a.user_ID = ?
         ";
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($student_ID, $section, $email); $stmt->fetch();
+            $stmt->execute(); $stmt->bind_result($student_ID, $email); $stmt->fetch();
 
             $data = [
                 'student_ID' => $student_ID,
-                'section' => $section,
                 'email' => $email
             ];
 
@@ -822,19 +932,20 @@ class Model{
         }
     }
 
-    public function readStudentSubject($input_sectionID){
+    public function readStudentSubject($input_studentID){
         $query = "
-        SELECT seh.secHandle_ID, su.subjectName, a.fName, a.mName, a.lName
-        FROM SectionHandle seh
+        SELECT c.secHandle_ID, su.subjectName, a.fName, a.mName, a.lName
+        FROM Class c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID
         INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN Account a ON f.user_ID = a.user_ID
-        WHERE section_ID = ?
+        WHERE c.student_ID = ?
         ";
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sectionID);
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
             $stmt->execute(); $stmt->bind_result($secHandle_ID, $subjectName, $fName, $mName, $lName);
 
             while($stmt->fetch()){

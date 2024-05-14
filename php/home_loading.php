@@ -6,7 +6,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
 
     $sessionData = $Model->readSessionData($_COOKIE['session_token']);
     $studentData = $Model->readStudentDetails($sessionData['user_ID']);
-    echo json_encode($Model->readStudentSubject($studentData['section']));
+    echo json_encode($Model->readStudentSubject($studentData['student_ID']));
 
     $Model = null; 
     exit();

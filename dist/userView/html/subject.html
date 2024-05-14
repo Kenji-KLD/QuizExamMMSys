@@ -65,53 +65,27 @@
     <main class="flex flex-1 justify-center items-center">
       <!-- CONTAINER -->
       <div class="w-dvw h-full">
-        <p class="main-title ml-6 mt-6 mb-0">System Analysis and Design</p>
+        <p id="subjectName" class="main-title ml-6 mt-6 mb-0"></p>
         <div
           class="p-0 md:p-4 bg-ISshade3/10 rounded-3xl backdrop-blur-[2.25px] border border-ISshade1 mt-4"
         >
           <div>
             <div class="flex">
-              <a
-                href=""
-                class="main-title ml-6 mt-6 mb-0 md:activated-secondary"
+              <a class="main-title ml-6 mt-6 mb-0 md:activated-secondary"
                 >Assessments</a
               >
-              <a href="/dist/userView/html/people.html" class="md:block hidden main-title ml-6 mt-6 mb-0"
+              <a class="md:block hidden main-title ml-6 mt-6 mb-0 peopleLink"
                 >People</a
               >
-              <a href="/dist/userView/html/leaderboard.html" class="md:block hidden main-title ml-6 mt-6 mb-0"
+              <a class="md:block hidden main-title ml-6 mt-6 mb-0 leaderboardLink"
                 >Leaderboard</a
               >
             </div>
           </div>
           <section
+            id="assessmentList"
             class="p-4 top-content grid grid-flow-row gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-1"
           >
-            <!-- CARDS -->
-            <div class="card-user1 w-auto rounded-3xl">
-              <a href="/dist/userView/html/assessment.html">
-                <h1 class="font-bold text-xl">Quiz 1</h1>
-                <h5 class="font-base text-sm mb-8">Score</h5>
-                <p class="font-base text-sm">04/20/2024</p>
-                <p class="font-base text-sm">01:50 PM</p>
-              </a>
-            </div>
-            <div class="card-user2 w-auto rounded-3xl">
-              <a href="">
-                <h1 class="font-bold text-xl">Quiz 1</h1>
-                <h5 class="font-base text-sm mb-8">Score</h5>
-                <p class="font-base text-sm">04/20/2024</p>
-                <p class="font-base text-sm">01:50 PM</p>
-              </a>
-            </div>
-            <div class="card-user2 w-auto rounded-3xl">
-              <a href="">
-                <h1 class="font-bold text-xl">Quiz 1</h1>
-                <h5 class="font-base text-sm mb-8">Score</h5>
-                <p class="font-base text-sm">04/20/2024</p>
-                <p class="font-base text-sm">01:50 PM</p>
-              </a>
-            </div>
           </section>
         </div>
       </div>
@@ -120,7 +94,7 @@
       class="fixed w-full bottom-0 bg-ISshade3/80 backdrop-blur-[2.25px] p-5 flex justify-around md:hidden"
     >
       <div>
-        <a href="" class="flex flex-col items-center">
+        <a class="flex flex-col items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -141,7 +115,7 @@
         </a>
       </div>
       <div>
-        <a href="/dist/userView/html/people.html" class="flex flex-col items-center">
+        <a class="flex flex-col items-center peopleLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -160,7 +134,7 @@
         </a>
       </div>
       <div>
-        <a href="/dist/userView/html/leaderboard.html" class="flex flex-col items-center">
+        <a class="flex flex-col items-center leaderboardLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -179,6 +153,8 @@
         </a>
       </div>
     </footer>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/userView/js/side.js"></script>
+    <script src="/dist/js/subject.js" type="module"></script>
   </body>
 </html>

@@ -94,6 +94,12 @@ jQuery(function () {
         success: function(response) {
             let data = JSON.parse(response);
 
+            document.getElementById('attendance').style.display = '';
+            document.getElementById('questionSetTitle').textContent = data.assessmentData.questionSetTitle;
+            document.getElementById('section_ID').textContent = data.assessmentData.section_ID;
+            document.getElementById('deadlineDate').textContent = data.assessmentData.deadlineDate;
+            document.getElementById('deadlineTime').textContent = data.assessmentData.deadlineTime;
+
             data.sectionList.forEach(student => {
                 const tr = document.createElement('tr');
             

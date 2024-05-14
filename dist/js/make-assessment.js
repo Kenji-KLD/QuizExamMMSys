@@ -70,7 +70,6 @@ window.createAssessment = function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response) {
-            console.log(response);
             let data = JSON.parse(response);
 
             if(data.processed == true){

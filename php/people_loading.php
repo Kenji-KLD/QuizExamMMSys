@@ -6,10 +6,11 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
     
     $sessionData = $Model->readSessionData($_COOKIE['session_token']);
     $studentData = $Model->readStudentDetails($sessionData['user_ID']);
-    $studentList = $Model->readSectionList($studentData['section']);
+    $studentList = $Model->readSectionList($_POST['secHandle_ID']);
     $profName = $Model->readFacultyName($_POST['secHandle_ID']);
 
     echo json_encode([
+        'secHandleData' => $Model->readSecHandleID($_POST['secHandle_ID']),
         'profName' => $profName,
         'studentList' => $studentList
     ]);

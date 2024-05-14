@@ -6,8 +6,9 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
 
     $secHandleData = $Model->readSecHandleID($_POST['secHandle_ID']);
     echo json_encode([
-        'sectionList' => $Model->readSectionList($secHandleData['section_ID']),
-        'setDisallowData' => $Model->readSetDisallow($_POST['questionSet_ID'])
+        'sectionList' => $Model->readSectionList($_POST['secHandle_ID']),
+        'setDisallowData' => $Model->readSetDisallow($_POST['questionSet_ID']),
+        'assessmentData' => $Model->readAssessment($_POST['questionSet_ID'])
     ]);
 
     $Model = null; 

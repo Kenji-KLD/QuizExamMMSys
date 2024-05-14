@@ -53,12 +53,6 @@ INSERT INTO Faculty(user_ID) VALUES
     (4)
 ;
 
-INSERT INTO Class(student_ID, secHandle_ID) VALUES
-    ("KLD-22-000247", 1),
-    ("KLD-22-000192", 1),
-    ("KLD-22-000420", 1)
-;
-
 INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
     ("BSIS201", "GEE5000"),
     ("BSIS201", "PCIS2209")
@@ -70,6 +64,12 @@ INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
 
 INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
     (1, "BSIS201")
+;
+
+INSERT INTO Class(student_ID, secHandle_ID) VALUES
+    ("KLD-22-000247", 1),
+    ("KLD-22-000192", 1),
+    ("KLD-22-000420", 1)
 ;
 
 INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES

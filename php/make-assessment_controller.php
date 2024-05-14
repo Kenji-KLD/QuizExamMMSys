@@ -69,7 +69,7 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
     }
 
     $secHandleData = $Model->readSecHandleID($_POST['secHandle_ID']);
-    $studentList = $Model->readSectionList($secHandleData['section_ID']);
+    $studentList = $Model->readSectionList($_POST['secHandle_ID']);
 
     $questionSet_ID = $Model->createQuestionSet(
         $_POST['secHandle_ID'],
