@@ -19,6 +19,25 @@ window.toggleRemove = function () {
     });
 }
 
+window.updateClass = function () {
+    $.ajax({
+        url: "/php/class-page-1_controller.php",
+        method: "POST",
+        data: {
+            secHandle_ID: getParameterByName('secHandle_ID')
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        },
+        success: function(response){
+
+        },
+        error: function(error){
+            console.error(error);
+        }
+    });
+}
+
 jQuery(function () {
     // Changing href redirects to contain GET variable
     const assessmentsLink = document.getElementById('assessmentsLink');
@@ -40,7 +59,6 @@ jQuery(function () {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response){
-            console.log(response);
             const data = JSON.parse(response);
 
             // Display subHandle_ID's Handled Subject and Section
