@@ -188,7 +188,7 @@ jQuery(function () {
 
                 // Create a new div element for the card
                 const card = document.createElement('div');
-                card.classList.add('card-test', 'w-[75%]', 'rounded-3xl');
+                card.classList.add('card-test', 'w-full', 'lg:w-[75%]', 'rounded-3xl');
 
                 // Create a new form element
                 const form = document.createElement('form');
