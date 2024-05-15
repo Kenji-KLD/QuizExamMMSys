@@ -11,7 +11,6 @@ jQuery(function() {
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         },
         success: function(response){
-            console.log(response);
             let data = JSON.parse(response);
 
             const container = document.getElementById('subjectList'); // Assuming subjectList is the container element

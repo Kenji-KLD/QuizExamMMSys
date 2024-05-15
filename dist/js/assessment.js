@@ -3,11 +3,6 @@ import { getParameterByName } from '/dist/js/function.js';
 // Anti-cheating
 let questionnaireTerminated = false;
 
-window.addEventListener('beforeunload', function (event) {
-    event.preventDefault();
-    event.returnValue = '';
-});
-
 window.addEventListener('unload', function () {
     // Window is unloaded (user might have exited the tab)
     terminateQuestionnaire();
