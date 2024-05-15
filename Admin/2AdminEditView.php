@@ -4,11 +4,31 @@
     if (isset($_POST['edit'])) {
         $user_ID = $_POST['user_ID'];
 
-        $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.sex, A.address, S.student_ID, C.section_ID
-                FROM Account A
-                LEFT JOIN Student S ON A.user_ID = S.user_ID
-                LEFT JOIN Class C ON S.student_ID = C.student_ID
-                WHERE A.user_ID = {$user_ID}";
+        $sql = "SELECT 
+        A.user_ID, 
+        A.userName, 
+        A.fName, 
+        A.mName, 
+        A.lName, 
+        A.email, 
+        A.birthdate, 
+        A.sex, 
+        A.address, 
+        S.student_ID,
+        SH.section_ID AS student_section_ID,
+        Sec.course AS section_course
+    FROM 
+        Account A
+    LEFT JOIN 
+        Student S ON A.user_ID = S.user_ID
+    LEFT JOIN 
+        Class C ON S.student_ID = C.student_ID
+    LEFT JOIN 
+        SectionHandle SH ON C.secHandle_ID = SH.secHandle_ID
+    LEFT JOIN 
+        Section Sec ON SH.section_ID = Sec.section_ID
+    WHERE 
+        A.user_ID = {$user_ID}";
 
         $result = $conn->query($sql);
 ?>        

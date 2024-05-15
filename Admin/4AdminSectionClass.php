@@ -112,12 +112,28 @@ class DeleteSection {
         $this->section_ID = $section_ID;
     }
 
+    private function generateRandomString($length = 12) {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
+    }
+
     public function delete() {
         include "connection.php";
 
         try {
-            $stmt = $conn->prepare("UPDATE Section SET course = 'q1w2e3r4t' WHERE section_ID = ?");
-            $stmt->bind_param('s', $this->section_ID);
+
+            $randomString = $this->generateRandomString();
+
+            $newSectionName = 'deleted_' . $randomString;
+
+            $stmt = $conn->prepare("UPDATE Section SET course = ? WHERE section_ID = ?");
+            $stmt->bind_param('ss', $newSectionName ,$this->section_ID);
             $stmt->execute();
             $stmt->close();
 
