@@ -185,7 +185,7 @@ jQuery(function () {
             data.questions.forEach((question, index) => {
                 // Create a new article element
                 const article = document.createElement('article');
-                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center', 'mb-6');
+                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center', 'my-6');
 
                 // Create a new div element for the card
                 const card = document.createElement('div');
