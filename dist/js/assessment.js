@@ -1,5 +1,6 @@
 import { getParameterByName } from '/dist/js/function.js';
 
+/*
 // Anti-cheating
 let questionnaireTerminated = false;
 let antiCheatFlag = true;
@@ -24,7 +25,7 @@ document.addEventListener('visibilitychange', function() {
         terminateQuestionnaire();
     }
 });
-// -------------
+// ------------- */
 
 window.promptSubmitQuestionnaire = function () {
     if(confirm("Are you sure you want to submit your answers?")){
@@ -184,7 +185,7 @@ jQuery(function () {
             data.questions.forEach((question, index) => {
                 // Create a new article element
                 const article = document.createElement('article');
-                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center');
+                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center', 'mb-6');
 
                 // Create a new div element for the card
                 const card = document.createElement('div');
@@ -229,12 +230,12 @@ jQuery(function () {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = `q${index + 1}-answers`;
-                    input.id = `A${choiceIndex + 1}`;
+                    input.id = `A${index + 1}${choiceIndex + 1}`;
                     input.value = choice;
 
                     // Create a new label element for the radio button
                     const label = document.createElement('label');
-                    label.htmlFor = `A${choiceIndex + 1}`;
+                    label.htmlFor = `A${index + 1}${choiceIndex + 1}`;
                     label.textContent = choice;
 
                     // Append the input and label elements to the answer item
