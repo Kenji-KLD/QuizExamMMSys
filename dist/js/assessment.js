@@ -2,19 +2,24 @@ import { getParameterByName } from '/dist/js/function.js';
 
 // Anti-cheating
 let questionnaireTerminated = false;
+let antiCheatFlag = true;
 
 window.addEventListener('unload', function () {
-    // Window is unloaded (user might have exited the tab)
-    terminateQuestionnaire();
+    // Window is unloaded (user might have exited the tab)\
+    if(antiCheatFlag){
+        terminateQuestionnaire();
+    }
 });
 
 window.addEventListener('blur', function() {
     // Window lost focus (user might have switched to another application)
-    terminateQuestionnaire();
+    if(antiCheatFlag){
+        terminateQuestionnaire();
+    }
 });
 
 document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'hidden') {
+    if (document.visibilityState === 'hidden' && antiCheatFlag) {
         // Tab is now hidden (user might have switched to a different application)
         terminateQuestionnaire();
     }
@@ -23,7 +28,7 @@ document.addEventListener('visibilitychange', function() {
 
 window.promptSubmitQuestionnaire = function () {
     if(confirm("Are you sure you want to submit your answers?")){
-        submitQuestionnaire();
+        antiCheatFlag = false; submitQuestionnaire(); 
     }
 };
 
@@ -183,7 +188,7 @@ jQuery(function () {
 
                 // Create a new div element for the card
                 const card = document.createElement('div');
-                card.classList.add('card-test', 'w-full', 'lg:w-[75%]', 'rounded-3xl');
+                card.classList.add('card-test', 'w-[75%]', 'rounded-3xl');
 
                 // Create a new form element
                 const form = document.createElement('form');
