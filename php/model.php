@@ -185,7 +185,7 @@ class Model{
 
     public function createScore($input_studentID, $input_questionSetID, $input_dateTaken){
         $scoreQuery = "
-        SELECT SUM(qb.pointsGiven) AS score
+        SELECT COALESCE(SUM(qb.pointsGiven), 0) AS score
         FROM AnswerStatistic ans
         INNER JOIN QuestionBank qb ON ans.question_ID = qb.question_ID
         WHERE ans.isCorrect = 1 AND ans.student_ID = ? AND qb.questionSet_ID = ?;
