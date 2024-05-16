@@ -5,6 +5,25 @@ var originalStyle = {
     selectColumn: document.getElementById('selectColumn').style.display,
 };
 
+window.getStudent = function (dataFlag) {
+    if(dataFlag == 'addStudent'){
+        const student_ID = document.getElementById('addStudent').value;
+        return { student_ID };
+    }
+    else if(dataFlag == 'removeStudent'){
+        const checkboxes = document.querySelectorAll('.studentCheckbox');
+        let student_ID = [];
+
+        checkboxes.forEach(checkbox => {
+            if(checkbox.checked){
+                student_ID.push(checkbox.value);
+            }
+        });
+
+        return { student_ID };
+    }
+};
+
 window.toggleRemove = function () {
     var removeButton = document.getElementById('removeButton');
     var selectColumn = document.getElementById('selectColumn');
@@ -17,7 +36,36 @@ window.toggleRemove = function () {
         checkbox.style.display = (checkbox.style.display !== 'none') ? 'none' : '';
         checkbox.checked = false;
     });
-}
+};
+
+window.updateClass = function (dataFlag, student_ID) {
+    $.ajax({
+        url: "/php/class-page-1_controller.php",
+        method: "POST",
+        data: {
+            dataFlag: dataFlag,
+            student_ID: JSON.stringify(student_ID),
+            secHandle_ID: getParameterByName('secHandle_ID')
+        },
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        },
+        success: function(response){
+            let data = JSON.parse(response);
+
+            if(data.processed){
+                alert("Success");
+                location.reload();
+            }
+            else{
+                alert(data.error_message);
+            }
+        },
+        error: function(error){
+            console.error(error);
+        }
+    });
+};
 
 jQuery(function () {
     // Changing href redirects to contain GET variable
@@ -54,7 +102,7 @@ jQuery(function () {
             data.studentList.forEach(student => {
                 const row = $("<tr></tr>");
                 row.html(`
-                    <td class="text-center tableSelect"><input type="checkbox" id="student${studentCount}"></td>
+                    <td class="text-center tableSelect"><input type="checkbox" class="studentCheckbox" value="${student.student_ID}"></td>
                     <td>${student.fullName}</td>
                     <td>${student.age}</td>
                     <td>${student.sex}</td>

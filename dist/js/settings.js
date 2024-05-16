@@ -43,7 +43,7 @@ jQuery(function () {
     let userDetails = JSON.parse(decodeURIComponent(getCookie('userDetails')));
     let fullName = userDetails['lName'] + ', ' + userDetails['fName'];
         if (userDetails['mName']) {
-            fullName += ' ' + userDetails['mName'] + '.';
+            fullName += ' ' + userDetails['mName'].charAt(0) + '.';
     }
 
     document.getElementById('fullName').textContent = fullName;

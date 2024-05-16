@@ -11,6 +11,25 @@ class Model{
         $this->db = $this->conn->conn;
     }
 
+    private function calculateAge($birthdate) {
+        // Create a DateTime object from the birthdate string
+        $birthDateObj = DateTime::createFromFormat('Y-m-d', $birthdate);
+
+        if (!$birthDateObj) {
+            // Handle invalid date format
+            return false;
+        }
+
+        // Get the current date
+        $currentDateObj = new DateTime();
+
+        // Calculate the difference between the current date and the birthdate
+        $age = $currentDateObj->diff($birthDateObj);
+
+        // Return the age in years
+        return $age->y;
+    }
+
     private function logError($error){
         $logDirectory = __DIR__ . '/log';
         $logFilePath = $logDirectory . '/database_error_log.txt';
@@ -48,7 +67,119 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createChoice($input_questionID, $input_choiceLabel){
+        $query = "
+        INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES (?, ?)
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("is", $input_questionID, $input_choiceLabel);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createClass($input_studentID, $input_secHandleID){
+        $query = "
+        INSERT INTO Class(student_ID, secHandle_ID) VALUES (?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("si", $input_studentID, $input_secHandleID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createQuestion($input_questionSetID, $input_questionFormat, $input_questionNumber, $input_questionText, $input_questionAnswer, $input_pointsGiven){
+        $query = "
+        INSERT INTO QuestionBank(
+            questionSet_ID,
+            questionFormat,
+            questionNumber,
+            questionText,
+            questionAnswer,
+            pointsGiven
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("isissi", 
+                $input_questionSetID, 
+                $input_questionFormat, 
+                $input_questionNumber, 
+                $input_questionText, 
+                $input_questionAnswer, 
+                $input_pointsGiven
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($question_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $question_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createQuestionSet($input_secHandleID, $input_questionSetTitle, $input_questionSetType, $input_questionTotal, $input_randomCount, $input_deadline, $input_timeLimit, $input_acadYear, $input_acadTerm, $input_acadSem){
+        $query = "
+        INSERT INTO QuestionSet(
+            secHandle_ID, 
+            questionSetTitle, 
+            questionSetType, 
+            questionTotal, 
+            randomCount, 
+            deadline, 
+            timeLimit, 
+            acadYear, 
+            acadTerm, 
+            acadSem
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ";
+
+        $returnIDQuery = "
+        SELECT LAST_INSERT_ID()
+        ";
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("issiisisss", 
+                $input_secHandleID,
+                $input_questionSetTitle,
+                $input_questionSetType,
+                $input_questionTotal, 
+                $input_randomCount, 
+                $input_deadline, 
+                $input_timeLimit, 
+                $input_acadYear, 
+                $input_acadTerm, 
+                $input_acadSem
+            );
+            $stmt->execute(); $stmt->close();
+
+            $returnIDstmt = $this->db->prepare($returnIDQuery);
+            $returnIDstmt->execute(); $returnIDstmt->bind_result($questionSet_ID);
+            $returnIDstmt->fetch(); $returnIDstmt->close();
+            
+            return $questionSet_ID;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
@@ -57,7 +188,7 @@ class Model{
         SELECT COUNT(*) AS score
         FROM AnswerStatistic ans
         INNER JOIN QuestionBank qb ON ans.question_ID = qb.question_ID
-        WHERE ans.isCorrect = 1 AND qb.questionSet_ID = ?;
+        WHERE ans.isCorrect = 1 AND ans.student_ID = ? AND qb.questionSet_ID = ?;
         ";
 
         $query = "
@@ -65,7 +196,7 @@ class Model{
         ";
 
         try{
-            $stmtScore = $this->db->prepare($scoreQuery); $stmtScore->bind_param("i", $input_questionSetID);
+            $stmtScore = $this->db->prepare($scoreQuery); $stmtScore->bind_param("si", $input_studentID, $input_questionSetID);
             $stmtScore->execute(); $stmtScore->bind_result($input_score);
             $stmtScore->fetch(); $stmtScore->close();
 
@@ -75,7 +206,37 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createSecHandle($input_facultyID, $input_subjectID, $input_sectionID){
+        $query = "
+        INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+        ((SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ? AND subject_ID = ?), ?)
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("iss", $input_facultyID, $input_subjectID, $input_sectionID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        INSERT INTO SetDisallow (student_ID, questionSet_ID, isDisallowed) VALUES (?, ?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("sii", $input_studentID, $input_questionSetID, $input_isDisallowed);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
     
@@ -95,22 +256,7 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
-        }
-    }
-
-    public function createSubHandle($input_facultyID, $input_subjectID, $input_sectionID){
-        $query = "
-        INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
-        ((SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ? AND subject_ID = ?), ?)
-        ";
-        
-        try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("iss", $input_facultyID, $input_subjectID, $input_sectionID);
-            $stmt->execute(); $stmt->close();
-        }
-        catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -123,14 +269,14 @@ class Model{
         $query = "
         SELECT
             fName, mName, lName,
-            email, sex, age
+            email, sex, birthdate
         FROM Account
         WHERE user_ID = ?
         ";
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $age);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName, $email, $sex, $birthdate);
 
             while($stmt->fetch()){
                 $data = [
@@ -139,7 +285,7 @@ class Model{
                     'lName' => $lName,
                     'email' => $email,
                     'sex' => $sex,
-                    'age' => $age
+                    'age' => $this->calculateAge($birthdate)
                 ];
             }
 
@@ -147,7 +293,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
@@ -180,7 +326,32 @@ class Model{
             }
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readAssessment($input_questionSetID){
+        $query = "
+        SELECT qs.questionSetTitle, seh.section_ID, qs.deadline
+        FROM QuestionSet qs
+        INNER JOIN SectionHandle seh ON qs.secHandle_ID = seh.secHandle_ID
+        WHERE qs.questionSet_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->store_result(); $stmt->bind_result($questionSetTitle, $section_ID, $deadline);
+            $stmt->fetch(); $stmt->close();
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'section_ID' => $section_ID,
+                'deadlineDate' => substr($deadline, 0, 10),
+                'deadlineTime' => substr($deadline, 11)
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
@@ -193,7 +364,7 @@ class Model{
             qs.deadline AS deadline
         FROM SectionHandle seh
         INNER JOIN QuestionSet qs ON seh.secHandle_ID = qs.secHandle_ID
-        WHERE seh.secHandle_ID = ?
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
         ";
         $data = [];
 
@@ -217,7 +388,124 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readAssessmentAllowed($input_studentID){
+        $data = [];
+        $query = "
+        SELECT 
+            sd.questionSet_ID, 
+            qs.questionSetTitle, 
+            qs.questionTotal, 
+            qs.randomCount, 
+            qs.deadline 
+        FROM 
+            SetDisallow sd
+        INNER JOIN 
+            QuestionSet qs 
+        ON 
+            sd.questionSet_ID = qs.questionSet_ID
+        WHERE 
+            sd.student_ID = ?
+        AND 
+            sd.isDisallowed = 0 
+        AND 
+            qs.deadline > NOW()
+        AND
+            qs.secHandle_ID IS NOT NULL
+        AND NOT EXISTS (
+            SELECT 1
+            FROM Score sc
+            WHERE sc.student_ID = ?
+            AND sc.questionSet_ID = sd.questionSet_ID
+        )
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("ss", $input_studentID, $input_studentID);
+            $stmt->execute(); $stmt->bind_result($questionSet_ID, $questionSetTitle, $questionTotal, $randomCount, $deadline);
+
+            while($stmt->fetch()){
+                $assessmentData[] = [
+                    'questionSet_ID' => $questionSet_ID, 
+                    'questionSetTitle' => $questionSetTitle, 
+                    'total' => $total = $randomCount == null ? $questionTotal : $randomCount,
+                    'date' => substr($deadline, 0, 10),
+                    'time' => substr($deadline, 11)
+                ];
+
+                $data[] = $assessmentData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readAssessmentScored($input_studentID){
+        $data = [];
+        $query = "
+        SELECT s.questionSet_ID, s.score, qs.questionSetTitle, qs.questionTotal, qs.randomCount, s.dateTaken 
+        FROM Score s
+        INNER JOIN QuestionSet qs ON s.questionSet_ID = qs.questionSet_ID
+        WHERE s.student_ID = ? AND qs.secHandle_ID IS NOT NULL
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
+            $stmt->execute(); $stmt->bind_result($questionSet_ID, $score, $questionSetTitle, $questionTotal, $randomCount, $dateTaken);
+
+            while($stmt->fetch()){
+                $assessmentData[] = [
+                    'questionSet_ID' => $questionSet_ID, 
+                    'questionSetTitle' => $questionSetTitle, 
+                    'score' => $score, 
+                    'total' => $total = $randomCount == null ? $questionTotal : $randomCount,
+                    'date' => substr($dateTaken, 0, 10),
+                    'time' => substr($dateTaken, 11)
+                ];
+
+                $data[] = $assessmentData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readFacultyName($input_secHandleID){
+        $query = "
+        SELECT a.fName, a.mName, a.lName 
+        FROM SectionHandle seh
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Account a ON f.user_ID = a.user_ID
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($fName, $mName, $lName); $stmt->fetch();
+
+            $nameData = [
+                "fName" => $fName,
+                "mName" => $mName,
+                "lName" => $lName
+            ];
+
+            $stmt->close();
+            return $nameData;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
@@ -242,7 +530,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -270,7 +558,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -291,7 +579,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -320,7 +608,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -409,53 +697,10 @@ class Model{
             ];
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
 
         return json_encode($data);
-    }
-
-    public function readStudentScore($input_studentID, $input_questionSetID){
-        $titleQuery = "
-        SELECT questionSetTitle FROM QuestionSet
-        WHERE questionSet_ID = ?
-        ";
-
-        $scoreQuery = "
-        SELECT score FROM Score
-        WHERE student_ID = ? AND questionSet_ID = ?
-        ";
-        
-        $questionTotalQuery = "
-        SELECT COUNT(qb.question_ID), qs.randomCount
-        FROM QuestionSet qs
-        INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-        WHERE qs.questionSet_ID = ?
-        ";
-
-        try{
-            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
-            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
-            $titleStmt->fetch(); $titleStmt->close();
-
-            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
-            $scoreStmt->execute(); $scoreStmt->bind_result($score);
-            $scoreStmt->fetch(); $scoreStmt->close();
-            
-            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
-            $totalStmt->execute(); $totalStmt->bind_result($actualCount, $randomCount);
-            $totalStmt->fetch(); $totalStmt->close();
-            $total = $randomCount == null ? $actualCount : $randomCount;
-
-            return [
-                'questionSetTitle' => $questionSetTitle,
-                'score' => $score,
-                'total' => $total
-            ];
-        }
-        catch(Exception $e){
-            $this->logError($e);
-        }
     }
 
     public function readSecHandleID($input_secHandleID){
@@ -464,7 +709,7 @@ class Model{
         FROM SectionHandle seh
         INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
-        WHERE seh.secHandle_ID = ?
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
         ";
         $secHandleData = [];
 
@@ -481,35 +726,37 @@ class Model{
             return $secHandleData;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
-    public function readSectionList($input_section){
+    public function readSectionList($input_secHandleID){
         $query = "
         SELECT 
+            s.student_ID,
             CONCAT(a.lName, ', ', a.fName, ' ', COALESCE(CONCAT(LEFT(NULLIF(a.mName, ''), 1), '.'), '')) AS fullName, 
-            a.age AS age, 
+            a.birthdate AS birthdate, 
             a.sex AS sex, 
             a.email AS email, 
             a.address AS address
         FROM Account a
         INNER JOIN Student s ON a.user_ID = s.user_ID
         INNER JOIN Class c ON s.student_ID = c.student_ID
-        WHERE c.section_ID = ?
+        WHERE c.secHandle_ID = ?
         ORDER BY fullName;
         ";
         $data = [];
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_section);
-            $stmt->execute(); $stmt->bind_result($fullName, $age, $sex, $email, $address);
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_secHandleID);
+            $stmt->execute(); $stmt->bind_result($student_ID, $fullName, $birthdate, $sex, $email, $address);
 
             // Name of outgoing variables here
             while($stmt->fetch()){
                 $studentData = [
+                    "student_ID" => $student_ID,
                     "fullName" => $fullName,
-                    "age" => $age,
+                    "age" => $this->calculateAge($birthdate),
                     "sex" => $sex,
                     "email" => $email,
                     "address" => $address
@@ -522,7 +769,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -544,7 +791,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -566,7 +813,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -602,26 +849,52 @@ class Model{
             return $sessionData;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readSetDisallow($input_questionSetID){
+        $data = [];
+        $query = "
+        SELECT student_ID, isDisallowed FROM SetDisallow
+        WHERE questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->bind_result($student_ID, $isDisallowed);
+
+            while($stmt->fetch()){
+                $setDisallowData = [
+                    'student_ID' => $student_ID,
+                    'isDisallowed' => $isDisallowed
+                ];
+
+                $data[] = $setDisallowData;
+            }
+
+            $stmt->close();
+            return $data;
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
     public function readStudentDetails($input_userID){
         $query = "
-        SELECT s.student_ID AS student_ID, c.section_ID AS section_ID, a.email AS email
+        SELECT s.student_ID AS student_ID, a.email AS email
         FROM Student s
         INNER JOIN Account a ON s.user_ID = a.user_ID
-        INNER JOIN Class c ON s.student_ID = c.student_ID
         WHERE a.user_ID = ?
         ";
 
         try{
             $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_userID);
-            $stmt->execute(); $stmt->bind_result($student_ID, $section, $email); $stmt->fetch();
+            $stmt->execute(); $stmt->bind_result($student_ID, $email); $stmt->fetch();
 
             $data = [
                 'student_ID' => $student_ID,
-                'section' => $section,
                 'email' => $email
             ];
 
@@ -629,23 +902,66 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
-    public function readStudentSubject($input_sectionID){
-        $query = "
-        SELECT seh.secHandle_ID, su.subjectName, a.fName, a.mName, a.lName
-        FROM SectionHandle seh
-        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
-        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
-        INNER JOIN Account a ON f.user_ID = a.user_ID
-        WHERE section_ID = ?
+    public function readStudentScore($input_studentID, $input_questionSetID){
+        $titleQuery = "
+        SELECT questionSetTitle FROM QuestionSet
+        WHERE questionSet_ID = ?
+        ";
+
+        $scoreQuery = "
+        SELECT score FROM Score
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        $questionTotalQuery = "
+        SELECT questionTotal, randomCount
+        FROM QuestionSet
+        WHERE questionSet_ID = ?
         ";
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_sectionID);
+            $titleStmt = $this->db->prepare($titleQuery); $titleStmt->bind_param("i", $input_questionSetID);
+            $titleStmt->execute(); $titleStmt->bind_result($questionSetTitle);
+            $titleStmt->fetch(); $titleStmt->close();
+
+            $scoreStmt = $this->db->prepare($scoreQuery); $scoreStmt->bind_param("si", $input_studentID, $input_questionSetID);
+            $scoreStmt->execute(); $scoreStmt->bind_result($score);
+            $scoreStmt->fetch(); $scoreStmt->close();
+            
+            $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
+            $totalStmt->execute(); $totalStmt->bind_result($questionTotal, $randomCount);
+            $totalStmt->fetch(); $totalStmt->close();
+            $total = $randomCount == null ? $questionTotal : $randomCount;
+
+            return [
+                'questionSetTitle' => $questionSetTitle,
+                'score' => $score,
+                'total' => $total
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readStudentSubject($input_studentID){
+        $query = "
+        SELECT c.secHandle_ID, su.subjectName, a.fName, a.mName, a.lName
+        FROM Class c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID
+        INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
+        INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
+        INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
+        INNER JOIN Account a ON f.user_ID = a.user_ID
+        WHERE c.student_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
             $stmt->execute(); $stmt->bind_result($secHandle_ID, $subjectName, $fName, $mName, $lName);
 
             while($stmt->fetch()){
@@ -664,7 +980,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -699,7 +1015,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -724,7 +1040,7 @@ class Model{
             return $section_ID;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
@@ -758,7 +1074,23 @@ class Model{
             }
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function updateSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        UPDATE SetDisallow
+        SET isDisallowed = ?
+        WHERE student_ID = ? AND questionSet_ID = ?
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("isi", $input_isDisallowed, $input_studentID, $input_questionSetID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
@@ -766,6 +1098,21 @@ class Model{
     // DELETE FUNCTIONS
 
 
+    public function deleteClass($input_studentID, $input_secHandleID){
+        $query = "
+        DELETE FROM Class
+        WHERE student_ID = ? AND secHandle_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("si", $input_studentID, $input_secHandleID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+    
     public function deleteSessionToken($input_sessionToken){
         $query = "
         DELETE FROM LoginToken
@@ -777,22 +1124,41 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
-    public function deleteSubHandle($input_facultyID, $input_sectionID){
-        $query = "
+    public function deleteSecHandle($input_facultyID, $input_sectionID){
+        $updateQuery = "
+        UPDATE QuestionSet qs
+        INNER JOIN SectionHandle seh ON qs.secHandle_ID = seh.secHandle_ID
+        SET qs.secHandle_ID = null
+        WHERE seh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND seh.section_ID = ?
+        ";
+
+        $deleteClassQuery = "
+        DELETE c FROM Class c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID
+        WHERE seh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND seh.section_ID = ?
+        ";
+
+        $deleteSecHandleQuery = "
         DELETE FROM SectionHandle 
         WHERE subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND section_ID = ?
         ";
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("ss", $input_facultyID, $input_sectionID);
-            $stmt->execute(); $stmt->close();
+            $updateStmt = $this->db->prepare($updateQuery); $updateStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $updateStmt->execute(); $updateStmt->close();
+
+            $deleteClassStmt = $this->db->prepare($deleteClassQuery); $deleteClassStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $deleteClassStmt->execute(); $deleteClassStmt->close();
+
+            $deleteSecHandleStmt = $this->db->prepare($deleteSecHandleQuery); $deleteSecHandleStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $deleteSecHandleStmt->execute(); $deleteSecHandleStmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 }

@@ -43,42 +43,42 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Add event listener for birthdate input to validate format
-    document.getElementById('birthdate').addEventListener('input', function() {
-        var input = this.value;
-        var validDate = /^\d{4}\/\d{2}\/\d{2}$/.test(input);
-        if (!validDate) {
-            document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use YYYY/MM/DD.';
-        } else {
-            document.getElementById('birthdate-error').textContent = '';
-        }
-    });
+    // document.getElementById('birthdate').addEventListener('input', function() {
+    //     var input = this.value;
+    //     var validDate = /^\d{2}\/\d{2}\/\d{4}$/.test(input);
+    //     if (!validDate) {
+    //         document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use DD/MM/YYYY.';
+    //     } else {
+    //         document.getElementById('birthdate-error').textContent = '';
+    //     }
+    // });
 });
 
 // Function to validate the birthdate format
-function validateDate(input) {
-    var dateString = input.value.trim();
-    var validDate = /^\d{4}\/\d{2}\/\d{2}$/.test(dateString);
+// function validateDate(input) {
+//     var dateString = input.value.trim();
+//     var validDate = /^\d{2}\/\d{2}\/\d{4}$/.test(dateString); 
 
-    if (!validDate) {
-        document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use YYYY/MM/DD.';
-        return false;
-    } else {
-        document.getElementById('birthdate-error').textContent = '';
-        return true;
-    }
-}
+//     if (!validDate) {
+//         document.getElementById('birthdate-error').textContent = 'Invalid date format. Please use DD/MM/YYYY.';
+//         return false;
+//     } else {
+//         document.getElementById('birthdate-error').textContent = '';
+//         return true;
+//     }
+// }
 
-// Event listener to validate birthdate format as user types
-document.getElementById('birthdate').addEventListener('input', function() {
-    validateDate(this);
-});
+
+// document.getElementById('birthdate').addEventListener('input', function() {
+//     validateDate(this);
+// });
 
 // Function to handle overall form validation before submission
 function validateForm() {
-    var birthdateInput = document.getElementById('birthdate');
-    if (!validateDate(birthdateInput)) {
-        return false; // Prevent form submission if birthdate is invalid
-    }
+    // var birthdateInput = document.getElementById('birthdate');
+    // if (!validateDate(birthdateInput)) {
+    //     return false;
+    // }
 
     var passwordInput = document.getElementById('password');
     var password = passwordInput.value;
@@ -88,6 +88,32 @@ function validateForm() {
         alert('Password must be at least 8 characters long and must not contain spaces or special characters.');
         return false; // Prevent form submission
     }
+
+    const day = document.getElementById("day").value;
+    const month = document.getElementById("month").value;
+    const year = document.getElementById("year").value;
+
+    if (day < 1 || day > 31) {
+        alert("Day must be between 1 and 31.");
+        return false;
+    }
+    if (month < 1 || month > 12) {
+        alert("Month must be between 1 and 12.");
+        return false;
+    }
+    if (year < 1970) {
+        alert("Year must be 1970 or later.");
+        return false;
+    }
+
+    // Check for valid date
+    const date = new Date(year, month - 1, day);
+    if (date.getDate() != day || (date.getMonth() + 1) != month || date.getFullYear() != year) {
+        alert("Invalid date.");
+        return false;
+    }
+
+    console.log("validateForm() function called");
 
     return confirm("Are you sure you want to submit this form?");
 }

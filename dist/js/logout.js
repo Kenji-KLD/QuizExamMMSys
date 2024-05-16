@@ -8,7 +8,6 @@ function logout() {
               xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
           },
           success: function() {
-             
               window.location.replace('/dist/index.html');
           },
           error: function(error) {

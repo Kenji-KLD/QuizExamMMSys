@@ -2,11 +2,11 @@
 
 function fetchFacultyData($conn) {
     $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.address, A.sex, SH.subject_ID, S.subjectName
-            FROM Account A
-            LEFT JOIN Faculty F ON A.user_ID = F.user_ID
-            LEFT JOIN SubjectHandle SH ON F.faculty_ID = SH.faculty_ID
-            LEFT JOIN Subject S ON SH.subject_ID = S.subject_ID
-            WHERE F.faculty_ID IS NOT NULL AND NOT A.userName LIKE 'deleted_%'";
+    FROM Account A
+    LEFT JOIN Faculty F ON A.user_ID = F.user_ID
+    LEFT JOIN SubjectHandle SH ON F.faculty_ID = SH.faculty_ID 
+    LEFT JOIN Subject S ON SH.subject_ID = S.subject_ID AND S.subjectName NOT LIKE 'deleted_%'
+    WHERE F.faculty_ID IS NOT NULL AND NOT A.userName LIKE 'deleted_%'";
 
     $result = $conn->query($sql);
     $facultyData = [];
@@ -39,15 +39,35 @@ function fetchFacultyData($conn) {
 }
 
 
-
 function fetchStudentData($conn) {
-    // Query to fetch student data
-    $sql = "SELECT A.user_ID, A.userName, A.fName, A.mName, A.lName, A.email, A.birthdate, A.address, A.sex, S.student_ID, C.section_ID, Sec.course
-            FROM Account A
-            LEFT JOIN Student S ON A.user_ID = S.user_ID
-            LEFT JOIN Class C ON S.student_ID = C.student_ID
-            LEFT JOIN Section Sec ON C.section_ID = Sec.section_ID
-            WHERE S.student_ID IS NOT NULL AND NOT A.userName LIKE 'deleted%'";
+    // Query to fetch student data including section information
+    $sql = "SELECT 
+                A.user_ID, 
+                A.userName, 
+                A.password, 
+                A.fName, 
+                A.mName, 
+                A.lName, 
+                A.email, 
+                A.birthdate, 
+                A.sex, 
+                A.address, 
+                S.student_ID,
+                Sec.section_ID AS student_section_ID,
+                Sec.course AS section_course
+            FROM 
+                Account A
+            LEFT JOIN 
+                Student S ON A.user_ID = S.user_ID
+            LEFT JOIN 
+                Class C ON S.student_ID = C.student_ID
+            LEFT JOIN 
+                SectionHandle SH ON C.secHandle_ID = SH.secHandle_ID
+            LEFT JOIN 
+                Section Sec ON SH.section_ID = Sec.section_ID
+            WHERE 
+                S.student_ID IS NOT NULL 
+                AND A.userName NOT LIKE 'deleted%'";
 
     $result = $conn->query($sql);
 
@@ -55,21 +75,26 @@ function fetchStudentData($conn) {
     $studentData = [];
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            // Prepare section information
+            $sectionInfo = [
+                'section_ID' => $row['student_section_ID'],
+                'course' => $row['section_course']
+            ];
+
+            // Prepare student data entry
             $studentData[] = [
                 'user_ID' => $row['user_ID'],
                 'userName' => $row['userName'],
+                'password' => $row['password'],
                 'fName' => $row['fName'],
                 'mName' => $row['mName'],
                 'lName' => $row['lName'],
                 'email' => $row['email'],
                 'birthdate' => $row['birthdate'],
-                'address' => $row['address'],
                 'sex' => $row['sex'],
-                'student_ID' => $row['student_ID'], // Include student_ID in the array
-                'sectionInfo' => [
-                    'section_ID' => $row['section_ID'],
-                    'course' => $row['course']
-                ]
+                'address' => $row['address'],
+                'student_ID' => $row['student_ID'],
+                'sectionInfo' => $sectionInfo // Include section information in the array
             ];
         }
     }
@@ -79,7 +104,9 @@ function fetchStudentData($conn) {
 
 
 function fetchSubjectData($conn){
-    $sql = "SELECT subject_ID, subjectName, unitsAmount, subjectType FROM Subject WHERE subject_ID != 'q1w2e3r4t' and subject_ID != 'N/A'";
+    $sql = "SELECT subject_ID, subjectName, unitsAmount, subjectType 
+    FROM Subject 
+    WHERE subjectName NOT LIKE 'deleted_%'";
 
     $result = $conn->query($sql);
 
@@ -94,13 +121,12 @@ function fetchSubjectData($conn){
         ];
         }
         }
-        
             return $subjectData;
 
 }
 
 function fetchSectiontData($conn){
-    $sql = "SELECT section_ID, course FROM Section WHERE course != 'q1w2e3r4t' AND section_ID != 'N/A'";
+    $sql = "SELECT section_ID, course FROM Section WHERE course NOT LIKE 'delete_%'";
 
     $result = $conn->query($sql);
 

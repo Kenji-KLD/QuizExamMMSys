@@ -1,11 +1,11 @@
-INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, address) VALUES
+INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES
     ("Kenji667", "$2y$10$uaopU3O/dB95DSCNNEtApObugn4BUAkXHSAXBjWLwbMz8.ltpNJPW", 
     "Kenji", "", "Gabunada", 
-    "kgabunada@kld.edu.ph", 21, "Male",
+    "kgabunada@kld.edu.ph", '2002-07-16', "Male",
     "B2 L29 Scotland St. Sunnycrest Village Salitran II, Dasmariñas, Cavite 4114"),
     ("MasterAibu", "$2y$10$oOl/QWtH.3OnhmItx0xgAuOkNSFfZ0vgnXoHM/o0f3cH/IwAWGa9O", 
     "Aibu", "", "Kuan", 
-    "akuan@kld.edu.ph", 20, "Male", 
+    "akuan@kld.edu.ph", '2003-05-05', "Male", 
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("admin", "$2y$10$hKTXF3EesCmn9sRCaCbzE.vZxfbNd1J6XHU9PVuzw7i4oYk2.UbuK", 
     "Admin", "", "Lorem Ipsum", 
@@ -13,11 +13,11 @@ INSERT INTO Account(userName, password, fName, mName, lName, email, age, sex, ad
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("faculty", "$2y$10$/l/3bssfbuFr/8FqC1vNsO21jGqZMsf2vIXXuF84jL9bLbJ9YRSES", 
     "Faculty", "", "Lorem Ipsum", 
-    "floremipsum@kld.edu.ph", 32, "Male", 
+    "floremipsum@kld.edu.ph", '2000/12/30', "Male", 
     "Congressional Avenue, Dasmariñas, Cavite 4114"),
     ("Hiroshi", "$2y$10$Nec0GYyGV2drsr6sJrFT/uNvpSMyhoPsAbVqDYbCEV3pwtOSxjagO", 
     "David", "Lavilla", "Agonia", 
-    "dlagonia@kld.edu.ph", 19, "Male",
+    "dlagonia@kld.edu.ph", '2000/12/30', "Male",
     "Greenwich St. Chester Place Burol Main, Dasmariñas, Cavite 4114")
 ;
 
@@ -35,6 +35,7 @@ INSERT INTO Subject(subject_ID, subjectName, unitsAmount, subjectType) VALUES
 ;
 
 INSERT INTO Section(section_ID, course) VALUES
+    ("FLAG-DEL", "Flagged for Deletion"),
     ("BSIS201", "Bachelor Science in Information Systems"),
     ("BSIS206", "Bachelor Science in Information Systems")
 ;
@@ -53,12 +54,6 @@ INSERT INTO Faculty(user_ID) VALUES
     (4)
 ;
 
-INSERT INTO Class(student_ID, section_ID) VALUES
-    ("KLD-22-000247", "BSIS201"),
-    ("KLD-22-000192", "BSIS201"),
-    ("KLD-22-000420", "BSIS201")
-;
-
 INSERT INTO SectionSubjectList(section_ID, subject_ID) VALUES
     ("BSIS201", "GEE5000"),
     ("BSIS201", "PCIS2209")
@@ -69,13 +64,20 @@ INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
 ;
 
 INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+    (null, "FLAG-DEL"),
     (1, "BSIS201")
 ;
 
+INSERT INTO Class(student_ID, secHandle_ID) VALUES
+    ("KLD-22-000247", 2),
+    ("KLD-22-000192", 2),
+    ("KLD-22-000420", 2)
+;
+
 INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES
-    (1, "Quiz 1: Ecosystem", "QUIZ", 10,
+    (2, "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
-    '2024-05-01 00:00:00', 7200, "2023-2024", "Midterm", "2nd Semester")
+    '2024-05-20 23:59:59', 7200, "2023-2024", "Midterm", "2nd Semester")
 ;
 
 INSERT INTO QuestionBank(questionSet_ID, questionFormat, questionNumber, questionText, questionAnswer, pointsGiven) VALUES
@@ -132,4 +134,27 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
     (10, "B. Testing 10"),
     (10, "C. Testing 10"),
     (10, "D. Testing 10")
+;
+
+INSERT INTO `setdisallow` (`student_ID`, `questionSet_ID`, `isDisallowed`) VALUES
+    ('KLD-22-000420', 1, 0),
+    ('KLD-22-000247', 1, 0),
+    ('KLD-22-000192', 1, 0)
+;
+
+INSERT INTO `answerstatistic` (`student_ID`, `question_ID`, `studentAnswer`, `isCorrect`) VALUES
+    ('KLD-22-000247', 1, 'A. Ernst Haeckel', 1),
+    ('KLD-22-000247', 2, 'A. Arthur Tansley', 1),
+    ('KLD-22-000247', 3, 'A. Habitat', 1),
+    ('KLD-22-000247', 4, 'A. Both A & B', 1),
+    ('KLD-22-000247', 5, 'A. Testing 5', 1),
+    ('KLD-22-000247', 6, 'A. Testing 6', 1),
+    ('KLD-22-000247', 7, 'A. Testing 7', 1),
+    ('KLD-22-000247', 8, 'A. Testing 8', 1),
+    ('KLD-22-000247', 9, 'A. Testing 9', 1),
+    ('KLD-22-000247', 10, 'A. Testing 10', 1)
+;
+
+INSERT INTO `score` (`student_ID`, `questionSet_ID`, `passed`, `score`, `dateTaken`) VALUES
+    ('KLD-22-000247', 1, 1, 10, '2024-05-12 16:14:32')
 ;

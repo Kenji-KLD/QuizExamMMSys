@@ -83,7 +83,7 @@
         <div class="menu-divider">
           <h3 class="menu-title">MANAGEMENT</h3>
           <li class="menu-hover">
-            <a href="/dist/profView/html/class-page-1.html" class="item">
+            <a id="manageLink" href="/dist/profView/html/class-page-1.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -102,7 +102,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="/dist/profView/html/make-assessment.html" class="item">
+            <a id="makeLink" href="/dist/profView/html/make-assessment.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -140,7 +140,7 @@
             </a>
           </li>
           <li class="menu-hover">
-            <a href="/dist/profView/html/view-statistics.html" class="item">
+            <a id="statisticsLink" href="/dist/profView/html/view-statistics.html" class="item">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -183,7 +183,7 @@
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
       <h1 class="main-title">Hold Assessments</h1>
       <div class="flex gap-4">
-        <a href="/dist/profView/html/hold-assessments.html">
+        <a id="backLink" href="/dist/profView/html/hold-assessments.html">
           <!--Back Icon-->
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -200,14 +200,14 @@
             />
           </svg>
         </a>
-        <p class="navitem mb-4">Quiz 1</p>
+        <p id="questionSetTitle" class="navitem mb-4"></p>
       </div>
       <div class="w-dvh grid grid-flow-row gap-3 md:grid-cols-1 lg:grid-cols-2">
         <div class="w-auto rounded-3xl bg-ISshade3 p-5">
-          <p class="text-3xl font-semibold">Attendance</p>
-          <p class="text-lg font-medium">Section</p>
-          <p>Date</p>
-          <p>Time</p>
+          <p id="attendance" class="text-3xl font-semibold" style="display: none;">Attendance</p>
+          <p id="section_ID" class="text-lg font-medium"></p>
+          <p id="deadlineDate"></p>
+          <p id="deadlineTime"></p>
           <div class="mt-4">
             <table class="w-full">
               <thead>
@@ -216,29 +216,14 @@
                   <th>Full Name</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center"><input type="checkbox" class="size-4"/></td>
-                  <td>Sample Name</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><input type="checkbox" class="size-4"/></td>
-                  <td>Sample Name</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><input type="checkbox" class="size-4"/></td>
-                  <td>Sample Name</td>
-                </tr>
-                <tr>
-                  <td class="text-center"><input type="checkbox" class="size-4"/></td>
-                  <td>Sample Name</td>
-                </tr>
+              <tbody id="studentList">
               </tbody>
             </table>
           </div>
          <div class="flex justify-center">
             <button
-              type="submit"
+              onclick="holdAssessment();"
+              type="button"
               class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
             >
               <p class="text-lg mx-auto font-medium">Submit</p>
@@ -249,17 +234,18 @@
         <div class="flex flex-col gap-8">
           <div class="card-stats">
             <h1 class="stats-title">Present</h1>
-            <p class="stats-number">00</p>
+            <p id="presentCounter" class="stats-number">0</p>
           </div>
           <div class="card-stats">
             <h1 class="stats-title">Absent</h1>
-            <p class="stats-number">00</p>
+            <p id="absentCounter" class="stats-number">0</p>
           </div>
         </div>
       </div>
     </main>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/attendance.js" type="module"></script>
     <script src="/dist/js/logout.js"></script>
   </body>
 </html>

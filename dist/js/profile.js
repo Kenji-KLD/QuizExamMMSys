@@ -4,7 +4,7 @@ jQuery(function() {
     let userDetails = JSON.parse(decodeURIComponent(getCookie('userDetails')));
     let fullName = userDetails['lName'] + ', ' + userDetails['fName'];
         if (userDetails['mName']) {
-            fullName += ' ' + userDetails['mName'] + '.';
+            fullName += ' ' + userDetails['mName'].charAt(0) + '.';
     }
 
     $.ajax({
@@ -18,7 +18,6 @@ jQuery(function() {
 
             document.getElementById('fullName').textContent = fullName;
             document.getElementById('student_ID').textContent = studentDetails['student_ID'];
-            document.getElementById('section').textContent = studentDetails['section'];
             document.getElementById('email').textContent = studentDetails['email'];
         },
         error: function(error){

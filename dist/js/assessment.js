@@ -1,8 +1,35 @@
 import { getParameterByName } from '/dist/js/function.js';
 
+/*
+// Anti-cheating
+let questionnaireTerminated = false;
+let antiCheatFlag = true;
+
+window.addEventListener('unload', function () {
+    // Window is unloaded (user might have exited the tab)\
+    if(antiCheatFlag){
+        terminateQuestionnaire();
+    }
+});
+
+window.addEventListener('blur', function() {
+    // Window lost focus (user might have switched to another application)
+    if(antiCheatFlag){
+        terminateQuestionnaire();
+    }
+});
+
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden' && antiCheatFlag) {
+        // Tab is now hidden (user might have switched to a different application)
+        terminateQuestionnaire();
+    }
+});
+// ------------- */
+
 window.promptSubmitQuestionnaire = function () {
     if(confirm("Are you sure you want to submit your answers?")){
-        submitQuestionnaire();
+        antiCheatFlag = false; submitQuestionnaire(); 
     }
 };
 
@@ -60,7 +87,7 @@ window.submitQuestionnaire = function () {
                 answerList: JSON.stringify(answerList)
             },
             success: function (response) {
-                
+                window.location.replace("score.html?questionSet_ID=" + getParameterByName('questionSet_ID'));
             },
             error: function (error) {
                 console.error(error);
@@ -68,12 +95,71 @@ window.submitQuestionnaire = function () {
         });
     }
     else{
-        alert("You have not selected an answer to all questions!");
+        alert("You have not provided an answer to all questions!");
     }
 };
 
-window.terminateQuestionnaire = function () {
+window.terminateQuestionnaire = function () { function executeTermination() {
+    // Define an empty array to store the formatted data
+    const answerList = [];
 
+    // Select all <article> elements in the document
+    const articles = document.querySelectorAll('article');
+
+    // Loop through each <article> element
+    articles.forEach(article => {
+        // Find the <input> element with name="question_ID" within the current article
+        const questionIdInput = article.querySelector('input[name="question_ID"]');
+        
+        // Get the value of the question_ID
+        const questionId = questionIdInput.value;
+        
+        // Initialize a variable to store the selected answer
+        let selectedAnswer = "No Answer";
+        
+        // Find all radio buttons (input[type="radio"]) within the current article
+        const radioButtons = article.querySelectorAll('input[type="radio"]');
+        
+        // Loop through each radio button to check if it is selected
+        radioButtons.forEach(radioButton => {
+            if (radioButton.checked) {
+                // Get the value of the selected radio button
+                selectedAnswer = radioButton.value;
+            }
+        });
+        
+        // Create an object with the question_ID and the selected answer
+        const answerObject = {
+            'question_ID': questionId,
+            'questionAnswer': selectedAnswer
+        };
+        
+        // Push the object into the answerList array
+        answerList.push(answerObject);
+    });
+
+    $.ajax({
+        url: "/php/assessment_controller.php",
+        method: "POST",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        },
+        data: {
+            questionSet_ID: getParameterByName('questionSet_ID'),
+            answerList: JSON.stringify(answerList)
+        },
+        success: function (response) {
+            window.location.replace("score.html?questionSet_ID=" + getParameterByName('questionSet_ID'));
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });};
+
+    if(!questionnaireTerminated){
+        questionnaireTerminated = true;
+        executeTermination();
+    }
 };
 
 jQuery(function () {
@@ -99,7 +185,7 @@ jQuery(function () {
             data.questions.forEach((question, index) => {
                 // Create a new article element
                 const article = document.createElement('article');
-                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center');
+                article.classList.add('flex', 'flex-col', 'gap-6', 'justify-center', 'items-center', 'my-6');
 
                 // Create a new div element for the card
                 const card = document.createElement('div');
@@ -144,12 +230,12 @@ jQuery(function () {
                     const input = document.createElement('input');
                     input.type = 'radio';
                     input.name = `q${index + 1}-answers`;
-                    input.id = `A${choiceIndex + 1}`;
+                    input.id = `A${index + 1}${choiceIndex + 1}`;
                     input.value = choice;
 
                     // Create a new label element for the radio button
                     const label = document.createElement('label');
-                    label.htmlFor = `A${choiceIndex + 1}`;
+                    label.htmlFor = `A${index + 1}${choiceIndex + 1}`;
                     label.textContent = choice;
 
                     // Append the input and label elements to the answer item

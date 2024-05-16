@@ -66,7 +66,7 @@ CREATE TABLE SubjectHandle(
 
 CREATE TABLE SectionHandle(
 	secHandle_ID BIGINT AUTO_INCREMENT,
-	subHandle_ID BIGINT NOT NULL,
+	subHandle_ID BIGINT,
 	section_ID VARCHAR(8) NOT NULL,
 	PRIMARY KEY(secHandle_ID),
 	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),
@@ -138,10 +138,10 @@ CREATE TABLE SetDisallow(
 );
 
 CREATE TABLE Class(
-	student_ID VARCHAR(13) UNIQUE NOT NULL,
-	section_ID VARCHAR(8) NOT NULL,
+	student_ID VARCHAR(13) NOT NULL,
+	secHandle_ID BIGINT NOT NULL,
 	FOREIGN KEY(student_ID) REFERENCES Student(student_ID),
-	FOREIGN KEY(section_ID) REFERENCES Section(section_ID)
+	FOREIGN KEY(secHandle_ID) REFERENCES SectionHandle(secHandle_ID)
 );
 
 CREATE TABLE SectionSubjectList(

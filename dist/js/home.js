@@ -22,7 +22,7 @@ jQuery(function() {
             data.forEach(item => {
                 let fullName = item.lName + ', ' + item.fName;
                 if (item.mName) {
-                    fullName += ' ' + item.mName + '.';
+                    fullName += ' ' + item.mName.charAt(0) + '.';
                 }
 
                 // Create elements for card

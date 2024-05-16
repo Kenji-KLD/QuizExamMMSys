@@ -7,18 +7,18 @@ class RegistrationFaculty {
     private $mName;
     private $lName;
     private $email;
-    private $mysqlDate;
+    private $birthdate;
     private $sex;
     private $address;
 
-    public function __construct($username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address) {
+    public function __construct($username, $password, $fName, $mName, $lName, $email, $birthdate, $sex, $address) {
         $this->username = $username;
         $this->password = $password;
         $this->fName = $fName;
         $this->mName = $mName;
         $this->lName = $lName;
         $this->email = $email;
-        $this->mysqlDate = $mysqlDate;
+        $this->birthdate = $birthdate;
         $this->sex = $sex;
         $this->address = $address;
     }
@@ -67,7 +67,7 @@ class RegistrationFaculty {
            
             $stmt1 = $conn->prepare("INSERT INTO Account (userName, password, fName, mName, lName, email, birthdate, sex, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $hashedPassword = password_hash($this->password, PASSWORD_BCRYPT);
-            $stmt1->bind_param('sssssssss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email,$this->mysqlDate, $this->sex, $this->address);
+            $stmt1->bind_param('sssssssss', $this->username, $hashedPassword, $this->fName, $this->mName, $this->lName, $this->email,$this->birthdate, $this->sex, $this->address);
             $stmt1->execute();
             $stmt1->close();
 

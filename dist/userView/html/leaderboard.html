@@ -65,22 +65,18 @@
     <main class="flex flex-1 justify-center items-center">
       <!-- CONTAINER -->
       <div class="w-dvw h-full">
-        <p class="main-title ml-6 mt-6 mb-0">System Analysis and Design</p>
+        <p id="subjectName" class="main-title ml-6 mt-6 mb-0"></p>
         <div
           class="p-0 md:p-4 bg-ISshade3/10 rounded-3xl backdrop-blur-[2.25px] border border-ISshade1 mt-4"
         >
           <div class="flex relative">
-            <a
-              href="/dist/userView/html/subject.html"
-              class="md:block hidden main-title ml-6 mt-6 mb-0"
+            <a class="md:block hidden main-title ml-6 mt-6 mb-0 assessmentLink"
               >Assessments</a
             >
-            <a
-              href="/dist/userView/html/people.html"
-              class="md:block hidden main-title ml-6 mt-6 mb-0 "
+            <a class="md:block hidden main-title ml-6 mt-6 mb-0 peopleLink"
               >People</a
             >
-            <a href="" class="main-title ml-6 mt-6 mb-0 md:activated-secondary antialiased"
+            <a class="main-title ml-6 mt-6 mb-0 md:activated-secondary antialiased"
               >Leaderboard</a
             >
             <div class="flex gap-3 absolute top-6 right-10">
@@ -154,10 +150,7 @@
       class="fixed w-full bottom-0 bg-ISshade3/80 backdrop-blur-[2.25px] p-5 flex justify-around md:hidden"
     >
       <div>
-        <a
-          href="/dist/userView/html/subject.html"
-          class="flex flex-col items-center"
-        >
+        <a class="flex flex-col items-center assessmentLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -176,10 +169,7 @@
         </a>
       </div>
       <div>
-        <a
-          href="/dist/userView/html/people.html"
-          class="flex flex-col items-center"
-        >
+        <a class="flex flex-col items-center peopleLink">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -198,7 +188,7 @@
         </a>
       </div>
       <div>
-        <a href="" class="flex flex-col items-center">
+        <a class="flex flex-col items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -219,6 +209,8 @@
         </a>
       </div>
     </footer>
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/userView/js/side.js"></script>
+    <script src="/dist/js/leaderboard.js" type="module"></script>
   </body>
 </html>

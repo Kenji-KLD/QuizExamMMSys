@@ -110,6 +110,7 @@ class RegistrationStudent {
     
 }
 
+
 class ImportStudent {
     private $file;
 
@@ -118,27 +119,22 @@ class ImportStudent {
     }
 
     public function import() {
-        include "connection.php";
-        
+        include "connection.php"; // Include database connection
+
         try {
             $handle = fopen($this->file, 'r');
+            if ($handle === false) {
+                throw new Exception("Failed to open file.");
+            }
 
-            fgetcsv($handle, 1000, ",");
-            
+            // Skip the header row
+            fgetcsv($handle); 
+
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $student_ID = $data[0]; 
                 
                 if (empty($student_ID)) {
-                    continue; 
-                }
-
-                $check_stmt = $conn->prepare("SELECT student_ID FROM Student WHERE student_ID = ?");
-                $check_stmt->bind_param("s", $student_ID);
-                $check_stmt->execute();
-                $check_result = $check_stmt->get_result();
-
-                if ($check_result->num_rows > 0) {
-                    continue; 
+                    continue; // Skip empty student ID
                 }
 
                 $userName = $data[1];
@@ -151,10 +147,25 @@ class ImportStudent {
                 $sex = $data[8];
                 $address = $data[9];
 
+                // Validate and format birthdate
+                $mysqlDate = null;
+                if (!empty($birthdate)) {
+                    $timestamp = strtotime($birthdate);
+                    if ($timestamp === false || $timestamp === -1) {
+                        // Date parsing failed or invalid date format
+                        throw new Exception("Invalid birthdate format: $birthdate");
+                    } else {
+                        $mysqlDate = date('Y-m-d', $timestamp);
+                    }
+                } else {
+                    // Handle empty birthdate
+                    $mysqlDate = null;
+                }
+
                 // Insert into Account table
                 $stmt = $conn->prepare("INSERT INTO Account(userName, password, fName, mName, lName, email, birthdate, sex, address) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("sssssssss", $userName, $password, $fName, $mName, $lName, $email, $birthdate, $sex, $address);
+                $stmt->bind_param("sssssssss", $userName, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address);
                 $stmt->execute();
                 $user_ID = $stmt->insert_id;
                 $stmt->close();
@@ -165,11 +176,13 @@ class ImportStudent {
                 $stmt1->execute();
                 $stmt1->close();
             }
-    
+
             fclose($handle);
             header("Location: 2AdminStudents.php");
+            exit;
         } catch (Exception $e) {
-            $_SESSION['notif'] = $e->getMessage();
+            $_SESSION['notif'] = "Error importing data: " . $e->getMessage();
+            error_log("Error importing data: " . $e->getMessage());
             header("Location: 2AdminStudents.php"); // Redirect with error message
             exit;
         }
