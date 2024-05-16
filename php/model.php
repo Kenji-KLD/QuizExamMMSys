@@ -1051,7 +1051,7 @@ class Model{
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN Account a ON f.user_ID = a.user_ID
-        WHERE c.student_ID = ?
+        WHERE c.student_ID = ? AND su.subjectName NOT LIKE 'deleted_%'
         ";
 
         try{
@@ -1087,7 +1087,7 @@ class Model{
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN SectionHandle seh ON suh.subHandle_ID = seh.subHandle_ID
         INNER JOIN Section se ON seh.section_ID = se.section_ID
-        WHERE f.faculty_ID = ?
+        WHERE f.faculty_ID = ? AND su.subjectName NOT LIKE 'deleted_%'
         ";
 
         try{
