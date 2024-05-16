@@ -59,8 +59,6 @@ jQuery(function () {
         success: function(response) {
             let data = JSON.parse(response);
 
-            const scoreData = document.getElementById('scoreData');
-
             document.getElementById('questionSetTitle').textContent = data.assessmentData.questionSetTitle;
             document.getElementById('deadlineDate').textContent = data.assessmentData.deadlineDate;
             document.getElementById('deadlineTime').textContent = data.assessmentData.deadlineTime;
@@ -68,8 +66,13 @@ jQuery(function () {
             document.getElementById('highestScore').textContent = data.statistics.numberData.highest_score;
             document.getElementById('lowestScore').textContent = data.statistics.numberData.lowest_score;
 
-            document.getElementById('questionNumber').textContent = data.statistics.questionData.questionNumber;
-            document.getElementById('questionText').textContent = data.statistics.questionData.questionText;
+            if(data.statistics.questionData.questionNumber == null && data.statistics.questionData.questionText == null){
+                document.getElementById('questionCard').style = "display: none";
+            }
+            else{
+                document.getElementById('questionNumber').textContent = data.statistics.questionData.questionNumber;
+                document.getElementById('questionText').textContent = data.statistics.questionData.questionText;
+            } 
 
             loadChart(data.statistics.numberData.passCount, data.statistics.numberData.failCount);
         },

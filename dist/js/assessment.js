@@ -5,7 +5,7 @@ let questionnaireTerminated = false;
 let antiCheatFlag = true;
 
 window.addEventListener('unload', function () {
-    // Window is unloaded (user might have exited the tab)\
+    // Window is unloaded (user might have exited the tab)
     if(antiCheatFlag){
         terminateQuestionnaire();
     }
