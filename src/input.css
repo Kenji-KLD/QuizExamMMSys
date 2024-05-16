@@ -63,6 +63,10 @@
         @apply font-medium text-lg my-5 opacity-90;
     }
 
+    .assessment-body {
+        @apply font-medium text-base my-5 opacity-90;
+    }
+
     .activated {
         @apply bg-gradient-to-br from-ISblue to-IScyan bg-clip-text text-transparent;
       }
