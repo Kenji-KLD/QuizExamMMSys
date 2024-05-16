@@ -185,7 +185,7 @@ class Model{
 
     public function createScore($input_studentID, $input_questionSetID, $input_dateTaken){
         $scoreQuery = "
-        SELECT COUNT(*) AS score
+        SELECT SUM(qb.pointsGiven) AS score
         FROM AnswerStatistic ans
         INNER JOIN QuestionBank qb ON ans.question_ID = qb.question_ID
         WHERE ans.isCorrect = 1 AND ans.student_ID = ? AND qb.questionSet_ID = ?;
@@ -656,6 +656,70 @@ class Model{
         }
     }
 
+    public function readLeaderboard($input_secHandleID){
+        $query = "
+        SELECT s.student_ID, sc.questionSet_ID 
+        FROM Class c
+        INNER JOIN Student s ON c.student_ID = s.student_ID
+        INNER JOIN Score sc ON s.student_ID = sc.student_ID
+        WHERE c.secHandle_ID = ?
+        ";
+        
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("i", $input_secHandleID);
+            $stmt->execute();
+            $stmt->bind_result($student_ID, $questionSet_ID);
+        
+            // Array to store student_ID and questionSet_ID pairs
+            $studentQuestionPairs = [];
+        
+            while ($stmt->fetch()) {
+                $studentQuestionPairs[] = [
+                    'student_ID' => $student_ID,
+                    'questionSet_ID' => $questionSet_ID
+                ];
+            }
+        
+            $stmt->close();
+        
+            // Array to store average percentages
+            $averages = [];
+        
+            // Process each student_ID and questionSet_ID pair
+            foreach ($studentQuestionPairs as $pair) {
+                $student_ID = $pair['student_ID'];
+                $questionSet_ID = $pair['questionSet_ID'];
+        
+                // Call readStudentScore function to get score data
+                $scoreData = $this->readStudentScore($student_ID, $questionSet_ID);
+                if ($scoreData !== null) { // Check if score data is valid
+                    $totalScore = $scoreData['score'];
+                    $totalMax = $scoreData['total'];
+        
+                    // Calculate average percentage
+                    $averagePercentage = ($totalMax > 0) ? ($totalScore / $totalMax) * 100 : 0;
+        
+                    // Store student_ID and averagePercentage in the result array
+                    $averages[] = [
+                        'student_ID' => $student_ID,
+                        'averagePercentage' => $averagePercentage
+                    ];
+                }
+            }
+        
+            // Sort averages by averagePercentage in descending order
+            usort($averages, function($a, $b) {
+                return $b['averagePercentage'] <=> $a['averagePercentage'];
+            });
+        
+            return $averages;
+        } 
+        catch (Exception $e) {
+            $this->logError($e->getMessage());
+        }
+    }    
+
     public function readPasswordHash($input_username){
         $query = "
         SELECT password FROM Account WHERE userName = ? AND userName NOT LIKE 'deleted_%'
@@ -1012,9 +1076,10 @@ class Model{
         ";
         
         $questionTotalQuery = "
-        SELECT questionTotal, randomCount
-        FROM QuestionSet
-        WHERE questionSet_ID = ?
+        SELECT SUM(qb.pointsGiven), AVG(qb.pointsGiven), qs.randomCount
+        FROM QuestionSet qs
+        INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
+        WHERE qs.questionSet_ID = ?
         ";
 
         try{
@@ -1027,9 +1092,9 @@ class Model{
             $scoreStmt->fetch(); $scoreStmt->close();
             
             $totalStmt = $this->db->prepare($questionTotalQuery); $totalStmt->bind_param("i", $input_questionSetID);
-            $totalStmt->execute(); $totalStmt->bind_result($questionTotal, $randomCount);
+            $totalStmt->execute(); $totalStmt->bind_result($questionTotal, $averagePointsGiven,  $randomCount);
             $totalStmt->fetch(); $totalStmt->close();
-            $total = $randomCount == null ? $questionTotal : $randomCount;
+            $total = (int)($randomCount == null ? $questionTotal : $averagePointsGiven * $randomCount);
 
             return [
                 'questionSetTitle' => $questionSetTitle,
