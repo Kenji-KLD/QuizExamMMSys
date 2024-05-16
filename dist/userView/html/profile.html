@@ -65,11 +65,84 @@
     <main class="flex flex-1 flex-col gap-4 md:justify-center md:items-center">
       <!-- CONTAINER -->
       <div class="h-full">
-        <div class="w-full md:w-[500px] md:bg-ISwhite/10 md:rounded-3xl md:p-4 md:backdrop-blur-[2.25px] md:border md:border-ISshade1 md:mt-32">
+        <div
+          class="w-full mb-8 md:w-[500px] md:bg-ISwhite/10 md:rounded-3xl md:p-4 md:backdrop-blur-[2.25px] md:border md:border-ISshade1 md:mt-8"
+        >
           <p class="stats-title ml-6 mt-12 md:mt-4 mb-0">Profile</p>
           <p id="fullName" class="assessment-subhead ml-6 mt-6 mb-0"></p>
-          <p id="student_ID" class="assessment-subhead ml-6 mt-1 mb-0"></p>
-          <p id="email" class="assessment-subhead ml-6 mt-1 mb-0"></p>
+          <p id="student_ID" class="assessment-body ml-6 mt-1 mb-0"></p>
+          <p id="email" class="assessment-body ml-6 mt-1 mb-0"></p>
+          <div class="ml-6 mt-12 md:mt-4 mb-0">
+            <h2 class="stats-title mt-12">Security and Privacy</h2>
+            <div class="flex gap-6 align-middle items-center">
+              <p class="mt-6 text-xl">Change Password</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.25"
+                stroke="currentColor"
+                class="w-5 h-5 mt-7 stroke-[#FEFEFE55] cursor-pointer"
+                onclick="showPass()"
+                id="eye"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+                />
+              </svg>
+            </div>
+            <div class="flex relative mt-10">
+              <input
+                type="password"
+                id="oldPass"
+                name="Password"
+                class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+                autocomplete="off"
+              />
+              <label
+                for="oldPass"
+                class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+                >Old Password</label
+              >
+            </div>
+            <div class="flex relative mt-16">
+              <input
+                type="password"
+                id="newPass"
+                name="Password"
+                class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+                autocomplete="off"
+              />
+              <label
+                for="newPass"
+                class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+                >New Password</label
+              >
+            </div>
+            <div class="flex relative mt-16">
+              <input
+                type="password"
+                id="confNewPass"
+                name="Password"
+                class="input-line w-[65%] py-1 border-b border-[#FEFEFE55] bg-transparent focus:outline-none peer"
+                autocomplete="off"
+              />
+              <label
+                for="confNewPass"
+                class="absolute -top-6 text-lg font-light text-[#FEFEFE55] cursor-pointer peer-focus:text-ISwhite"
+                >Confirm New Password</label
+              >
+            </div>
+            <button
+              onclick="changePassword();"
+              type="submit"
+              class="flex cursor-pointer mt-10 bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
+            >
+              <p class="text-lg mx-auto font-medium">Change Password</p>
+            </button>
+          </div>
           <div class="ml-6 mt-16 mb-0 rounded-3xl px-8 w-fit bg-ISshade3">
             <a onclick="logout()" class="item cursor-pointer">
               <svg
@@ -96,5 +169,6 @@
     <script src="/dist/userView/js/side.js"></script>
     <script src="/dist/js/profile.js" type="module"></script>
     <script src="/dist/js/logout.js" defer></script>
+    <script src="/dist/js/showPass.js"></script>
   </body>
 </html>

@@ -481,6 +481,100 @@ class Model{
         }
     }
 
+    public function readDeletedStudent($input_studentID){
+        $query = "
+        SELECT a.userName FROM Account a
+        INNER JOIN Student s ON a.user_ID = s.user_ID
+        WHERE s.student_ID = ? AND a.userName LIKE 'deleted_%'
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
+            $stmt->execute(); $stmt->store_result();
+            if($stmt->num_rows > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function readEditableAssessment($input_questionSetID){
+        $data = [];
+        $questions = [];
+
+        $query = "
+        SELECT
+            qs.questionSetTitle,
+            qs.rubrics,
+            qs.timeLimit,
+            qb.question_ID,
+            qb.questionNumber,
+            qb.questionText,
+            qb.questionAnswer,
+            cb.choice_ID,
+            cb.choiceLabel
+        FROM 
+            QuestionSet qs
+        JOIN 
+            QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
+        LEFT JOIN 
+            ChoiceBank cb ON qb.question_ID = cb.question_ID
+        WHERE 
+            qs.questionSet_ID = ?;
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("i", $input_questionSetID);
+            $stmt->execute(); $stmt->bind_result($questionSetTitle, $rubrics, $timeLimit, $question_ID, $questionNumber, $questionText, $questionAnswer, $choice_ID, $choiceLabel);
+
+            while ($stmt->fetch()) {
+                // Check if the question_ID already exists in the questions array
+                $key = array_search($question_ID, array_column($questions, 'question_ID'));
+
+                if ($key === false) {
+                    // If the question_ID doesn't exist, create a new question array
+                    $question = [
+                        "question_ID" => $question_ID,
+                        "questionNumber" => $questionNumber,
+                        "questionText" => $questionText,
+                        "questionAnswer" => $questionAnswer,
+                        "choices" => []
+                    ];
+                    $questions[] = $question;
+                    $key = count($questions) - 1; // Get the index of the newly added question
+                }
+
+                // Add choiceLabel to the corresponding question's choices array
+                if ($choiceLabel !== null) {
+                    $choice = [
+                        "choice_ID" => $choice_ID,
+                        "choiceLabel" => $choiceLabel
+                    ];
+                    $questions[$key]['choices'][] = $choice;
+                }
+            }
+
+            $stmt->close();
+
+            $data = [
+                'questionSetTitle' => $questionSetTitle,
+                'rubrics' => $rubrics,
+                'timeLimit' => $timeLimit,
+                'questions' => $questions
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+
+        return json_encode($data);
+    }
+
     public function readFacultyName($input_secHandleID){
         $query = "
         SELECT a.fName, a.mName, a.lName 
@@ -540,7 +634,7 @@ class Model{
         SELECT suh.subject_ID, su.subjectName FROM Subject su
         INNER JOIN SubjectHandle suh ON su.subject_ID = suh.subject_ID
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
-        WHERE f.faculty_ID = ?;
+        WHERE f.faculty_ID = ? AND su.subjectName NOT LIKE 'deleted_%';
         ";
 
         try{
@@ -564,7 +658,7 @@ class Model{
 
     public function readPasswordHash($input_username){
         $query = "
-        SELECT password FROM Account WHERE userName = ?
+        SELECT password FROM Account WHERE userName = ? AND userName NOT LIKE 'deleted_%'
         ";
 
         try{
@@ -957,7 +1051,7 @@ class Model{
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN Account a ON f.user_ID = a.user_ID
-        WHERE c.student_ID = ?
+        WHERE c.student_ID = ? AND su.subjectName NOT LIKE 'deleted_%'
         ";
 
         try{
@@ -993,7 +1087,7 @@ class Model{
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
         INNER JOIN SectionHandle seh ON suh.subHandle_ID = seh.subHandle_ID
         INNER JOIN Section se ON seh.section_ID = se.section_ID
-        WHERE f.faculty_ID = ?
+        WHERE f.faculty_ID = ? AND su.subjectName NOT LIKE 'deleted_%'
         ";
 
         try{
@@ -1024,7 +1118,7 @@ class Model{
         SELECT se.section_ID FROM Section se
         LEFT JOIN SectionHandle seh ON se.section_ID = seh.section_ID
         LEFT JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-        WHERE suh.subHandle_ID IS NULL;
+        WHERE suh.subHandle_ID IS NULL AND se.section_ID != 'FLAG-DEL' AND se.section_ID NOT LIKE 'deleted_%';
         ";
         $section_ID = [];
         
@@ -1045,9 +1139,25 @@ class Model{
     }
     
 
-    // DELETE FUNCTIONS
+    // UPDATE FUNCTIONS
 
 
+    public function updateChoice($input_choiceID, $input_choiceLabel){
+        $query = "
+        UPDATE ChoiceBank
+        SET choiceLabel = ?
+        WHERE choice_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("si", $input_choiceLabel, $input_choiceID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+    
     public function updatePassword($input_sessionToken, $input_oldPassword, $input_newPassword){
         $sessionData = $this->readSessionData($input_sessionToken);
         $newPassword = password_hash($input_newPassword, PASSWORD_BCRYPT);
@@ -1072,6 +1182,22 @@ class Model{
             else{
                 return false;
             }
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function updateQuestion($input_questionID, $input_questionText, $input_questionAnswer){
+        $query = "
+        UPDATE QuestionBank
+        SET questionText = ?, questionAnswer = ?
+        WHERE question_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("ssi", $input_questionText, $input_questionAnswer, $input_questionID);
+            $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
             $this->logError($e->getMessage());
