@@ -39,6 +39,12 @@ jQuery(function () {
     // Changing href redirects to contain GET variable
     const viewStatisticsLink = document.getElementById('viewStatisticsLink');
     viewStatisticsLink.setAttribute('href', viewStatisticsLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const manageLink = document.getElementById('manageLink');
+    manageLink.setAttribute('href', manageLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const makeLink = document.getElementById('makeLink');
+    makeLink.setAttribute('href', makeLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
+    const holdLink = document.getElementById('holdLink');
+    holdLink.setAttribute('href', holdLink.getAttribute('href') + "?secHandle_ID=" + getParameterByName('secHandle_ID'));
 
     $.ajax({
         url: "/php/view-statistics-details_loading.php",
