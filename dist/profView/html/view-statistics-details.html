@@ -186,7 +186,7 @@
     <main class="p-7 h-dvh w-dvw overflow-y-auto">
       <h1 class="main-title">View Statistics</h1>
       <div class="flex gap-4">
-        <a href="/dist/profView/html/view-statistics.html">
+        <a id="viewStatisticsLink" href="/dist/profView/html/view-statistics.html">
           <!--Back Icon-->
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -204,9 +204,9 @@
           </svg>
         </a>
         <div class="flex flex-col">
-          <p class="navitem">Quiz 1 - <span>Section</span></p>
-          <p class="font-base text-sm">04/20/2024</p>
-          <p class="font-base text-sm">01:50 PM</p>
+          <p id="questionSetTitle" class="navitem"></p>
+          <p id="deadlineDate" class="font-base text-sm"></p>
+          <p id="deadlineTime" class="font-base text-sm"></p>
         </div>
       </div>
 
@@ -219,14 +219,14 @@
             <canvas id="myChart" class="mx-auto my-0"></canvas>
           </div>
         </div>
-        <div class="flex flex-col gap-4">
+        <div id="scoreData" class="flex flex-col gap-4">
           <div class="card-stats">
             <p class="stats-title">Highest Score</p>
-            <p class="stats-number">000</p>
+            <p id="highestScore" class="stats-number">000</p>
           </div>
           <div class="card-stats">
             <p class="stats-title">Lowest Score</p>
-            <p class="stats-number">000</p>
+            <p id="lowestScore" class="stats-number">000</p>
           </div>
         </div>
         <div class="card-stats col-span-2">
@@ -234,8 +234,8 @@
           <article class="flex justify-center items-center">
             <div class="card-test w-auto rounded-3xl">
               <form action="#">
-                <h1 class="question-number font-bold text-xl">Question 1</h1>
-                <h5 class="question-content font-base text-base mb-8">
+                <h1 class="question-number font-bold text-xl">Question <span id="questionNumber"></span></h1>
+                <h5 id="questionText" class="question-content font-base text-base mb-8">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco
@@ -246,20 +246,6 @@
                   mollit anim id est laborum.
                 </h5>
               </form>
-              <div class="answers">
-                <div class="answers-item">
-                  <input type="radio" name="q1-answers" id="A" value="Lorem" />
-                  <label for="A">A. Lorem</label>
-                </div>
-                <div class="answers-item">
-                  <input type="radio" name="q1-answers" id="B" value="Dolor" />
-                  <label for="B">B. Dolor</label>
-                </div>
-                <div class="answers-item">
-                  <input type="radio" name="q1-answers" id="C" value="Amet" />
-                  <label for="C">C. Amet</label>
-                </div>
-              </div>
             </div>
           </article>
         </div>
@@ -267,6 +253,7 @@
     </main>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
+    <script src="/dist/js/view-statistics-details.js" type="module"></script>
     <script src="/dist/js/logout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <script>
@@ -283,7 +270,7 @@
               label: "Number of Students",
               backgroundColor: ["#F9C91F7F", "#F845027F"],
               borderColor: ["#F9C91FCE", "#F84502CE"],
-              data: [12, 19],
+              data: getRemarks(),
               borderWidth: 1,
               hoverOffset: 5,
             },

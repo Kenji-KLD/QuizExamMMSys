@@ -1039,6 +1039,71 @@ class Model{
         }
     }
 
+    public function readStatistics($input_questionSetId){
+        $questionData = [];
+
+        $questionDataQuery = "
+        SELECT 
+            qb.questionNumber AS questionNumber,
+            qb.questionText AS questionText,
+            COUNT(*) AS incorrectCount
+        FROM 
+            AnswerStatistic AS ans
+        JOIN 
+            QuestionBank AS qb ON ans.question_ID = qb.question_ID
+        LEFT JOIN 
+            ChoiceBank AS cb ON qb.question_ID = cb.question_ID
+        WHERE 
+            ans.isCorrect = 0
+            AND qb.questionSet_ID = ?
+        GROUP BY
+            qb.questionNumber,
+            qb.questionText,
+            cb.choiceLabel
+        ORDER BY
+            incorrectCount DESC
+        LIMIT 1
+        ";
+
+        $numberStatsQuery = "
+        SELECT 
+            MAX(score) AS highest_score,
+            MIN(score) AS lowest_score,
+            SUM(CASE WHEN passed = 1 THEN 1 ELSE 0 END) AS passCount,
+            SUM(CASE WHEN passed = 0 THEN 1 ELSE 0 END) AS failCount
+        FROM 
+            Score
+        WHERE
+            questionSet_ID = ?
+        ";
+
+        try{
+            $questionStmt = $this->db->prepare($questionDataQuery); $questionStmt->bind_param("i", $input_questionSetId);
+            $questionStmt->execute(); $questionStmt->bind_result($questionNumber, $questionText, $incorrectCount);
+            $questionStmt->fetch(); $questionStmt->close();
+
+            $numberStmt = $this->db->prepare($numberStatsQuery); $numberStmt->bind_param("i", $input_questionSetId);
+            $numberStmt->execute(); $numberStmt->bind_result($highest_score, $lowest_score, $passCount, $failCount);
+            $numberStmt->fetch(); $numberStmt->close();
+           
+            return[
+                'questionData' => [
+                    'questionNumber' => $questionNumber,
+                    'questionText' => $questionText,
+                ],
+                'numberData' => [
+                    'highest_score' => $highest_score,
+                    'lowest_score' => $lowest_score,
+                    'passCount' => (int)$passCount,
+                    'failCount' => (int)$failCount
+                ]
+            ];
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
     public function readStudentDetails($input_userID){
         $query = "
         SELECT s.student_ID AS student_ID, a.email AS email
