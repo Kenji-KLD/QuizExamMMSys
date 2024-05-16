@@ -1,9 +1,5 @@
 import { getParameterByName } from '/dist/js/function.js';
 
-export function getRemarks() {
-    return [document.getElementById('passCount').value, document.getElementById('failCount').value];
-  }
-
 jQuery(function () {
     // Changing href redirects to contain GET variable
     const viewStatisticsLink = document.getElementById('viewStatisticsLink');
