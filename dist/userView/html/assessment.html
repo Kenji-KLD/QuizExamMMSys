@@ -13,7 +13,16 @@
   <body class="background flex flex-col h-screen">
     <!-- ASSESSMENT HEADER -->
     <header class="p-4 bg-gradient-to-b from-ISshade3 to-transparent">
-      <p id="questionSetTitle" class="main-title ml-6 mt-6 mb-4"></p>
+      <div class="fixed p-4 bg-ISshade3 rounded-xl top-0 right-0 w-full z-10 text-center md:right-6 md:top-6 md:w-auto">
+        <div class="flex gap-2 text-lg font-medium justify-center items-center">
+          <span id="hours">10</span>
+          <p>:</p>
+          <span id="minutes">10</span>
+          <p>:</p>
+          <span id="seconds">10</span>
+        </div>
+      </div>
+      <p id="questionSetTitle" class="main-title ml-6 mt-14 mb-4 md:mt-6"></p>
       <p
         id="rubrics"
         class="px-8 text-base font-medium mb-6 text-left w-full xl:w-[50%]"
