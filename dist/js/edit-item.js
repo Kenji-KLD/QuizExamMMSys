@@ -6,9 +6,6 @@ function updateQuestion(questionData) {
     beforeSend: function(xhr) {
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     },
-    success: function(response){
-      console.log(response);
-    },
     error: function(error){
       console.error(error);
     }
@@ -65,9 +62,14 @@ export function loadEdit() {
       if (editMode) {
         // Save the changes
         const questionText = questionContent.textContent;
-        const choiceIDs = Array.from(choiceIDInput).mal((choice_ID) => choice_ID.value);
+        const choiceIDs = Array.from(choiceIDInput).map((choice_ID) => choice_ID.value);
         const choiceLabel = Array.from(labels).map((label) => label.textContent);
-        const choice = choiceIDs.map((choice_ID, index) => [choice_ID, choiceLabel[index]]);
+        const choice = choiceIDs.map((choice_ID, index) => {
+          return {
+              "choice_ID": choice_ID,
+              "choiceLabel": choiceLabel[index]
+          };
+        });
 
         // Find the selected radio button value
         let selectedRadioValue = null;

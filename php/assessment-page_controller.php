@@ -18,10 +18,6 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         $Model->updateChoice($choice['choice_ID'], $choice['choiceLabel']);
     }
 
-    echo json_encode([
-        'processed' => $questionData
-    ]);
-
     $Model = null; 
     exit();
 }
