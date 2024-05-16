@@ -27,9 +27,8 @@ document.addEventListener('visibilitychange', function() {
 // -------------
 
 window.promptSubmitQuestionnaire = function () {
-    if(confirm("Are you sure you want to submit your answers?")){
-        antiCheatFlag = false; submitQuestionnaire(); 
-    }
+    antiCheatFlag = false; 
+    showModal("Are you sure you want to submit your answers?");
 };
 
 window.submitQuestionnaire = function () {
@@ -94,7 +93,7 @@ window.submitQuestionnaire = function () {
         });
     }
     else{
-        alert("You have not provided an answer to all questions!");
+        showWarningModal("You have not provided an answer to all questions!");
     }
 };
 
@@ -160,6 +159,57 @@ window.terminateQuestionnaire = function () { function executeTermination() {
         executeTermination();
     }
 };
+
+// Get modal element and buttons
+const modal = document.getElementById('modal');
+const modalText = document.getElementById('modal-text');
+const modalYesBtn = document.getElementById('modal-yes');
+const modalNoBtn = document.getElementById('modal-no');
+
+// Function to show modal
+function showModal(text) {
+    modalText.textContent = text;
+    modal.classList.remove('hidden');
+}
+
+// Function to hide modal
+function hideModal() {
+    modal.classList.add('hidden');
+}
+
+// Attach click event listeners
+modalYesBtn.addEventListener('click', () => {
+    // Handle 'Yes' button click
+    hideModal();
+    submitQuestionnaire(); antiCheatFlag = true;
+});
+
+modalNoBtn.addEventListener('click', () => {
+    // Handle 'No' button click
+    hideModal();
+});
+
+// Get warning modal elements
+const warningModal = document.getElementById('warningModal');
+const confirmWarningBtn = document.getElementById('confirmWarning');
+const warningMessage = document.getElementById('warningMessage');
+
+// Function to show warning modal
+function showWarningModal(message) {
+    warningMessage.textContent = message;
+    warningModal.classList.remove('hidden');
+}
+
+// Function to hide warning modal
+function hideWarningModal() {
+    warningModal.classList.add('hidden');
+}
+
+// Attach click event listener to OK button
+confirmWarningBtn.addEventListener('click', () => {
+    // Handle OK button click (optional)
+    hideWarningModal();
+});
 
 jQuery(function () {
     $.ajax({

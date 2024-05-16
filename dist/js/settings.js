@@ -1,6 +1,6 @@
 import { getCookie } from '/dist/js/function.js';
 
-function changePassword(){
+window.changePassword = function () {
     var oldPass = document.getElementById('oldPass').value;
     var newPass = document.getElementById('newPass').value;
     var confNewPass = document.getElementById('confNewPass').value;
@@ -22,7 +22,7 @@ function changePassword(){
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             },
             success: function(response){
-                data = JSON.parse(response);
+                let data = JSON.parse(response);
 
                 if(data.processed == true){
                     alert("Success");
