@@ -106,16 +106,20 @@ unset($_SESSION['notif']);
                     </div>
 
         <div class="col-md-8">
-                <div class="form-section">
-                    <form action="" method="GET">
-                        <input type="text" placeholder="Search term..." name="search">
-                        <select name="search_by">
-                            <option value="name">Name</option>
-                            <option value="email">Email</option>
-                            <option value="student_id">Student ID</option>
-                        </select>
-                            <button type="submit" class="submit">Search</button>
-                    </form><br>
+        <div class="form-section">
+                <form action="" method="GET" class="search-form">
+                    <input type="text" placeholder="Search term..." name="search" class="search-input">
+                    <select name="search_by" class="search-select">
+                        <option value="name">Name</option>
+                        <option value="email">Email</option>
+                        <option value="student_id">Student ID</option>
+                    </select>
+                        <button type="submit" class="submit">Search</button>
+                </form><br>
+            </div>
+
+
+                    <div class="form-section">
                 <center><h2>Student List</h2></center><br>
                     <table>
                     <tr>

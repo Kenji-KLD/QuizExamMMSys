@@ -80,3 +80,5 @@
 [2024-05-16 00:28:28] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'c
         INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID...' at line 1
 [2024-05-16 02:32:02] - Error: Cannot add or update a child row: a foreign key constraint fails (`quizsystem`.`class`, CONSTRAINT `class_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`student_ID`))
+[2024-05-16 08:45:25] - Error: Subquery returns more than 1 row
+[2024-05-16 08:48:19] - Error: Subquery returns more than 1 row

@@ -1,6 +1,6 @@
 import { getParameterByName } from '/dist/js/function.js';
 
-/*
+
 // Anti-cheating
 let questionnaireTerminated = false;
 let antiCheatFlag = true;
@@ -25,7 +25,6 @@ document.addEventListener('visibilitychange', function() {
         terminateQuestionnaire();
     }
 });
-// ------------- */
 
 window.promptSubmitQuestionnaire = function () {
     if(confirm("Are you sure you want to submit your answers?")){
