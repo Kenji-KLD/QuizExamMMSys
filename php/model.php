@@ -481,6 +481,28 @@ class Model{
         }
     }
 
+    public function readDeletedStudent($input_studentID){
+        $query = "
+        SELECT a.userName FROM Account a
+        INNER JOIN Student s ON a.user_ID = s.user_ID
+        WHERE s.student_ID = ? AND a.userName LIKE 'deleted_%'
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("s", $input_studentID);
+            $stmt->execute(); $stmt->store_result();
+            if($stmt->num_rows > 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
     public function readEditableAssessment($input_questionSetID){
         $data = [];
         $questions = [];
@@ -612,7 +634,7 @@ class Model{
         SELECT suh.subject_ID, su.subjectName FROM Subject su
         INNER JOIN SubjectHandle suh ON su.subject_ID = suh.subject_ID
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
-        WHERE f.faculty_ID = ?;
+        WHERE f.faculty_ID = ? AND su.subjectName NOT LIKE 'deleted_%';
         ";
 
         try{
@@ -636,7 +658,7 @@ class Model{
 
     public function readPasswordHash($input_username){
         $query = "
-        SELECT password FROM Account WHERE userName = ?
+        SELECT password FROM Account WHERE userName = ? AND userName NOT LIKE 'deleted_%'
         ";
 
         try{
@@ -1096,7 +1118,7 @@ class Model{
         SELECT se.section_ID FROM Section se
         LEFT JOIN SectionHandle seh ON se.section_ID = seh.section_ID
         LEFT JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
-        WHERE suh.subHandle_ID IS NULL;
+        WHERE suh.subHandle_ID IS NULL AND se.section_ID != 'FLAG-DEL' AND se.section_ID NOT LIKE 'deleted_%';
         ";
         $section_ID = [];
         
