@@ -255,42 +255,5 @@
     <script src="/dist/js/sidebar.js"></script>
     <script src="/dist/js/view-statistics-details.js" type="module"></script>
     <script src="/dist/js/logout.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-    <script>
-      const passCount = document.getElementById('passCount').value;
-      const failCount = document.getElementById('failCount').value;
-
-      Chart.defaults.color = "#FEFEFE";
-
-      const ctx = document.getElementById("myChart");
-
-      new Chart(ctx, {
-        type: "pie",
-        data: {
-          labels: ["Passed", "Failed"],
-          datasets: [
-            {
-              label: "Number of Students",
-              backgroundColor: ["#F9C91F7F", "#F845027F"],
-              borderColor: ["#F9C91FCE", "#F84502CE"],
-              data: [passCount, failCount],
-              borderWidth: 1,
-              hoverOffset: 5,
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            title: {
-              display: true,
-              text: "Statistics of Students", // Customize the title text here
-              font: {
-                size: 18, // Customize the font size of the title
-              },
-            },
-          },
-        },
-      });
-    </script>
   </body>
 </html>

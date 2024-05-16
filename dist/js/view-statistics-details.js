@@ -1,4 +1,39 @@
 import { getParameterByName } from '/dist/js/function.js';
+import {} from 'https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js';
+
+function loadChart(passCount, failCount) {
+  Chart.defaults.color = "#FEFEFE";
+
+  const ctx = document.getElementById("myChart");
+
+  new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Passed", "Failed"],
+      datasets: [
+        {
+          label: "Number of Students",
+          backgroundColor: ["#F9C91F7F", "#F845027F"],
+          borderColor: ["#F9C91FCE", "#F84502CE"],
+          data: [passCount, failCount],
+          borderWidth: 1,
+          hoverOffset: 5,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Statistics of Students", // Customize the title text here
+          font: {
+            size: 18, // Customize the font size of the title
+          },
+        },
+      },
+    },
+  });
+}
 
 jQuery(function () {
     // Changing href redirects to contain GET variable
@@ -30,18 +65,7 @@ jQuery(function () {
             document.getElementById('questionNumber').textContent = data.statistics.questionData.questionNumber;
             document.getElementById('questionText').textContent = data.statistics.questionData.questionText;
 
-            const passCount = document.createElement('input');
-            passCount.id = 'passCount';
-            passCount.type = 'hidden';
-            passCount.value = data.statistics.numberData.passCount;
-
-            const failCount = document.createElement('input');
-            failCount.id = 'failCount';
-            failCount.type = 'hidden';
-            failCount.value = data.statistics.numberData.failCount;
-
-            scoreData.appendChild(passCount);
-            scoreData.appendChild(failCount);
+            loadChart(data.statistics.numberData.passCount, data.statistics.numberData.failCount);
         },
         error: function(error){
           console.error(error);
