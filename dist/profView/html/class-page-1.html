@@ -210,12 +210,14 @@
             />
           </svg>
           <input
+            id="addStudent"
             type="text"
             class="text-ISshade3 w-[25%] rounded-xl p-3"
             placeholder="e.i. KLD-xx-xxxxxx"
           />
           <button
-            type="submit"
+            onclick="updateClass('addStudent', getStudent('addStudent'));"
+            type="button"
             class="flex cursor-pointer bg-gradient-to-br from-[#F84502CE] to-[#F9C91FCE] py-2 px-6 rounded-[2.5rem]"
           >
             <p class="text-lg mx-auto my-auto font-medium">Add</p>
@@ -233,6 +235,7 @@
             </button>
             <button
               id="removeButton"
+              onclick="updateClass('removeStudent', getStudent('removeStudent'));"
               type="submit"
               class="flex cursor-pointer bg-gradient-to-br from-[#4862FFCE] to-[#11CBFECE] py-2 px-6 rounded-[2.5rem]"
             >

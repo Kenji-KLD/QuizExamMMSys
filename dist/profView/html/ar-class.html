@@ -140,7 +140,7 @@
           </select> 
           </div>
           <button
-            onclick="sendData('createSubHandle', {
+            onclick="sendData('createSecHandle', {
               'subject_ID': document.getElementById('handledSubject').value,
               'section_ID': document.getElementById('unhandledSection').value
             });"
@@ -169,7 +169,7 @@
           </select>
           </div>
           <button
-            onclick="sendData('deleteSubHandle', {
+            onclick="sendData('deleteSecHandle', {
               'section_ID': document.getElementById('handledSection').value
             });"
             type="submit"
@@ -182,8 +182,9 @@
     </main>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/dist/js/sidebar.js"></script>
-    <script src="/dist/js/checkToken.js"></script>
-    <script>jQuery(function() {checkToken(0, 0)})</script>
+    <script src="/dist/js/checkToken.js">
+      jQuery(function() {checkToken(0, 0);});
+    </script>
     <script src="/dist/js/ar-class.js" defer></script>
     <script src="/dist/js/logout.js"></script>
   </body>

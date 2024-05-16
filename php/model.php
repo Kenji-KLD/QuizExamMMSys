@@ -67,7 +67,7 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -81,7 +81,21 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createClass($input_studentID, $input_secHandleID){
+        $query = "
+        INSERT INTO Class(student_ID, secHandle_ID) VALUES (?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("si", $input_studentID, $input_secHandleID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
 
@@ -119,7 +133,7 @@ class Model{
             return $question_ID;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -165,22 +179,7 @@ class Model{
             return $questionSet_ID;
         }
         catch(Exception $e){
-            $this->logError($e);
-        }
-    }
-
-    public function createSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
-        $query = "
-        INSERT INTO SetDisallow (student_ID, questionSet_ID, isDisallowed) VALUES (?, ?, ?)
-        ";
-
-        try{
-            $stmt = $this->db->prepare($query);
-            $stmt->bind_param("sii", $input_studentID, $input_questionSetID, $input_isDisallowed);
-            $stmt->execute(); $stmt->close();
-        }
-        catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -207,7 +206,37 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createSecHandle($input_facultyID, $input_subjectID, $input_sectionID){
+        $query = "
+        INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+        ((SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ? AND subject_ID = ?), ?)
+        ";
+        
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("iss", $input_facultyID, $input_subjectID, $input_sectionID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+
+    public function createSetDisallow($input_studentID, $input_questionSetID, $input_isDisallowed){
+        $query = "
+        INSERT INTO SetDisallow (student_ID, questionSet_ID, isDisallowed) VALUES (?, ?, ?)
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param("sii", $input_studentID, $input_questionSetID, $input_isDisallowed);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
         }
     }
     
@@ -227,22 +256,7 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
-        }
-    }
-
-    public function createSubHandle($input_facultyID, $input_subjectID, $input_sectionID){
-        $query = "
-        INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
-        ((SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ? AND subject_ID = ?), ?)
-        ";
-        
-        try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("iss", $input_facultyID, $input_subjectID, $input_sectionID);
-            $stmt->execute(); $stmt->close();
-        }
-        catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -279,7 +293,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
@@ -312,7 +326,7 @@ class Model{
             }
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -337,7 +351,7 @@ class Model{
             ];
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -350,7 +364,7 @@ class Model{
             qs.deadline AS deadline
         FROM SectionHandle seh
         INNER JOIN QuestionSet qs ON seh.secHandle_ID = qs.secHandle_ID
-        WHERE seh.secHandle_ID = ?
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
         ";
         $data = [];
 
@@ -374,7 +388,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -399,6 +413,8 @@ class Model{
             sd.isDisallowed = 0 
         AND 
             qs.deadline > NOW()
+        AND
+            qs.secHandle_ID IS NOT NULL
         AND NOT EXISTS (
             SELECT 1
             FROM Score sc
@@ -427,7 +443,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -437,7 +453,7 @@ class Model{
         SELECT s.questionSet_ID, s.score, qs.questionSetTitle, qs.questionTotal, qs.randomCount, s.dateTaken 
         FROM Score s
         INNER JOIN QuestionSet qs ON s.questionSet_ID = qs.questionSet_ID
-        WHERE s.student_ID = ?
+        WHERE s.student_ID = ? AND qs.secHandle_ID IS NOT NULL
         ";
         
         try{
@@ -461,7 +477,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -472,7 +488,7 @@ class Model{
         INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
         INNER JOIN Faculty f ON suh.faculty_ID = f.faculty_ID
         INNER JOIN Account a ON f.user_ID = a.user_ID
-        WHERE seh.secHandle_ID = ?
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
         ";
 
         try{
@@ -489,7 +505,7 @@ class Model{
             return $nameData;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -514,7 +530,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -542,7 +558,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -563,7 +579,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -592,7 +608,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -681,7 +697,7 @@ class Model{
             ];
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
 
         return json_encode($data);
@@ -693,7 +709,7 @@ class Model{
         FROM SectionHandle seh
         INNER JOIN SubjectHandle suh ON seh.subHandle_ID = suh.subHandle_ID
         INNER JOIN Subject su ON suh.subject_ID = su.subject_ID
-        WHERE seh.secHandle_ID = ?
+        WHERE seh.secHandle_ID = ? AND seh.section_ID != 'FLAG-DEL'
         ";
         $secHandleData = [];
 
@@ -710,7 +726,7 @@ class Model{
             return $secHandleData;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -753,7 +769,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -775,7 +791,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -797,7 +813,7 @@ class Model{
             $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -833,7 +849,7 @@ class Model{
             return $sessionData;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -861,7 +877,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -886,7 +902,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -928,7 +944,7 @@ class Model{
             ];
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -964,7 +980,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -999,7 +1015,7 @@ class Model{
             return $data;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -1024,7 +1040,7 @@ class Model{
             return $section_ID;
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
@@ -1058,7 +1074,7 @@ class Model{
             }
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -1074,7 +1090,7 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 
@@ -1082,6 +1098,21 @@ class Model{
     // DELETE FUNCTIONS
 
 
+    public function deleteClass($input_studentID, $input_secHandleID){
+        $query = "
+        DELETE FROM Class
+        WHERE student_ID = ? AND secHandle_ID = ?
+        ";
+
+        try{
+            $stmt = $this->db->prepare($query); $stmt->bind_param("si", $input_studentID, $input_secHandleID);
+            $stmt->execute(); $stmt->close();
+        }
+        catch(Exception $e){
+            $this->logError($e->getMessage());
+        }
+    }
+    
     public function deleteSessionToken($input_sessionToken){
         $query = "
         DELETE FROM LoginToken
@@ -1093,22 +1124,41 @@ class Model{
             $stmt->execute(); $stmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
     
-    public function deleteSubHandle($input_facultyID, $input_sectionID){
-        $query = "
+    public function deleteSecHandle($input_facultyID, $input_sectionID){
+        $updateQuery = "
+        UPDATE QuestionSet qs
+        INNER JOIN SectionHandle seh ON qs.secHandle_ID = seh.secHandle_ID
+        SET qs.secHandle_ID = null
+        WHERE seh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND seh.section_ID = ?
+        ";
+
+        $deleteClassQuery = "
+        DELETE c FROM Class c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID
+        WHERE seh.subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND seh.section_ID = ?
+        ";
+
+        $deleteSecHandleQuery = "
         DELETE FROM SectionHandle 
         WHERE subHandle_ID = (SELECT subHandle_ID FROM SubjectHandle WHERE faculty_ID = ?) AND section_ID = ?
         ";
 
         try{
-            $stmt = $this->db->prepare($query); $stmt->bind_param("ss", $input_facultyID, $input_sectionID);
-            $stmt->execute(); $stmt->close();
+            $updateStmt = $this->db->prepare($updateQuery); $updateStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $updateStmt->execute(); $updateStmt->close();
+
+            $deleteClassStmt = $this->db->prepare($deleteClassQuery); $deleteClassStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $deleteClassStmt->execute(); $deleteClassStmt->close();
+
+            $deleteSecHandleStmt = $this->db->prepare($deleteSecHandleQuery); $deleteSecHandleStmt->bind_param("ss", $input_facultyID, $input_sectionID);
+            $deleteSecHandleStmt->execute(); $deleteSecHandleStmt->close();
         }
         catch(Exception $e){
-            $this->logError($e);
+            $this->logError($e->getMessage());
         }
     }
 }

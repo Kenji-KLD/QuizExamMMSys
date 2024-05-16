@@ -27,15 +27,15 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
             'error_message' => 'ERROR: No Section Selected'
         ]);
     }
-    else if($_POST['dataFlag'] == 'createSubHandle'){
+    else if($_POST['dataFlag'] == 'createSecHandle'){
         $sessionData = $Model->readSessionData($_COOKIE['session_token']);
-        $Model->createSubHandle($sessionData['faculty_ID'], $jsonData['subject_ID'], $jsonData['section_ID']);
+        $Model->createSecHandle($sessionData['faculty_ID'], $jsonData['subject_ID'], $jsonData['section_ID']);
 
         echo json_encode(['processed' => true]);
     }
-    elseif ($_POST['dataFlag'] == 'deleteSubHandle') {
+    elseif ($_POST['dataFlag'] == 'deleteSecHandle') {
         $sessionData = $Model->readSessionData($_COOKIE['session_token']);
-        $Model->deleteSubHandle($sessionData['faculty_ID'], $jsonData['section_ID']);
+        $Model->deleteSecHandle($sessionData['faculty_ID'], $jsonData['section_ID']);
 
         echo json_encode(['processed' => true]);
     }
