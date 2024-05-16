@@ -75,3 +75,8 @@
 [2024-05-15 00:18:35] - Error: Unknown column 'c.section_ID' in 'where clause'
 [2024-05-15 00:19:00] - Error: Unknown column 'c.section_ID' in 'where clause'
 [2024-05-15 00:21:28] - Error: Unknown column 'c.section_ID' in 'where clause'
+[2024-05-16 00:28:19] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID...' at line 1
+[2024-05-16 00:28:28] - Error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'c
+        INNER JOIN SectionHandle seh ON c.secHandle_ID = seh.secHandle_ID...' at line 1
+[2024-05-16 02:32:02] - Error: Cannot add or update a child row: a foreign key constraint fails (`quizsystem`.`class`, CONSTRAINT `class_ibfk_1` FOREIGN KEY (`student_ID`) REFERENCES `student` (`student_ID`))
