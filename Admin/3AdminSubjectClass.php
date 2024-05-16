@@ -150,12 +150,28 @@ class DeleteSubject {
         $this->subjectID = $subjectID;
     }
 
+    private function generateRandomString($length = 12) {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $randomString = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
+    }
+
     public function delete() {
         include "connection.php";
 
         try {
-            $stmt = $conn->prepare("DELETE FROM Subject WHERE subject_ID = ?");
-            $stmt->bind_param('s', $this->subjectID);
+
+            $randomString = $this->generateRandomString();
+
+            $newSubjectName = 'deleted_' . $randomString;
+
+            $stmt = $conn->prepare("UPDATE subject SET subjectName = ? WHERE subject_ID = ?");
+            $stmt->bind_param('ss', $newSubjectName, $this->subjectID);
             $stmt->execute();
             $stmt->close();
 
@@ -179,6 +195,8 @@ class AssignSubject{
         $this->faculty_ID = $faculty_ID;
         $this->subjectID = $subjectID;
     }
+
+    
 
     public function checkEmpty(){
         if(empty($this->faculty_ID) || empty($this->subjectID)){

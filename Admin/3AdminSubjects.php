@@ -91,7 +91,7 @@ unset($_SESSION['notif1']);
                     <select name="subjectID" id="subjectID">
                     <option disabled selected>Select Subject</option>
                     <?php
-                    $query = "SELECT subject_ID, subjectName FROM Subject";
+                    $query = "SELECT subject_ID, subjectName FROM Subject WHERE subjectName NOT LIKE 'deleted_%'";
                     $result = mysqli_query($conn, $query);
 
                     if (mysqli_num_rows($result) > 0) {

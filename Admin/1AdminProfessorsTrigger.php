@@ -13,14 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mName = $_POST['mName'];
         $lName = $_POST['lName'];
         $email = $_POST['email'];
-        $birthdate = $_POST ['birthdate'];
+        $day = $_POST['day'];
+        $month = $_POST['month'];
+        $year = $_POST['year'];
         $sex = $_POST ['sex'];
         $address = $_POST ['address'];
 
-        $mysqlDate = date('Y-m-d', strtotime($birthdate));
+        $birthdate = $year . '/' . $month . '/' . $day;
 
 
-        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $mysqlDate, $sex, $address);
+        $registration = new RegistrationFaculty ($username, $password, $fName, $mName, $lName, $email, $birthdate, $sex, $address);
 
         if ($registration->validate()) {
             if ($registration->register()) {

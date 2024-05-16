@@ -27,48 +27,50 @@ unset($_SESSION['notif']);
     <div class="container" style="margin-left: 300px;">  
         <div class="row">
             
-            <div class="col-md-4">
-                <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validateForm()">
-                    <div class="form-section">
-                    <center><h2>Professor Form</h2></center>
-                    <center><?php echo $notif ?></center><br>
-                        <label for="fName">First Name:</label>
-                        <input type="text" id="fName" name="fName" required><br>
+        <div class="col-md-4">
+        <form action="1AdminProfessorsTrigger.php" method="post" onsubmit="return validateForm()">
+            <div class="form-section">
+                <center><h2>Professor Form</h2></center>
+                <center><?php echo $notif ?></center><br>
+                <label for="fName">First Name:</label>
+                <input type="text" id="fName" name="fName" required><br>
 
-                        <label for="mName">Middle Name:</label>
-                        <input type="text" id="mName" name="mName"><br>
+                <label for="mName">Middle Name:</label>
+                <input type="text" id="mName" name="mName"><br>
 
-                        <label for="lName">Last Name:</label>
-                        <input type="text" id="lName" name="lName" required><br>
+                <label for="lName">Last Name:</label>
+                <input type="text" id="lName" name="lName" required><br>
 
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" name="username" placeholder="" required><br>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
 
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" placeholder="At least 8 characters" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="At least 8 characters" required><br>
 
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="name@domain.com" required><br>
-                        
-                        <label for="birthdate">Birthdate: (YYYY/MM/DD)</label>
-                        <input type="text" id="birthdate" name="birthdate" placeholder="YYYY/MM/DD" required>
-                        <small style="color: red;" id="birthdate-error"></small><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="name@domain.com" required><br>
+                
+                <label for="birthdate">Birthdate (DD/MM/YYYY):</label>
+                <div class="birthdate-container">
+                <input type="number" id="day" name="day" class="birthdate-input" min="1" max="31" placeholder="DD" required>
+                <input type="number" id="month" name="month" class="birthdate-input" min="1" max="12" placeholder="MM" required>
+                <input type="number" id="year" name="year" class="birthdate-input" min="1970" placeholder="YYYY" required>
+                </div>
 
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" required><br>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required><br>
 
+                <label for="sex">Sex:</label>
+                <select name="sex" id="sex" required>
+                    <option disabled selected> Select Gender </option>
+                    <option value="Male"> Male </option>
+                    <option value="Female"> Female </option>
+                </select><br><br>
 
-                        <label for="sex">Sex:</label>
-                        <select name="sex" id="sex" required>
-                            <option disabled selected> Select Gender </option>
-                            <option value="Male"> Male </option>
-                            <option value="Female"> Female </option>
-                        </select><br><br>
-
-                        <input type="submit" class="submit" name="add" value="Submit">
-                    </div>
-                </form>
+                <input type="submit" class="submit" name="add" value="Submit">
             </div>
+        </form>
+    </div>
 
             <div class="col-md-8">
                 <div class="list-section">

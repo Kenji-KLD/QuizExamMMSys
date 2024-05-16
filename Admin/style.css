@@ -35,6 +35,17 @@
             overflow-y: auto; /* Add vertical scrollbar */
             max-height: 600px; /* Set max height to enable scrolling */
         }
+        .birthdate-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .birthdate-input {
+            width: 60px;
+            margin-right: 5px;
+            text-align: center; /* Center-align text in input fields */
+        }
+        
         .list-section {
             margin-top: 30px;
             width: 100%;
