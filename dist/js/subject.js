@@ -10,7 +10,7 @@ function createAssessmentCard(isAllowed, questionSetData) {
     const cardType = isAllowed == true ? 'card-user1' : 'card-user2';
 
     const assessmentDiv = document.createElement('div');
-    assessmentDiv.classList.add(cardType, 'w-auto', 'rounded-3x1');
+    assessmentDiv.classList.add(cardType, 'w-auto', 'rounded-xl');
     
     const questionSetTitle = document.createElement('h1');
     questionSetTitle.classList.add('font-bold', 'text-xl');
