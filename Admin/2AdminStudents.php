@@ -30,7 +30,7 @@ unset($_SESSION['notif']);
         <div class="row">
             <div class="col-md-4">
 
-                        <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validatePassword()">
+                        <form action="2AdminStudentTrigger.php" method="post" onsubmit="return validateForm()">
                         <div class="form-section">
                         <center><h2>Student Form</h2></center>
                         <center><?php echo $notif ?></center><br>
@@ -108,7 +108,7 @@ unset($_SESSION['notif']);
         <div class="col-md-8">
         <div class="form-section">
                 <form action="" method="GET" class="search-form">
-                    <input type="text" placeholder="Search term..." name="search" class="search-input">
+                    <input type="text" placeholder="Search term..." name="search">
                     <select name="search_by" class="search-select">
                         <option value="name">Name</option>
                         <option value="email">Email</option>
@@ -116,10 +116,10 @@ unset($_SESSION['notif']);
                     </select>
                         <button type="submit" class="submit">Search</button>
                 </form><br>
-            </div>
+            <!-- </div>
 
 
-                    <div class="form-section">
+                    <div class="form-section"> -->
                 <center><h2>Student List</h2></center><br>
                     <table>
                     <tr>
