@@ -1,66 +1,69 @@
 <?php
+include 'connection.php';
 
-include 'connection.php'; // Ensure your database connection is included
-
-function executeQuery($sql) {
-    global $conn;
-    $result = $conn->query($sql);
-    if (!$result) {
-        die("Query failed: " . $conn->error);
-    }
-    return $result;
-}
-
-function calculatePassedFailed($subjectID, $term) {
-    global $conn;
-
-    $sql = "SELECT SUM(IF(score >= 50, 1, 0)) AS passed_count,
-                   SUM(IF(score < 50, 1, 0)) AS failed_count
+function getPassedFailedStats($conn) {
+    $sql = "SELECT
+                Score.questionSet_ID,
+                QuestionSet.questionSetTitle,
+                QuestionSet.acadYear,
+                QuestionSet.acadTerm,
+                QuestionSet.acadSem,
+                SUM(CASE WHEN Score.passed = 1 THEN 1 ELSE 0 END) AS passed_count,
+                SUM(CASE WHEN Score.passed = 0 THEN 1 ELSE 0 END) AS failed_count
             FROM Score
-            INNER JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
-            INNER JOIN SectionHandle ON QuestionSet.secHandle_ID = SectionHandle.secHandle_ID
-            INNER JOIN SubjectHandle ON SectionHandle.subHandle_ID = SubjectHandle.subHandle_ID
-            WHERE SubjectHandle.subject_ID = '$subjectID' AND QuestionSet.acadTerm = '$term'";
-
-    $result = executeQuery($sql);
-    return $result->fetch_assoc();
-}
-
-function getHighestLowestScores($subjectID, $term) {
-    global $conn;
-
-    $sql = "SELECT MAX(score) AS highest_score, MIN(score) AS lowest_score
-            FROM Score
-            INNER JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
-            INNER JOIN SectionHandle ON QuestionSet.secHandle_ID = SectionHandle.secHandle_ID
-            INNER JOIN SubjectHandle ON SectionHandle.subHandle_ID = SubjectHandle.subHandle_ID
-            WHERE SubjectHandle.subject_ID = '$subjectID' AND QuestionSet.acadTerm = '$term'";
-
-    $result = executeQuery($sql);
-    return $result->fetch_assoc();
-}
-
-function getLowestAnsweredQuestion($subjectID, $term) {
-    global $conn;
-
-    $sql = "SELECT MIN(qs.questionTotal - IFNULL((SELECT COUNT(*) FROM AnswerStatistic AS as1 WHERE as1.question_ID = qb.question_ID), 0)) AS lowest_unanswered,
-                   qb.questionText AS lowest_question_text
-            FROM QuestionSet qs
-            INNER JOIN QuestionBank qb ON qs.questionSet_ID = qb.questionSet_ID
-            INNER JOIN SectionHandle ON qs.secHandle_ID = SectionHandle.secHandle_ID
-            INNER JOIN SubjectHandle ON SectionHandle.subHandle_ID = SubjectHandle.subHandle_ID
-            WHERE SubjectHandle.subject_ID = '$subjectID' AND qs.acadTerm = '$term'
-            GROUP BY qs.questionSet_ID
-            ORDER BY lowest_unanswered ASC
-            LIMIT 1";
-
+            JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
+            GROUP BY Score.questionSet_ID, QuestionSet.questionSetTitle, QuestionSet.acadYear, QuestionSet.acadTerm, QuestionSet.acadSem";
     $result = $conn->query($sql);
-
-    if ($result && $result->num_rows > 0) {
-        return $result->fetch_assoc(); 
-    } else {
-        return null; 
+    $stats = [];
+    while ($row = $result->fetch_assoc()) {
+        $stats[] = $row;
     }
+    return $stats;
 }
 
+function getScoreStats($conn) {
+    $sql = "SELECT
+                Score.questionSet_ID,
+                QuestionSet.questionSetTitle,
+                MAX(Score.score) AS highest_score,
+                MIN(Score.score) AS lowest_score
+            FROM Score
+            JOIN QuestionSet ON Score.questionSet_ID = QuestionSet.questionSet_ID
+            GROUP BY Score.questionSet_ID, QuestionSet.questionSetTitle";
+    $result = $conn->query($sql);
+    $stats = [];
+    while ($row = $result->fetch_assoc()) {
+        $stats[] = $row;
+    }
+    return $stats;
+}
+
+function getLowestAnsweredQuestions($conn) {
+    $sql = "SELECT
+                qb.questionSet_ID,
+                qs.questionSetTitle,
+                qb.questionText AS lowest_question_text,
+                COUNT(aq.question_ID) AS unanswered_count
+            FROM QuestionBank qb
+            LEFT JOIN AnswerStatistic aq ON qb.question_ID = aq.question_ID
+            JOIN QuestionSet qs ON qb.questionSet_ID = qs.questionSet_ID
+            GROUP BY qb.questionSet_ID, qs.questionSetTitle, qb.question_ID
+            ORDER BY qb.questionSet_ID, unanswered_count ASC";
+    $result = $conn->query($sql);
+    $questions = [];
+    while ($row = $result->fetch_assoc()) {
+
+        $questions[$row['questionSet_ID']][] = $row;
+    }
+
+    $lowestAnsweredQuestions = [];
+    foreach ($questions as $questionSet_ID => $questionGroup) {
+        $lowestAnsweredQuestions[] = $questionGroup[0];  
+    }
+    return $lowestAnsweredQuestions;
+}
+
+$passedFailedStats = getPassedFailedStats($conn);
+$scoreStats = getScoreStats($conn);
+$lowestAnsweredQuestions = getLowestAnsweredQuestions($conn);
 ?>
