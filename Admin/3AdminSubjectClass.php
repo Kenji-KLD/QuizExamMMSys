@@ -21,11 +21,11 @@ class AddSubject {
     
         try {
     
-            $stmt = $conn->prepare("SELECT 1 FROM Subject WHERE subject_ID = ? AND subjectName = ?");
+            $stmt = $conn->prepare("SELECT 1 FROM Subject WHERE subject_ID = ? AND subjectName = ? AND subjectType = ?");
             if (!$stmt) {
                 throw new Exception("Failed to prepare statement: " . $conn->error);
             }
-            $stmt->bind_param('ss', $this->subjectID, $this->subjectName);
+            $stmt->bind_param('sss', $this->subjectID, $this->subjectName, $this->subjectType);
             $stmt->execute();
     
         
