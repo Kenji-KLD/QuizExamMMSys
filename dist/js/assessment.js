@@ -255,6 +255,25 @@ jQuery(function () {
                 // Append the article element to the container element
                 container.appendChild(article);
             });
+
+            const timer = setInterval(() => {
+                if (data.timeLimit < 0) {
+                    clearInterval(timer);
+                    terminateQuestionnaire();
+                } else {
+                    document.getElementById('hours').textContent = String(
+                        Math.floor(data.timeLimit / 3600)).padStart(2, '0'
+                    );
+                    document.getElementById('minutes').textContent = String(
+                        Math.floor((data.timeLimit % 3600) / 60)).padStart(2, '0'
+                    );
+                    document.getElementById('seconds').textContent = String(
+                        data.timeLimit % 60).padStart(2, '0'
+                    );
+                    
+                    data.timeLimit--;
+                }
+            }, 1000);
         },
         error: function (error) {
             console.error(error);
