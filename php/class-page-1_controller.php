@@ -23,7 +23,13 @@ if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUE
         ]);
     }
     else if($_POST['dataFlag'] == 'addStudent'){
-        if(!filterID($studentData['student_ID'])){
+        if($Model->readDeletedStudent($studentData['student_ID'])){
+            echo json_encode([
+                'processed' => false, 
+                'error_message' => 'ERROR: No Student Selected'
+            ]);
+        }
+        else if(!filterID($studentData['student_ID'])){
             echo json_encode([
                 'processed' => false, 
                 'error_message' => 'ERROR: Student ID Format Mistype'
