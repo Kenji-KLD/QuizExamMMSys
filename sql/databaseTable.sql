@@ -66,7 +66,7 @@ CREATE TABLE SubjectHandle(
 
 CREATE TABLE SectionHandle(
 	secHandle_ID BIGINT AUTO_INCREMENT,
-	subHandle_ID BIGINT NOT NULL,
+	subHandle_ID BIGINT,
 	section_ID VARCHAR(8) NOT NULL,
 	PRIMARY KEY(secHandle_ID),
 	FOREIGN KEY(subHandle_ID) REFERENCES SubjectHandle(subHandle_ID),

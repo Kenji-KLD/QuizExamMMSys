@@ -35,6 +35,7 @@ INSERT INTO Subject(subject_ID, subjectName, unitsAmount, subjectType) VALUES
 ;
 
 INSERT INTO Section(section_ID, course) VALUES
+    ("FLAG-DEL", "Flagged for Deletion"),
     ("BSIS201", "Bachelor Science in Information Systems"),
     ("BSIS206", "Bachelor Science in Information Systems")
 ;
@@ -63,17 +64,18 @@ INSERT INTO SubjectHandle(faculty_ID, subject_ID) VALUES
 ;
 
 INSERT INTO SectionHandle(subHandle_ID, section_ID) VALUES
+    (null, "FLAG-DEL"),
     (1, "BSIS201")
 ;
 
 INSERT INTO Class(student_ID, secHandle_ID) VALUES
-    ("KLD-22-000247", 1),
-    ("KLD-22-000192", 1),
-    ("KLD-22-000420", 1)
+    ("KLD-22-000247", 2),
+    ("KLD-22-000192", 2),
+    ("KLD-22-000420", 2)
 ;
 
 INSERT INTO QuestionSet(secHandle_ID, questionSetTitle, questionSetType, questionTotal, rubrics, deadline, timeLimit, acadYear, acadTerm, acadSem) VALUES
-    (1, "Quiz 1: Ecosystem", "QUIZ", 10,
+    (2, "Quiz 1: Ecosystem", "QUIZ", 10,
     "Choose the letter which is most correct.",
     '2024-05-20 23:59:59', 7200, "2023-2024", "Midterm", "2nd Semester")
 ;
@@ -135,9 +137,10 @@ INSERT INTO ChoiceBank(question_ID, choiceLabel) VALUES
 ;
 
 INSERT INTO `setdisallow` (`student_ID`, `questionSet_ID`, `isDisallowed`) VALUES
-('KLD-22-000420', 1, 0),
-('KLD-22-000247', 1, 0),
-('KLD-22-000192', 1, 0);
+    ('KLD-22-000420', 1, 0),
+    ('KLD-22-000247', 1, 0),
+    ('KLD-22-000192', 1, 0)
+;
 
 INSERT INTO `answerstatistic` (`student_ID`, `question_ID`, `studentAnswer`, `isCorrect`) VALUES
     ('KLD-22-000247', 1, 'A. Ernst Haeckel', 1),
