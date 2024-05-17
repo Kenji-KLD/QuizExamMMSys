@@ -27,7 +27,6 @@ document.addEventListener('visibilitychange', function() {
 // -------------
 
 window.promptSubmitQuestionnaire = function () {
-    antiCheatFlag = false; 
     showModal("Are you sure you want to submit your answers?");
 };
 
@@ -181,13 +180,12 @@ function hideModal() {
 modalYesBtn.addEventListener('click', () => {
     // Handle 'Yes' button click
     hideModal();
-    submitQuestionnaire(); antiCheatFlag = true;
+    submitQuestionnaire();
 });
 
 modalNoBtn.addEventListener('click', () => {
     // Handle 'No' button click
     hideModal();
-    antiCheatFlag = true;
 });
 
 // Get warning modal elements
