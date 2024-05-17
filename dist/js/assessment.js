@@ -187,6 +187,7 @@ modalYesBtn.addEventListener('click', () => {
 modalNoBtn.addEventListener('click', () => {
     // Handle 'No' button click
     hideModal();
+    antiCheatFlag = true;
 });
 
 // Get warning modal elements
